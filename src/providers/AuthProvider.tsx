@@ -28,7 +28,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState(Boolean(auth));
 
   useEffect(() => {
-    if (!auth) {return; }
+    if (!auth) {
+      return;
+    }
 
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
@@ -43,7 +45,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       user,
       loading,
       logout: async () => {
-        if (!auth) { return; }
+        if (!auth) {
+          return;
+        }
         await signOut(auth);
       },
     }),
