@@ -6,10 +6,12 @@ import {
 } from "firebase/firestore";
 import { db } from "./firestore";
 
+// Callers must only invoke these after confirming `isFirebaseConfigured`
+// (see firebase/config.ts) — that's what guarantees `db` is non-null here.
 export const getCollectionWithId = async <T extends { id: string }>(
   name: string,
 ): Promise<T[]> => {
-  const snapshot = await getDocs(collection(db, name));
+  const snapshot = await getDocs(collection(db!, name));
 
   return snapshot.docs.map((doc) => {
     const data = doc.data() as Omit<T, "id">;

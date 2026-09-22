@@ -1,7 +1,15 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { firebaseConfig } from "./config";
+import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
+import { getFirestore, type Firestore } from "firebase/firestore";
+import { firebaseConfig, isFirebaseConfigured } from "./config";
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const app: FirebaseApp | null = isFirebaseConfigured
+  ? getApps().length
+    ? getApp()
+    : initializeApp(firebaseConfig)
+  : null;
 
-export const db = getFirestore(app);
+// `db` is null when Firebase isn't configured. Every caller of this module
+// only reaches it after checking `isFirebaseConfigured` (see the page
+// components and API routes under src/app), so the `!` below is safe there
+// and keeps this module import-safe on its own.
+export const db: Firestore | null = app ? getFirestore(app) : null;

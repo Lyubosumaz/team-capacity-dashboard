@@ -24,7 +24,10 @@ export const metadata: Metadata = {
 const RootLayout: FC<Readonly<{ children: ReactNode }>> = ({ children }) => {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body
+        className="min-h-full flex flex-col bg-background text-foreground"
+        suppressHydrationWarning
+      >
         <Providers>
           <AppHeader />
           <main

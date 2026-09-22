@@ -58,7 +58,7 @@ export const POST = async (request: Request) => {
       members: body.members ?? [],
     };
 
-    const teamsRef = collection(db, "teams");
+    const teamsRef = collection(db!, "teams");
     const teamDocRef = doc(teamsRef, newTeam.id);
 
     await setDoc(teamDocRef, {
@@ -95,7 +95,7 @@ export const DELETE = async (request: Request) => {
       );
     }
 
-    const teamsRef = collection(db, "teams");
+    const teamsRef = collection(db!, "teams");
     const teamDocRef = doc(teamsRef, id);
 
     await deleteDoc(teamDocRef);
@@ -131,7 +131,7 @@ export const PUT = async (request: Request) => {
       );
     }
 
-    const teamsRef = collection(db, "teams");
+    const teamsRef = collection(db!, "teams");
     const teamDocRef = doc(teamsRef, body.id);
 
     await setDoc(teamDocRef, { name: body.name }, { merge: true });

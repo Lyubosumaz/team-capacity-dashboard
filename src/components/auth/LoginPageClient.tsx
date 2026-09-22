@@ -23,7 +23,7 @@ export const LoginPageClient: FC = () => {
     setIsSubmitting(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth!, email, password); // page.tsx only renders this when Firebase is configured
       router.push("/");
     } catch (err) {
       console.error("Login failed", err);

@@ -30,7 +30,7 @@ export const RegisterPageClient: FC = () => {
     setIsSubmitting(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth!, email, password); // page.tsx only renders this when Firebase is configured
       router.push("/");
     } catch (err) {
       console.error("Registration failed", err);
