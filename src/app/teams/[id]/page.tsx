@@ -1,6 +1,7 @@
+import { notFound } from "next/navigation";
 import { collection, doc, getDoc, query, where } from "firebase/firestore";
-import { db } from "@/lib/firebase/firestore";
-import { withFirebasePage } from "@/common/withFirebasePage/withFirebasePage";
+import { getDb } from "@/lib/firebase/firestore";
+import { requireFirebase } from "@/common/requireFirebase/requireFirebase";
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
 import { TeamDetailPageClient } from "@/components/teams/TeamDetailPageClient";
 import { getCollectionQueryWithId } from "@/lib/firebase/collections";
@@ -16,43 +17,48 @@ const TeamDetailPage = async ({
 }) => {
   const { id } = await params;
 
-  return withFirebasePage("Team details", async () => {
-    if (!id) {
-      return null;
-    }
+  const unavailable = requireFirebase("Team details");
 
-    const teamDoc = await getDoc(doc(db!, "teams", id));
+  if (unavailable) {
+    return unavailable;
+  }
 
-    if (!teamDoc.exists()) {
-      return null;
-    }
+  if (!id) {
+    notFound();
+  }
 
-    const teamData = teamDoc.data() as Omit<Team, "id">;
-    const team: Team = { ...teamData, id: teamDoc.id };
+  const db = getDb();
+  const teamDoc = await getDoc(doc(db, "teams", id));
 
-    const [teamProjects, teamRisks] = await Promise.all([
-      getCollectionQueryWithId<Project>(
-        query(collection(db!, "projects"), where("teamId", "==", id)),
-      ),
-      getCollectionQueryWithId<RiskInsight>(
-        query(collection(db!, "riskInsights"), where("teamId", "==", id)),
-      ),
-    ]);
+  if (!teamDoc.exists()) {
+    notFound();
+  }
 
-    const totalCapacity = team.members.reduce(
-      (sum, member) => sum + member.capacityPerSprint,
-      0,
-    );
+  const teamData = teamDoc.data() as Omit<Team, "id">;
+  const team: Team = { ...teamData, id: teamDoc.id };
 
-    return (
-      <TeamDetailPageClient
-        team={team}
-        projects={teamProjects}
-        risks={teamRisks}
-        totalCapacity={totalCapacity}
-      />
-    );
-  });
+  const [teamProjects, teamRisks] = await Promise.all([
+    getCollectionQueryWithId<Project>(
+      query(collection(db, "projects"), where("teamId", "==", id)),
+    ),
+    getCollectionQueryWithId<RiskInsight>(
+      query(collection(db, "riskInsights"), where("teamId", "==", id)),
+    ),
+  ]);
+
+  const totalCapacity = team.members.reduce(
+    (sum, member) => sum + member.capacityPerSprint,
+    0,
+  );
+
+  return (
+    <TeamDetailPageClient
+      team={team}
+      projects={teamProjects}
+      risks={teamRisks}
+      totalCapacity={totalCapacity}
+    />
+  );
 };
 
 export default TeamDetailPage;

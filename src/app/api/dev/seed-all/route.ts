@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/firestore";
+import { getDb } from "@/lib/firebase/firestore";
 import {
   skills,
   teams,
@@ -66,7 +66,7 @@ export const POST = async () => {
     items: readonly T[],
   ) => {
     return items.map((item) => {
-      const ref = doc(collection(db!, collectionName), item.id);
+      const ref = doc(collection(getDb(), collectionName), item.id);
       const { ...data } = item;
       const cleaned = stripMockPrefixesFromObject(
         data as Record<string, unknown>,

@@ -7,55 +7,60 @@ import type {
   RiskEvent,
 } from "@/lib/domain/types";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { withFirebasePage } from "@/common/withFirebasePage/withFirebasePage";
+import { requireFirebase } from "@/common/requireFirebase/requireFirebase";
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
 } from "@/lib/domain/metrics";
 import { RiskPageClient } from "@/components/risk/RiskPageClient";
 
-const RiskPage = async () =>
-  withFirebasePage("Risk insights", async () => {
-    const [teams, projects, sprints, riskRules, riskInsights, riskEvents] =
-      await Promise.all([
-        getCollectionWithId<Team>("teams"),
-        getCollectionWithId<Project>("projects"),
-        getCollectionWithId<Sprint>("sprints"),
-        getCollectionWithId<RiskRule>("riskRules"),
-        getCollectionWithId<RiskInsight>("riskInsights"),
-        getCollectionWithId<RiskEvent>("riskEvents"),
-      ]);
+const RiskPage = async () => {
+  const unavailable = requireFirebase("Risk insights");
 
-    const highRiskInsights = riskInsights.filter(
-      (insight) => insight.severity === "high",
-    );
+  if (unavailable) {
+    return unavailable;
+  }
 
-    const highRiskTeamsCount = new Set(
-      highRiskInsights
-        .map((insight) => insight.teamId)
-        .filter((id): id is string => Boolean(id)),
-    ).size;
+  const [teams, projects, sprints, riskRules, riskInsights, riskEvents] =
+    await Promise.all([
+      getCollectionWithId<Team>("teams"),
+      getCollectionWithId<Project>("projects"),
+      getCollectionWithId<Sprint>("sprints"),
+      getCollectionWithId<RiskRule>("riskRules"),
+      getCollectionWithId<RiskInsight>("riskInsights"),
+      getCollectionWithId<RiskEvent>("riskEvents"),
+    ]);
 
-    const upcomingEvents = getUpcomingRiskEvents(riskEvents, new Date(), 50);
+  const highRiskInsights = riskInsights.filter(
+    (insight) => insight.severity === "high",
+  );
 
-    const teamsOverCapacity =
-      sprints.length > 0
-        ? getTeamsOverCapacity(teams, projects, sprints[0], 1)
-        : [];
+  const highRiskTeamsCount = new Set(
+    highRiskInsights
+      .map((insight) => insight.teamId)
+      .filter((id): id is string => Boolean(id)),
+  ).size;
 
-    const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
+  const upcomingEvents = getUpcomingRiskEvents(riskEvents, new Date(), 50);
 
-    return (
-      <RiskPageClient
-        highRiskInsightsCount={highRiskInsights.length}
-        highRiskTeamsCount={highRiskTeamsCount}
-        upcomingEventsCount={upcomingEvents.length}
-        insights={riskInsights}
-        rules={riskRules}
-        teams={teams}
-        overCapacityTeamIds={overCapacityTeamIds}
-      />
-    );
-  });
+  const teamsOverCapacity =
+    sprints.length > 0
+      ? getTeamsOverCapacity(teams, projects, sprints[0], 1)
+      : [];
+
+  const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
+
+  return (
+    <RiskPageClient
+      highRiskInsightsCount={highRiskInsights.length}
+      highRiskTeamsCount={highRiskTeamsCount}
+      upcomingEventsCount={upcomingEvents.length}
+      insights={riskInsights}
+      rules={riskRules}
+      teams={teams}
+      overCapacityTeamIds={overCapacityTeamIds}
+    />
+  );
+};
 
 export default RiskPage;

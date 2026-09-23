@@ -1,8 +1,11 @@
 import type { FC } from "react";
 import { RegisterPageClient } from "@/components/auth/RegisterPageClient";
-import { withFirebasePage } from "@/common/withFirebasePage/withFirebasePage";
+import { FirebaseGate } from "@/common/FirebaseGate/FirebaseGate";
 
-const RegisterPage: FC = async () =>
-  withFirebasePage("Registration", async () => <RegisterPageClient />);
+const RegisterPage: FC = () => (
+  <FirebaseGate feature="Registration">
+    <RegisterPageClient />
+  </FirebaseGate>
+);
 
 export default RegisterPage;

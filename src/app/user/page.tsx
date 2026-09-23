@@ -1,8 +1,11 @@
 import type { FC } from "react";
 import { UserPageClient } from "@/components/user/UserPageClient";
-import { withFirebasePage } from "@/common/withFirebasePage/withFirebasePage";
+import { FirebaseGate } from "@/common/FirebaseGate/FirebaseGate";
 
-const UserPage: FC = async () =>
-  withFirebasePage("Account", async () => <UserPageClient />);
+const UserPage: FC = () => (
+  <FirebaseGate feature="Account">
+    <UserPageClient />
+  </FirebaseGate>
+);
 
 export default UserPage;

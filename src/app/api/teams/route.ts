@@ -4,7 +4,7 @@ import { collection, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { teams as mockTeams } from "@/lib/domain/mockData";
 import type { Team } from "@/lib/domain/types";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { db } from "@/lib/firebase/firestore";
+import { getDb } from "@/lib/firebase/firestore";
 
 export const runtime = "nodejs";
 
@@ -58,7 +58,7 @@ export const POST = async (request: Request) => {
       members: body.members ?? [],
     };
 
-    const teamsRef = collection(db!, "teams");
+    const teamsRef = collection(getDb(), "teams");
     const teamDocRef = doc(teamsRef, newTeam.id);
 
     await setDoc(teamDocRef, {
@@ -95,7 +95,7 @@ export const DELETE = async (request: Request) => {
       );
     }
 
-    const teamsRef = collection(db!, "teams");
+    const teamsRef = collection(getDb(), "teams");
     const teamDocRef = doc(teamsRef, id);
 
     await deleteDoc(teamDocRef);
@@ -131,7 +131,7 @@ export const PUT = async (request: Request) => {
       );
     }
 
-    const teamsRef = collection(db!, "teams");
+    const teamsRef = collection(getDb(), "teams");
     const teamDocRef = doc(teamsRef, body.id);
 
     await setDoc(teamDocRef, { name: body.name }, { merge: true });

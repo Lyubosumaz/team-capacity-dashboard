@@ -4,6 +4,7 @@ import { FC, ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LocalizationProvider } from "./LocalizationProvider";
 import { AuthProvider } from "./AuthProvider";
+import { FirebaseProvider } from "./FirebaseProvider";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -15,7 +16,9 @@ export const Providers: FC<ProvidersProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider>
-        <AuthProvider>{children}</AuthProvider>
+        <FirebaseProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </FirebaseProvider>
       </LocalizationProvider>
     </QueryClientProvider>
   );

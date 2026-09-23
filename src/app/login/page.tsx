@@ -1,8 +1,11 @@
 import type { FC } from "react";
 import { LoginPageClient } from "@/components/auth/LoginPageClient";
-import { withFirebasePage } from "@/common/withFirebasePage/withFirebasePage";
+import { FirebaseGate } from "@/common/FirebaseGate/FirebaseGate";
 
-const LoginPage: FC = async () =>
-  withFirebasePage("Sign in", async () => <LoginPageClient />);
+const LoginPage: FC = () => (
+  <FirebaseGate feature="Sign in">
+    <LoginPageClient />
+  </FirebaseGate>
+);
 
 export default LoginPage;

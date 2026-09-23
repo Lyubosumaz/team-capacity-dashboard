@@ -56,6 +56,17 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Running with or without Firebase
+
+Copy `example.env` to `.env` to use real data. Restart the dev server after changing it. Without it, the app falls back to mock data or a "Firebase unavailable" page.
+
+| Page type | Guard |
+|---|---|
+| Server page that fetches data (`teams`, `teams/[id]`, `risk`) | `requireFirebase("Feature")` |
+| Client-only page (`login`, `register`, `user`) | `<FirebaseGate feature="Feature">` |
+
+Access Firestore only through `getDb()` (`src/lib/firebase/firestore.ts`). Never use `db!`.
+
 ## Seeding Firestore (dev only)
 
 To populate Firebase/Firestore with the mock domain data used by the app (skills, teams, sprints, projects, risk rules/insights/events), run the dev seed endpoint while the dev server is running:
