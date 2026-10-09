@@ -1,49 +1,101 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { AppHeader } from "./AppHeader";
-import { Providers } from "../../providers/Providers";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { TEST_ID_PREFIXES } from "@tzardom-ui/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("next/link", () => {
-  return {
-    __esModule: true,
-    default: ({ href, children, ...rest }: any) => (
-      <a href={href} {...rest}>
-        {children}
-      </a>
-    ),
-  };
-});
+import { Providers } from "../../providers/Providers";
+import { AppHeader } from "./AppHeader";
+
+vi.mock("next/link", () => ({
+  __esModule: true,
+  default: ({ href, children, ...rest }: any) => (
+    <a href={href} {...rest}>
+      {children}
+    </a>
+  ),
+}));
+
+const BRAND_ID = `${TEST_ID_PREFIXES.brand}-header`;
+const THEME_TOGGLE_ID = `${TEST_ID_PREFIXES.themeToggle}-header`;
+const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-header`;
+const LINK_ID = TEST_ID_PREFIXES.commonLink;
+const USER_MENU_ID = `${TEST_ID_PREFIXES.userMenu}-header-mobile`;
+
+const renderHeader = () =>
+  render(
+    <Providers>
+      <AppHeader />
+    </Providers>,
+  );
 
 describe("AppHeader", () => {
-  it("renders title, subtitle, and primary nav links", () => {
-    render(
-      <Providers>
-        <AppHeader />
-      </Providers>,
-    );
-
-    expect(screen.getByText(/team capacity dashboard/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/plan capacity, workload, and delivery risk/i),
-    ).toBeInTheDocument();
-    const overviewLinks = screen.getAllByTestId("nav-link-overview");
-    const riskLinks = screen.getAllByTestId("nav-link-risk");
-    const teamsLinks = screen.getAllByTestId("nav-link-teams");
-
-    expect(overviewLinks.length).toBeGreaterThanOrEqual(1);
-    expect(riskLinks.length).toBeGreaterThanOrEqual(1);
-    expect(teamsLinks.length).toBeGreaterThanOrEqual(1);
+  beforeEach(() => {
+    window.localStorage.clear();
   });
 
-  it("renders the theme toggle button", () => {
-    render(
-      <Providers>
-        <AppHeader />
-      </Providers>,
-    );
+  it("shows the brand's title and subtitle", () => {
+    renderHeader();
 
-    expect(screen.getByTestId("theme-toggle")).toBeInTheDocument();
-    const loginButtons = screen.getAllByTestId("login-button");
-    expect(loginButtons.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByTestId(`${BRAND_ID}-title`)).toHaveTextContent(
+      /team capacity dashboard/i,
+    );
+    expect(screen.getByTestId(`${BRAND_ID}-subtitle`)).toHaveTextContent(
+      /plan capacity, workload, and delivery risk/i,
+    );
+  });
+
+  it("links to the three primary pages in both navs", () => {
+    renderHeader();
+
+    for (const nav of ["header-nav", "header-nav-mobile"]) {
+      expect(screen.getByTestId(`${LINK_ID}-${nav}-overview`)).toHaveAttribute(
+        "href",
+        "/",
+      );
+      expect(screen.getByTestId(`${LINK_ID}-${nav}-risk`)).toHaveAttribute(
+        "href",
+        "/risk",
+      );
+      expect(screen.getByTestId(`${LINK_ID}-${nav}-teams`)).toHaveAttribute(
+        "href",
+        "/teams",
+      );
+    }
+    expect(
+      screen.getByTestId(`${LINK_ID}-header-nav-overview`),
+    ).toHaveTextContent(/overview/i);
+    expect(
+      screen.getAllByRole("navigation", { name: /primary navigation/i }),
+    ).toHaveLength(2);
+  });
+
+  it("shows the login links and no user menu when logged out", () => {
+    renderHeader();
+
+    for (const login of ["header-login", "header-login-mobile"]) {
+      const link = screen.getByTestId(`${LINK_ID}-${login}`);
+      expect(link).toHaveAttribute("href", "/login");
+      expect(link).toHaveTextContent(/log in/i);
+    }
+    expect(screen.queryByTestId(USER_MENU_ID)).toBeNull();
+  });
+
+  it("switches the page to dark with the theme toggle", () => {
+    renderHeader();
+
+    fireEvent.click(screen.getByTestId(THEME_TOGGLE_ID));
+
+    expect(document.documentElement).toHaveAttribute("data-theme", "dark");
+  });
+
+  it("shows the current language and switches it", () => {
+    renderHeader();
+    const trigger = screen.getByTestId(`${LANGUAGE_SELECT_ID}-trigger`);
+
+    expect(trigger).toHaveAccessibleName("Language: EN");
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByTestId(`${LANGUAGE_SELECT_ID}-option-bg`));
+
+    expect(trigger).toHaveAccessibleName("Language: BG");
   });
 });

@@ -2,6 +2,8 @@
 
 import { FC, ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TzarProvider } from "@tzardom-ui/react";
+import { THEME_STORAGE_KEY } from "@/constants";
 import { LocalizationProvider } from "./LocalizationProvider";
 import { AuthProvider } from "./AuthProvider";
 import { FirebaseProvider } from "./FirebaseProvider";
@@ -15,11 +17,13 @@ export const Providers: FC<ProvidersProps> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LocalizationProvider>
-        <FirebaseProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </FirebaseProvider>
-      </LocalizationProvider>
+      <TzarProvider storageKey={THEME_STORAGE_KEY}>
+        <LocalizationProvider>
+          <FirebaseProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </FirebaseProvider>
+        </LocalizationProvider>
+      </TzarProvider>
     </QueryClientProvider>
   );
 };

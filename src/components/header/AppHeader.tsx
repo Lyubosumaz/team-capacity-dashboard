@@ -1,41 +1,88 @@
 "use client";
 
-import { FC } from "react";
-import { Umbrella } from "lucide-react";
-import { HeaderNav } from "./HeaderNavLink";
-import { ThemeToggleButton } from "./ThemeToggleButton";
-import { LanguageToggleButton } from "./LanguageToggleButton";
-import { LoginButton } from "./LoginButton";
-import { UserMenu } from "./UserMenu";
+import type { FC } from "react";
+import Link from "next/link";
+import {
+  TzarBrand,
+  TzarCommonLink,
+  TzarLanguageSelect,
+  TzarThemeToggle,
+  TzarUserMenu,
+  type TzarLanguage,
+} from "@tzardom-ui/react";
+import type { Locale } from "@/lib/i18n/messages";
+import { useAuth } from "@/providers/AuthProvider";
 import { useLocalization } from "@/providers/LocalizationProvider";
 
+const NAV_ITEMS = [
+  { href: "/", labelKey: "header.nav.overview", testId: "overview" },
+  { href: "/risk", labelKey: "header.nav.risk", testId: "risk" },
+  { href: "/teams", labelKey: "header.nav.teams", testId: "teams" },
+];
+
+const LANGUAGES: TzarLanguage<Locale>[] = [
+  { code: "en", short: "EN", label: "English" },
+  { code: "bg", short: "BG", label: "Bulgarian" },
+  { code: "ka", short: "KA", label: "Georgian" },
+];
+
 export const AppHeader: FC = () => {
-  const { t } = useLocalization();
+  const { t, locale, setLocale } = useLocalization();
+  const { user, logout } = useAuth();
+
+  const renderNav = (testId: string) => (
+    <nav
+      className="flex gap-3 text-sm font-medium"
+      aria-label="Primary navigation"
+      data-testid={testId}
+    >
+      {NAV_ITEMS.map((item) => (
+        <TzarCommonLink
+          key={item.href}
+          as={Link}
+          href={item.href}
+          variant="ghost"
+          data-testid={`${testId}-${item.testId}`}
+        >
+          {t(item.labelKey)}
+        </TzarCommonLink>
+      ))}
+    </nav>
+  );
 
   return (
     <>
-      <header className="border-b border-border-subtle bg-accent-soft backdrop-blur shadow-sm">
+      <header
+        className="border-b border-border-subtle bg-accent-soft backdrop-blur shadow-sm"
+        data-testid="app-header"
+      >
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
-          <div className="flex items-center gap-3">
-            <Umbrella className="h-8 w-8" aria-hidden="true" />
-
-            <div className="flex flex-col leading-4">
-              <span className="text-sm font-semibold tracking-tight text-foreground">
-                {t("header.title")}
-              </span>
-              <span className="text-xs text-muted">{t("header.subtitle")}</span>
-            </div>
-          </div>
+          <TzarBrand
+            title={t("header.title")}
+            subtitle={t("header.subtitle")}
+            data-testid="header"
+          />
 
           <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden md:block">
-              <HeaderNav />
-            </div>
+            <div className="hidden md:block">{renderNav("header-nav")}</div>
             <div className="flex items-center gap-2">
-              <ThemeToggleButton />
-              <LanguageToggleButton />
+              <TzarThemeToggle data-testid="header" />
+              <TzarLanguageSelect
+                languages={LANGUAGES}
+                value={locale}
+                onChange={setLocale}
+                data-testid="header"
+              />
               <div className="hidden md:block">
-                <LoginButton />
+                {!user && (
+                  <TzarCommonLink
+                    as={Link}
+                    href="/login"
+                    data-testid="header-login"
+                  >
+                    {t("header.login")}
+                  </TzarCommonLink>
+                )}
               </div>
             </div>
           </div>
@@ -43,10 +90,26 @@ export const AppHeader: FC = () => {
       </header>
       <div className="border-b border-border-subtle bg-accent-soft/60 shadow-sm lg:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between py-2 px-6 gap-3">
-          <HeaderNav />
+          {renderNav("header-nav-mobile")}
           <div className="flex items-center gap-2">
-            <LoginButton />
-            <UserMenu />
+            {!user && (
+              <TzarCommonLink
+                as={Link}
+                href="/login"
+                data-testid="header-login-mobile"
+              >
+                {t("header.login")}
+              </TzarCommonLink>
+            )}
+            {user?.email && (
+              <TzarUserMenu
+                email={user.email}
+                accountHref="/user"
+                linkAs={Link}
+                onLogout={logout}
+                data-testid="header-mobile"
+              />
+            )}
           </div>
         </div>
       </div>

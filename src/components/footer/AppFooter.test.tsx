@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { TEST_ID_PREFIXES } from "@tzardom-ui/react";
 import { AppFooter } from "./AppFooter";
 import { Providers } from "../../providers/Providers";
 
@@ -13,7 +14,9 @@ describe("AppFooter", () => {
 
     const year = new Date().getFullYear();
 
-    expect(screen.getByTestId("app-footer")).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${TEST_ID_PREFIXES.footer}-app`),
+    ).toBeInTheDocument();
 
     expect(
       screen.getByText(new RegExp(`©\\s*${year}\\s*lyubosumaz-projects`, "i")),
