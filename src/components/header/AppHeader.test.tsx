@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { TEST_ID_PREFIXES } from "@tzardom-ui/react";
+import { tzrTestId } from "@tzardom-ui/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Providers } from "../../providers/Providers";
@@ -13,12 +13,6 @@ vi.mock("next/link", () => ({
     </a>
   ),
 }));
-
-const BRAND_ID = `${TEST_ID_PREFIXES.brand}-header`;
-const THEME_TOGGLE_ID = `${TEST_ID_PREFIXES.themeToggle}-header`;
-const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-header`;
-const LINK_ID = TEST_ID_PREFIXES.commonLink;
-const USER_MENU_ID = `${TEST_ID_PREFIXES.userMenu}-header-mobile`;
 
 const renderHeader = () =>
   render(
@@ -35,33 +29,30 @@ describe("AppHeader", () => {
   it("shows the brand's title and subtitle", () => {
     renderHeader();
 
-    expect(screen.getByTestId(`${BRAND_ID}-title`)).toHaveTextContent(
-      /team capacity dashboard/i,
-    );
-    expect(screen.getByTestId(`${BRAND_ID}-subtitle`)).toHaveTextContent(
-      /plan capacity, workload, and delivery risk/i,
-    );
+    expect(
+      screen.getByTestId(tzrTestId("brand", "header", "title")),
+    ).toHaveTextContent(/team capacity dashboard/i);
+    expect(
+      screen.getByTestId(tzrTestId("brand", "header", "subtitle")),
+    ).toHaveTextContent(/plan capacity, workload, and delivery risk/i);
   });
 
   it("links to the three primary pages in both navs", () => {
     renderHeader();
 
-    for (const nav of ["header-nav", "header-nav-mobile"]) {
-      expect(screen.getByTestId(`${LINK_ID}-${nav}-overview`)).toHaveAttribute(
-        "href",
-        "/",
-      );
-      expect(screen.getByTestId(`${LINK_ID}-${nav}-risk`)).toHaveAttribute(
-        "href",
-        "/risk",
-      );
-      expect(screen.getByTestId(`${LINK_ID}-${nav}-teams`)).toHaveAttribute(
-        "href",
-        "/teams",
-      );
+    for (const nav of ["nav", "mobile-nav"]) {
+      expect(
+        screen.getByTestId(tzrTestId("commonLink", `${nav}-overview`)),
+      ).toHaveAttribute("href", "/");
+      expect(
+        screen.getByTestId(tzrTestId("commonLink", `${nav}-risk`)),
+      ).toHaveAttribute("href", "/risk");
+      expect(
+        screen.getByTestId(tzrTestId("commonLink", `${nav}-teams`)),
+      ).toHaveAttribute("href", "/teams");
     }
     expect(
-      screen.getByTestId(`${LINK_ID}-header-nav-overview`),
+      screen.getByTestId(tzrTestId("commonLink", "nav-overview")),
     ).toHaveTextContent(/overview/i);
     expect(
       screen.getAllByRole("navigation", { name: /primary navigation/i }),
@@ -71,30 +62,34 @@ describe("AppHeader", () => {
   it("shows the login links and no user menu when logged out", () => {
     renderHeader();
 
-    for (const login of ["header-login", "header-login-mobile"]) {
-      const link = screen.getByTestId(`${LINK_ID}-${login}`);
+    for (const login of ["login", "mobile-login"]) {
+      const link = screen.getByTestId(tzrTestId("commonLink", login));
       expect(link).toHaveAttribute("href", "/login");
       expect(link).toHaveTextContent(/log in/i);
     }
-    expect(screen.queryByTestId(USER_MENU_ID)).toBeNull();
+    expect(screen.queryByTestId(tzrTestId("userMenu", "mobile"))).toBeNull();
   });
 
   it("switches the page to dark with the theme toggle", () => {
     renderHeader();
 
-    fireEvent.click(screen.getByTestId(THEME_TOGGLE_ID));
+    fireEvent.click(screen.getByTestId(tzrTestId("themeToggle", "header")));
 
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
   });
 
   it("shows the current language and switches it", () => {
     renderHeader();
-    const trigger = screen.getByTestId(`${LANGUAGE_SELECT_ID}-trigger`);
+    const trigger = screen.getByTestId(
+      tzrTestId("languageSelect", "header", "trigger"),
+    );
 
     expect(trigger).toHaveAccessibleName("Language: EN");
 
     fireEvent.click(trigger);
-    fireEvent.click(screen.getByTestId(`${LANGUAGE_SELECT_ID}-option-bg`));
+    fireEvent.click(
+      screen.getByTestId(tzrTestId("languageSelect", "header", "option-bg")),
+    );
 
     expect(trigger).toHaveAccessibleName("Language: BG");
   });

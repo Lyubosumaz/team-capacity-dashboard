@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useLocalization } from "@/providers/LocalizationProvider";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 import { auth } from "@/lib/firebase/client";
 
 export const LoginPageClient: FC = () => {
@@ -39,7 +39,8 @@ export const LoginPageClient: FC = () => {
       data-testid="login-page"
     >
       <div className="w-full max-w-sm">
-        <PageHeader
+        <TzarPageHeader
+          data-testid="login"
           title={t("auth.login.title")}
           description={t("auth.login.description")}
         />

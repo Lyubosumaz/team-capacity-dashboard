@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import type { Team } from "@/lib/domain/types";
 import { useLocalization } from "@/providers/LocalizationProvider";
 import { TeamsList } from "./TeamsList";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 
 type TeamsPageClientProps = {
   teams: Team[];
@@ -37,7 +37,8 @@ export const TeamsPageClient: FC<TeamsPageClientProps> = ({ teams }) => {
 
   return (
     <section className="flex w-full flex-col gap-4">
-      <PageHeader
+      <TzarPageHeader
+        data-testid="teams"
         title={t("teams.overviewHeader.title")}
         description={t("teams.overviewHeader.description")}
       />

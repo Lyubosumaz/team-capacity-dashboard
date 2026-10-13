@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useLocalization } from "@/providers/LocalizationProvider";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 import { auth } from "@/lib/firebase/client";
 
 export const RegisterPageClient: FC = () => {
@@ -46,7 +46,8 @@ export const RegisterPageClient: FC = () => {
       data-testid="register-page"
     >
       <div className="w-full max-w-sm">
-        <PageHeader
+        <TzarPageHeader
+          data-testid="register"
           title={t("auth.register.title")}
           description={t("auth.register.description")}
         />

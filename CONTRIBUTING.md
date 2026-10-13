@@ -9,6 +9,7 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
    - Create a feature branch from `main` (e.g. `feat/add-new-widget`).
 
 2. **Set up locally**
+   - Use Node 26 (22.12+ and 24 also work; Vitest doesn't support 25).
    - Install dependencies: `npm install`
    - Start the dev server: `npm run dev`
 

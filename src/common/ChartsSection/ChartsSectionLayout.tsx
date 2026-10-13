@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ChartsSectionTexts } from "./ChartsSection";
-import { PageHeader } from "../PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 
 export const ChartsSectionLayout: FC<{
   texts?: ChartsSectionTexts;
@@ -12,7 +12,8 @@ export const ChartsSectionLayout: FC<{
       data-testid="charts-section"
     >
       {texts?.heading && texts?.description ? (
-        <PageHeader
+        <TzarPageHeader
+          data-testid="charts"
           title={texts.heading}
           description={texts.description}
           as="h2"

@@ -64,7 +64,7 @@ export const AppHeader: FC = () => {
           />
 
           <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden md:block">{renderNav("header-nav")}</div>
+            <div className="hidden md:block">{renderNav("nav")}</div>
             <div className="flex items-center gap-2">
               <TzarThemeToggle data-testid="header" />
               <TzarLanguageSelect
@@ -75,11 +75,7 @@ export const AppHeader: FC = () => {
               />
               <div className="hidden md:block">
                 {!user && (
-                  <TzarCommonLink
-                    as={Link}
-                    href="/login"
-                    data-testid="header-login"
-                  >
+                  <TzarCommonLink as={Link} href="/login" data-testid="login">
                     {t("header.login")}
                   </TzarCommonLink>
                 )}
@@ -90,13 +86,13 @@ export const AppHeader: FC = () => {
       </header>
       <div className="border-b border-border-subtle bg-accent-soft/60 shadow-sm lg:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between py-2 px-6 gap-3">
-          {renderNav("header-nav-mobile")}
+          {renderNav("mobile-nav")}
           <div className="flex items-center gap-2">
             {!user && (
               <TzarCommonLink
                 as={Link}
                 href="/login"
-                data-testid="header-login-mobile"
+                data-testid="mobile-login"
               >
                 {t("header.login")}
               </TzarCommonLink>
@@ -107,7 +103,7 @@ export const AppHeader: FC = () => {
                 accountHref="/user"
                 linkAs={Link}
                 onLogout={logout}
-                data-testid="header-mobile"
+                data-testid="mobile"
               />
             )}
           </div>

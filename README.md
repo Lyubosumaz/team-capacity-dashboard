@@ -44,7 +44,8 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
 
 ## Getting Started
 
-First, run the development server:
+You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25). Install
+the dependencies with `npm install`, then run the development server:
 
 ```bash
 npm run dev

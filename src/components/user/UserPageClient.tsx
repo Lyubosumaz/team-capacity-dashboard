@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLocalization } from "@/providers/LocalizationProvider";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 
 export const UserPageClient: FC = () => {
   const { user, loading } = useAuth();
@@ -33,7 +33,8 @@ export const UserPageClient: FC = () => {
     return (
       <section className="flex w-full flex-col items-center justify-center py-10">
         <div className="w-full max-w-sm text-center space-y-3">
-          <PageHeader
+          <TzarPageHeader
+            data-testid="guest"
             title="Account"
             description="You need to log in to view your account."
           />
@@ -103,7 +104,8 @@ export const UserPageClient: FC = () => {
   return (
     <section className="flex w-full flex-col items-center justify-center py-10">
       <div className="w-full max-w-sm space-y-4">
-        <PageHeader
+        <TzarPageHeader
+          data-testid="account"
           title={t("auth.login.title")}
           description="Your account details"
         />

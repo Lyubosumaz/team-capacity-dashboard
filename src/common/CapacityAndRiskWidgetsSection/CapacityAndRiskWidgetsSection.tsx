@@ -1,24 +1,39 @@
+"use client";
+
 import type { FC } from "react";
+import {
+  TzarTeamsOverCapacity,
+  TzarUpcomingRiskEvents,
+} from "@tzardom-ui/react";
+import { useTeamsOverCapacity } from "./useTeamsOverCapacity";
+import { useUpcomingRiskEvents } from "./useUpcomingRiskEvents";
 
-import { TeamsOverCapacityWidget } from "@/common/CapacityAndRiskWidgetsSection/TeamsOverCapacityWidget";
-import { UpcomingRiskEventsWidget } from "@/common/CapacityAndRiskWidgetsSection/UpcomingRiskEventsWidget";
+const CARD_CLASSES = "rounded-lg border border-border-subtle bg-background p-4";
 
-type CapacityAndRiskWidgetsSectionProps = Record<string, never>;
+export const CapacityAndRiskWidgetsSection: FC = () => {
+  const teamsOverCapacity = useTeamsOverCapacity();
+  const upcomingRiskEvents = useUpcomingRiskEvents();
 
-export const CapacityAndRiskWidgetsSection: FC<
-  CapacityAndRiskWidgetsSectionProps
-> = () => {
   return (
     <div
       className="grid w-full gap-4 sm:gap-6 md:grid-cols-2"
       data-testid="capacity-and-risk-widgets"
     >
-      <div className="rounded-lg border border-border-subtle bg-background p-4">
-        <TeamsOverCapacityWidget />
-      </div>
-      <div className="rounded-lg border border-border-subtle bg-background p-4">
-        <UpcomingRiskEventsWidget />
-      </div>
+      <TzarTeamsOverCapacity
+        title="Teams over capacity this sprint"
+        status={teamsOverCapacity.status}
+        teams={teamsOverCapacity.teams}
+        usedText="utilised"
+        className={CARD_CLASSES}
+        data-testid="widgets"
+      />
+      <TzarUpcomingRiskEvents
+        title="Upcoming risk events"
+        status={upcomingRiskEvents.status}
+        events={upcomingRiskEvents.events}
+        className={CARD_CLASSES}
+        data-testid="widgets"
+      />
     </div>
   );
 };

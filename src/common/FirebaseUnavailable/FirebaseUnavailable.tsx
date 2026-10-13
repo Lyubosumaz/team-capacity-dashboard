@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import Link from "next/link";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 
 type FirebaseUnavailableProps = {
   // Optional context about which feature was requested, e.g. "Teams".
@@ -19,7 +19,8 @@ export const FirebaseUnavailable: FC<FirebaseUnavailableProps> = ({
       className="flex w-full flex-col items-center justify-center gap-4 py-16 text-center"
       data-testid="firebase-unavailable"
     >
-      <PageHeader
+      <TzarPageHeader
+        data-testid="no-firebase"
         title={
           feature
             ? `${feature} needs Firebase configured`

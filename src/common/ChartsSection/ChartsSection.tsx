@@ -10,7 +10,7 @@ import {
 } from "@/lib/domain/metrics";
 import { CapacityOverTimeChart } from "@/common/CapacityOverTimeChart/CapacityOverTimeChart";
 import { WorkloadVsCapacityChart } from "@/common/WorkloadVsCapacityChart/WorkloadVsCapacityChart";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 import { ChartsSectionLayout } from "./ChartsSectionLayout";
 
 export type ChartsSectionTexts = {
@@ -92,7 +92,8 @@ export const ChartsSection: FC<ChartsSectionProps> = ({
   return (
     <section className="space-y-4">
       {withHeader && texts?.heading && texts?.description && (
-        <PageHeader
+        <TzarPageHeader
+          data-testid="charts"
           title={texts.heading}
           description={texts.description}
           as="h2"

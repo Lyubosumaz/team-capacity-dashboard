@@ -5,7 +5,7 @@ import type { Team, RiskInsight, RiskRule } from "@/lib/domain/types";
 import { useLocalization } from "@/providers/LocalizationProvider";
 import { CapacityAndRiskWidgetsSection } from "@/common/CapacityAndRiskWidgetsSection/CapacityAndRiskWidgetsSection";
 import { RiskInsightsList } from "@/components/risk/RiskInsightsList";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 import { KeyMetricsSection } from "@/common/KeyMetricsSection/KeyMetricsSection";
 
 type RiskPageClientProps = {
@@ -31,7 +31,8 @@ export const RiskPageClient: FC<RiskPageClientProps> = ({
 
   return (
     <section className="flex w-full flex-col gap-6">
-      <PageHeader
+      <TzarPageHeader
+        data-testid="risk"
         title={t("risk.overviewHeader.title")}
         description={t("risk.overviewHeader.description")}
       />

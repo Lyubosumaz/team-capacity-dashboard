@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { tzrTestId } from "@tzardom-ui/react";
 
 import { Providers } from "@/providers/Providers";
 import { RiskPageClient } from "@/components/risk/RiskPageClient";
@@ -61,10 +62,10 @@ describe("Risk page", () => {
     expect(screen.getByText(/High-risk insights/i)).toBeInTheDocument();
     expect(screen.getByTestId("capacity-and-risk-widgets")).toBeInTheDocument();
     expect(
-      screen.getByTestId("teams-over-capacity-widget"),
+      screen.getByTestId(tzrTestId("teamsOverCapacity", "widgets")),
     ).toBeInTheDocument();
     expect(
-      screen.getByTestId("upcoming-risk-events-widget"),
+      screen.getByTestId(tzrTestId("upcomingRiskEvents", "widgets")),
     ).toBeInTheDocument();
     expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
   });

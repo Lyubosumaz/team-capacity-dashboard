@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { useLocalization } from "@/providers/LocalizationProvider";
 import { KeyMetricsSection } from "../../common/KeyMetricsSection/KeyMetricsSection";
 import { CapacityAndRiskWidgetsSection } from "../../common/CapacityAndRiskWidgetsSection/CapacityAndRiskWidgetsSection";
-import { PageHeader } from "@/common/PageHeader/PageHeader";
+import { TzarPageHeader } from "@tzardom-ui/react";
 import { ChartsSection } from "@/common/ChartsSection/ChartsSection";
 
 type HomePageClientProps = {
@@ -57,7 +57,8 @@ export const HomePageClient: FC<HomePageClientProps> = ({
       className="flex w-full flex-col gap-6"
       data-testid="home-overview-section"
     >
-      <PageHeader
+      <TzarPageHeader
+        data-testid="home"
         title={t("home.overviewHeader.title")}
         description={t("home.overviewHeader.description")}
       />
