@@ -8,9 +8,7 @@ import {
   getTeamCapacityForSprint,
   getTeamWorkloadForSprint,
 } from "@/lib/domain/metrics";
-import { CapacityOverTimeChart } from "@/common/CapacityOverTimeChart/CapacityOverTimeChart";
-import { WorkloadVsCapacityChart } from "@/common/WorkloadVsCapacityChart/WorkloadVsCapacityChart";
-import { TzarPageHeader } from "@tzardom-ui/react";
+import { TzarChart, TzarPageHeader } from "@tzardom-ui/react";
 import { ChartsSectionLayout } from "./ChartsSectionLayout";
 
 export type ChartsSectionTexts = {
@@ -24,6 +22,11 @@ export type ChartsSectionTexts = {
   workloadVsCapacityTitle: string;
   currentSprintFallback: string;
 };
+
+const CAPACITY_SERIES = [
+  { key: "capacity", label: "Capacity" },
+  { key: "workload", label: "Workload" },
+];
 
 type ChartsSectionProps = {
   teamId: string;
@@ -102,16 +105,26 @@ export const ChartsSection: FC<ChartsSectionProps> = ({
 
       <div className="grid gap-4 md:grid-cols-2">
         {snapshots.length > 0 && (
-          <CapacityOverTimeChart
+          <TzarChart
+            type="line"
             data={snapshots}
+            xKey="sprintName"
+            xLabel="Sprint"
+            series={CAPACITY_SERIES}
             title={texts.capacityOverTimeTitle}
             subtitle={team.name}
+            data-testid="capacity-over-time"
           />
         )}
 
         {workloadData.length > 0 && (
-          <WorkloadVsCapacityChart
+          <TzarChart
+            type="bar"
             data={workloadData}
+            xKey="name"
+            xLabel="Team"
+            series={CAPACITY_SERIES}
+            data-testid="workload-vs-capacity"
             title={texts.workloadVsCapacityTitle}
             subtitle={
               currentSprint ? currentSprint.name : texts.currentSprintFallback

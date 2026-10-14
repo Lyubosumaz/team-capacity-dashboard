@@ -11,15 +11,8 @@ vi.mock("@/lib/domain/metrics", () => ({
   getTeamWorkloadForSprint: vi.fn(),
 }));
 
-vi.mock("@/components/charts/CapacityOverTimeChart", () => ({
-  CapacityOverTimeChart: ({ title }: any) => <div>{title}</div>,
-}));
-
-vi.mock("@/components/charts/WorkloadVsCapacityChart", () => ({
-  WorkloadVsCapacityChart: ({ title }: any) => <div>{title}</div>,
-}));
-
 import { useQuery } from "@tanstack/react-query";
+import { tzrTestId } from "@tzardom-ui/react";
 import {
   getCapacitySnapshotsForTeam,
   getTeamCapacityForSprint,
@@ -163,7 +156,11 @@ describe("ChartsSection", () => {
     expect(
       screen.getByRole("heading", { name: /capacity & workload/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Capacity over time/i)).toBeInTheDocument();
-    expect(screen.getByText(/Workload vs capacity/i)).toBeInTheDocument();
+    expect(
+      screen.getByTestId(tzrTestId("chart", "capacity-over-time", "title")),
+    ).toHaveTextContent(/Capacity over time/i);
+    expect(
+      screen.getByTestId(tzrTestId("chart", "workload-vs-capacity", "title")),
+    ).toHaveTextContent(/Workload vs capacity/i);
   });
 });
