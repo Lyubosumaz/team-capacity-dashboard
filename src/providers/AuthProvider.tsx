@@ -6,7 +6,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  type FC,
   type ReactNode,
 } from "react";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
@@ -20,7 +19,7 @@ export type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   // Without Firebase there's no user to wait for, so we start not loading.
   const [loading, setLoading] = useState(Boolean(auth));

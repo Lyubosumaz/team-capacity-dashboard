@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { collection, doc, getDoc, query, where } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/firestore";
-import { requireFirebase } from "@/common/requireFirebase/requireFirebase";
+import { requireFirebase } from "@/components/firebase/requireFirebase";
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
-import { TeamDetailPageClient } from "@/components/teams/TeamDetailPageClient";
+import { TeamDetailPageClient } from "@/views/teams/TeamDetailPageClient";
 import { getCollectionQueryWithId } from "@/lib/firebase/collections";
 
 type TeamPageParams = {

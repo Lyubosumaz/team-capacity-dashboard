@@ -7,12 +7,12 @@ import type {
   RiskEvent,
 } from "@/lib/domain/types";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { requireFirebase } from "@/common/requireFirebase/requireFirebase";
+import { requireFirebase } from "@/components/firebase/requireFirebase";
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
 } from "@/lib/domain/metrics";
-import { RiskPageClient } from "@/components/risk/RiskPageClient";
+import { RiskPageClient } from "@/views/risk/RiskPageClient";
 
 const RiskPage = async () => {
   const unavailable = requireFirebase("Risk insights");

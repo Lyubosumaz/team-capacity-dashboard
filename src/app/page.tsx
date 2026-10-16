@@ -1,5 +1,5 @@
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
-import { HomePageClient } from "@/components/home/HomePageClient";
+import { HomePageClient } from "@/views/home/HomePageClient";
 import { getCollectionWithId } from "@/lib/firebase/collections";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import {

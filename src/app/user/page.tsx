@@ -1,8 +1,7 @@
-import type { FC } from "react";
-import { UserPageClient } from "@/components/user/UserPageClient";
-import { FirebaseGate } from "@/common/FirebaseGate/FirebaseGate";
+import { UserPageClient } from "@/views/user/UserPageClient";
+import { FirebaseGate } from "@/components/firebase/FirebaseGate";
 
-const UserPage: FC = () => (
+const UserPage = () => (
   <FirebaseGate feature="Account">
     <UserPageClient />
   </FirebaseGate>

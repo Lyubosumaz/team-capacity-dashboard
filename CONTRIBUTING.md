@@ -28,7 +28,7 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 ## Code style
 
 - TypeScript with `strict` mode is enabled; keep types precise.
-- React components use arrow functions and `FC<...>` where appropriate.
+- React components are arrow functions with typed props, no `FC`.
 - Use ESLint and Prettier to keep the codebase consistent.
 
 ## CI/CD

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type FC, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 
 export type FirebaseContextValue = {
@@ -15,10 +15,10 @@ type FirebaseProviderProps = {
   isConfigured?: boolean;
 };
 
-export const FirebaseProvider: FC<FirebaseProviderProps> = ({
+export const FirebaseProvider = ({
   children,
   isConfigured = isFirebaseConfigured,
-}) => (
+}: FirebaseProviderProps) => (
   <FirebaseContext.Provider value={{ isConfigured }}>
     {children}
   </FirebaseContext.Provider>

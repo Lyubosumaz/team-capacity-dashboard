@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Providers } from "@/providers/Providers";
-import { TeamsPageClient } from "@/components/teams/TeamsPageClient";
+import { TeamsPageClient } from "@/views/teams/TeamsPageClient";
 import { teams as mockTeams } from "@/lib/domain/mockData";
 
 vi.mock("next/link", () => {

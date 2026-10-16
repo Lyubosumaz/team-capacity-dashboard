@@ -1,8 +1,7 @@
-import type { FC } from "react";
-import { LoginPageClient } from "@/components/auth/LoginPageClient";
-import { FirebaseGate } from "@/common/FirebaseGate/FirebaseGate";
+import { LoginPageClient } from "@/views/auth/LoginPageClient";
+import { FirebaseGate } from "@/components/firebase/FirebaseGate";
 
-const LoginPage: FC = () => (
+const LoginPage = () => (
   <FirebaseGate feature="Sign in">
     <LoginPageClient />
   </FirebaseGate>

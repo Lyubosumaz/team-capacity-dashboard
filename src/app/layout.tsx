@@ -1,9 +1,9 @@
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { AppHeader } from "../components/header/AppHeader";
-import { AppFooter } from "../components/footer/AppFooter";
-import { Providers } from "../providers/Providers";
+import { AppHeader } from "@/components/layout/AppHeader";
+import { AppFooter } from "@/components/layout/AppFooter";
+import { Providers } from "@/providers/Providers";
 import "@/styles/globals.css";
 
 const poppins = Poppins({
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<Readonly<{ children: ReactNode }>> = ({ children }) => {
+const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
       <body

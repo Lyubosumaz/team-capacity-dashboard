@@ -5,7 +5,6 @@ import {
   useContext,
   useMemo,
   useState,
-  type FC,
   type ReactNode,
 } from "react";
 import { defaultLocale, messages, type Locale } from "@/lib/i18n/messages";
@@ -20,9 +19,7 @@ const LocalizationContext = createContext<LocalizationContextValue | null>(
   null,
 );
 
-export const LocalizationProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const LocalizationProvider = ({ children }: { children: ReactNode }) => {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
 
   const value: LocalizationContextValue = useMemo(

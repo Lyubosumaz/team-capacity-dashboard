@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { Providers } from "@/providers/Providers";
-import { RiskPageClient } from "@/components/risk/RiskPageClient";
+import { RiskPageClient } from "@/views/risk/RiskPageClient";
 import {
   teams as mockTeams,
   projects as mockProjects,

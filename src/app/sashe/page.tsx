@@ -1,10 +1,9 @@
 "use client";
 
-import type { FC } from "react";
 import { Heart } from "lucide-react";
 import { useLocalization } from "@/providers/LocalizationProvider";
 
-const SashePage: FC = () => {
+const SashePage = () => {
   const { t } = useLocalization();
 
   return (

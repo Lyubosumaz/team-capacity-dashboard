@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/common/ChartsSection/ChartsSection", () => ({
+vi.mock("@/components/widgets/ChartsSection/ChartsSection", () => ({
   ChartsSection: () => <div data-testid="charts-section" />,
 }));
 
 import { Providers } from "@/providers/Providers";
-import { HomePageClient } from "@/components/home/HomePageClient";
+import { HomePageClient } from "@/views/home/HomePageClient";
 import {
   teams as mockTeams,
   projects as mockProjects,
