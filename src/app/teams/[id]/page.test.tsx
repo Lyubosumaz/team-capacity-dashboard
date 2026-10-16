@@ -44,11 +44,11 @@ describe("TeamDetailPage", () => {
       </Providers>,
     );
 
-    expect(
-      screen.getByRole("heading", { name: /members & capacity/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /projects & risks/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("team-members-heading")).toHaveTextContent(
+      /members & capacity/i,
+    );
+    expect(screen.getByTestId("team-projects-heading")).toHaveTextContent(
+      /projects & risks/i,
+    );
   });
 });

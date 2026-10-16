@@ -1,9 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-// This test exercises the real login form, so it needs the page to believe
-// Firebase is configured (firebase/auth itself is mocked in vitest.setup.ts,
-// so nothing real is ever called).
+// Pretend Firebase is configured (firebase/auth is mocked in vitest.setup.ts).
 vi.mock("@/lib/firebase/config", () => ({
   isFirebaseConfigured: true,
   firebaseConfig: {},
@@ -22,6 +20,16 @@ describe("Login page", () => {
 
     expect(screen.getByTestId("login-page")).toBeInTheDocument();
     expect(screen.getByTestId("login-form")).toBeInTheDocument();
-    expect(screen.getByTestId("login-submit")).toBeInTheDocument();
+    expect(screen.getByTestId("login-submit")).toHaveAttribute(
+      "type",
+      "submit",
+    );
+    expect(screen.getByTestId("login-submit")).toHaveTextContent("Log in");
+    expect(screen.getByTestId("login-email")).toHaveAccessibleName(
+      "Work email",
+    );
+    expect(screen.getByTestId("login-password")).toHaveAccessibleName(
+      "Password",
+    );
   });
 });

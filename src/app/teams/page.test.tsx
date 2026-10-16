@@ -24,7 +24,9 @@ describe("TeamsPage", () => {
       </Providers>,
     );
 
-    expect(screen.getByRole("heading", { name: /teams/i })).toBeInTheDocument();
-    expect(screen.getByText(/Team Alpha/i)).toBeInTheDocument();
+    expect(screen.getByTestId("teams-header")).toHaveTextContent(/teams/i);
+    expect(screen.getByTestId("team-name-team-alpha")).toHaveTextContent(
+      /team alpha/i,
+    );
   });
 });

@@ -31,11 +31,14 @@ export const RiskInsightsList: FC<RiskInsightsListProps> = ({
       <section className="space-y-3" data-testid="risk-insights-list">
         <h2
           id="risk-insights-heading"
+          data-testid="risk-insights-heading"
           className="text-sm font-semibold uppercase tracking-wide opacity-70"
         >
           {texts.heading}
         </h2>
-        <p className="text-xs opacity-80">{texts.emptyState}</p>
+        <p className="text-xs opacity-80" data-testid="risk-insights-empty">
+          {texts.emptyState}
+        </p>
       </section>
     );
   }
@@ -46,6 +49,7 @@ export const RiskInsightsList: FC<RiskInsightsListProps> = ({
     <section className="space-y-3" data-testid="risk-insights-list">
       <h2
         id="risk-insights-heading"
+        data-testid="risk-insights-heading"
         className="text-sm font-semibold uppercase tracking-wide opacity-70"
       >
         {texts.heading}
@@ -79,19 +83,32 @@ export const RiskInsightsList: FC<RiskInsightsListProps> = ({
             <li
               key={insight.id}
               className="rounded-md border border-border-subtle bg-background px-3 py-2"
+              data-testid={`risk-insight-${insight.id}`}
             >
               <div className="flex items-center justify-between gap-2">
-                <p className="font-medium">
+                <p
+                  className="font-medium"
+                  data-testid={`risk-insight-title-${insight.id}`}
+                >
                   {rule?.name ?? texts.fallbackTitle}
                 </p>
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-semibold ${severityClassName}`}
+                  data-testid={`risk-insight-severity-${insight.id}`}
                 >
                   {severityLabel}
                 </span>
               </div>
-              <p className="mt-1 text-xs opacity-90">{insight.message}</p>
-              <p className="mt-1 text-[11px] opacity-70">
+              <p
+                className="mt-1 text-xs opacity-90"
+                data-testid={`risk-insight-message-${insight.id}`}
+              >
+                {insight.message}
+              </p>
+              <p
+                className="mt-1 text-[11px] opacity-70"
+                data-testid={`risk-insight-team-${insight.id}`}
+              >
                 {team ? team.name : texts.unassignedTeam}
                 {isTeamOverCapacity && ` ${texts.overCapacitySuffix}`}
               </p>

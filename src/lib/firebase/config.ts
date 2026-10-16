@@ -7,11 +7,8 @@ export const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// True only when the minimum set of env vars needed to talk to a real
-// Firebase project is present. When false, nothing in the app should
-// attempt to touch Firebase — see firebase/client.ts and firebase/firestore.ts,
-// which export `null` instead of a client in that case, and the various
-// page components that check this before fetching.
+// True when the .env has the Firebase keys. If false, the app runs without
+// Firebase: no login and no database.
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey &&
   firebaseConfig.authDomain &&

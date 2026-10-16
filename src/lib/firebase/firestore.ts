@@ -8,16 +8,9 @@ const app: FirebaseApp | null = isFirebaseConfigured
     : initializeApp(firebaseConfig)
   : null;
 
-// `db` is null when Firebase isn't configured, which keeps this module
-// import-safe without a .env. Not exported: everything goes through `getDb()`.
 const db: Firestore | null = app ? getFirestore(app) : null;
 
-/**
- * Returns the Firestore instance, or throws a readable error if Firebase
- * isn't configured. Callers are expected to have checked first (pages via
- * `requireFirebase()`, API routes via their own env check), so hitting this
- * throw means a guard is missing.
- */
+// Throws if Firebase isn't configured: check with requireFirebase() first.
 export const getDb = (): Firestore => {
   if (!db) {
     throw new Error(

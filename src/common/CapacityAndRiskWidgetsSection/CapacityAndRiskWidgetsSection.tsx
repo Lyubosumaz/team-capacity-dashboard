@@ -20,19 +20,19 @@ export const CapacityAndRiskWidgetsSection: FC = () => {
       data-testid="capacity-and-risk-widgets"
     >
       <TzarTeamsOverCapacity
+        data-testid="teams-over-capacity"
         title="Teams over capacity this sprint"
         status={teamsOverCapacity.status}
         teams={teamsOverCapacity.teams}
         usedText="utilised"
         className={CARD_CLASSES}
-        data-testid="widgets"
       />
       <TzarUpcomingRiskEvents
+        data-testid="upcoming-risk-events"
         title="Upcoming risk events"
         status={upcomingRiskEvents.status}
         events={upcomingRiskEvents.events}
         className={CARD_CLASSES}
-        data-testid="widgets"
       />
     </div>
   );

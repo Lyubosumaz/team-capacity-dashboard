@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { tzrTestId } from "@tzardom-ui/react";
 import { describe, expect, it } from "vitest";
 import { KeyMetricsSection } from "./KeyMetricsSection";
 
@@ -10,7 +9,7 @@ const texts = {
 };
 
 describe("KeyMetricsSection", () => {
-  it("renders three metric cards with stable test ids", () => {
+  it("renders three metric cards with their labels and values", () => {
     render(
       <KeyMetricsSection
         section1={1}
@@ -20,15 +19,13 @@ describe("KeyMetricsSection", () => {
       />,
     );
 
-    for (const value of ["1", "2", "3"]) {
-      expect(
-        screen.getByTestId(tzrTestId("metricCard", value)),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByTestId(tzrTestId("metricCard", value, "value")),
-      ).toHaveTextContent(value);
+    for (const index of [1, 2, 3]) {
+      const card = screen.getByTestId(`key-metrics-card-${index}`);
+      expect(card).toHaveTextContent(`Section ${index}`);
+      expect(card).toHaveTextContent(String(index));
     }
-    expect(screen.getByText("Section 2")).toBeInTheDocument();
-    expect(screen.getByText("Third metric")).toBeInTheDocument();
+    expect(screen.getByTestId("key-metrics-card-3")).toHaveTextContent(
+      "Third metric",
+    );
   });
 });

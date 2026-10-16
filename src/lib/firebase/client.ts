@@ -10,7 +10,5 @@ const app: FirebaseApp | null = isFirebaseConfigured
     : initializeApp(firebaseConfig)
   : null;
 
-// `auth` is null when Firebase isn't configured (e.g. no .env locally).
-// Consumers (AuthProvider, login/register) must handle that instead of
-// calling into it directly, so a missing .env never throws at import time.
+// null without Firebase keys in the .env. Check it before using it.
 export const auth: Auth | null = app ? getAuth(app) : null;

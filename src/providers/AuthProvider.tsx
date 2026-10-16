@@ -21,10 +21,8 @@ export type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  // When `auth` is null (Firebase isn't configured), skip straight to a
-  // resolved "signed out" state instead of subscribing to Firebase — there
-  // is nothing to subscribe to, and calling into a null auth would throw.
   const [user, setUser] = useState<User | null>(null);
+  // Without Firebase there's no user to wait for, so we start not loading.
   const [loading, setLoading] = useState(Boolean(auth));
 
   useEffect(() => {

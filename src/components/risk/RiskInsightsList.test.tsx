@@ -27,17 +27,22 @@ describe("RiskInsightsList", () => {
     );
 
     expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /risk insights/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/no risk insights have been identified yet/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("risk-insights-heading")).toHaveTextContent(
+      /risk insights/i,
+    );
+    expect(screen.getByTestId("risk-insights-empty")).toHaveTextContent(
+      /no risk insights have been identified yet/i,
+    );
   });
 
   it("renders an insight with rule name, severity, message, and team", () => {
     const rules = [
-      { id: "rule-1", name: "High work-in-progress", description: "" },
+      {
+        id: "rule-1",
+        name: "High work-in-progress",
+        description: "",
+        severity: "high" as const,
+      },
     ];
     const teams = [
       {
@@ -78,12 +83,18 @@ describe("RiskInsightsList", () => {
     );
 
     expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
-    expect(screen.getByText("High work-in-progress")).toBeInTheDocument();
-    expect(screen.getByText("High")).toBeInTheDocument();
     expect(
-      screen.getByText(/team has too many items in progress/i),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Engineering")).toBeInTheDocument();
+      screen.getByTestId("risk-insight-title-insight-1"),
+    ).toHaveTextContent("High work-in-progress");
+    expect(
+      screen.getByTestId("risk-insight-severity-insight-1"),
+    ).toHaveTextContent("High");
+    expect(
+      screen.getByTestId("risk-insight-message-insight-1"),
+    ).toHaveTextContent(/team has too many items in progress/i);
+    expect(screen.getByTestId("risk-insight-team-insight-1")).toHaveTextContent(
+      "Engineering",
+    );
   });
 
   it("falls back to generic title when rule is missing", () => {
@@ -119,8 +130,12 @@ describe("RiskInsightsList", () => {
     );
 
     expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
-    expect(screen.getByText("Risk insight")).toBeInTheDocument();
-    expect(screen.getByText("Unassigned team")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("risk-insight-title-insight-1"),
+    ).toHaveTextContent("Risk insight");
+    expect(screen.getByTestId("risk-insight-team-insight-1")).toHaveTextContent(
+      "Unassigned team",
+    );
   });
 
   it("marks team as over capacity when id is in overCapacityTeamIds", () => {
@@ -140,7 +155,14 @@ describe("RiskInsightsList", () => {
         message: "Some medium severity issue.",
       },
     ];
-    const rules = [{ id: "rule-1", name: "Rule", description: "" }];
+    const rules = [
+      {
+        id: "rule-1",
+        name: "Rule",
+        description: "",
+        severity: "medium" as const,
+      },
+    ];
 
     render(
       <Providers>
@@ -163,8 +185,8 @@ describe("RiskInsightsList", () => {
       </Providers>,
     );
 
-    expect(
-      screen.getByText(/engineering · over capacity this sprint/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("risk-insight-team-insight-1")).toHaveTextContent(
+      /engineering · over capacity this sprint/i,
+    );
   });
 });

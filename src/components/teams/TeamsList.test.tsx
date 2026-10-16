@@ -53,24 +53,33 @@ describe("TeamsList", () => {
     render(<TeamsList {...baseProps} />);
 
     expect(screen.getByTestId("teams-list")).toBeInTheDocument();
-    expect(screen.getByText("Engineering")).toBeInTheDocument();
-    expect(screen.getByText("Design")).toBeInTheDocument();
+    expect(screen.getByTestId("team-name-team-1")).toHaveTextContent(
+      "Engineering",
+    );
+    expect(screen.getByTestId("team-name-team-2")).toHaveTextContent("Design");
   });
 
   it("links to each team detail page", () => {
     render(<TeamsList {...baseProps} />);
 
-    const engLink = screen.getByRole("link", { name: /engineering/i });
-    const designLink = screen.getByRole("link", { name: /design/i });
-
-    expect(engLink).toHaveAttribute("href", "/teams/team-1");
-    expect(designLink).toHaveAttribute("href", "/teams/team-2");
+    expect(screen.getByTestId("team-link-team-1")).toHaveAttribute(
+      "href",
+      "/teams/team-1",
+    );
+    expect(screen.getByTestId("team-link-team-2")).toHaveAttribute(
+      "href",
+      "/teams/team-2",
+    );
   });
 
   it("renders correct member count text (singular vs plural)", () => {
     render(<TeamsList {...baseProps} />);
 
-    expect(screen.getByText("1 member")).toBeInTheDocument();
-    expect(screen.getByText("2 members")).toBeInTheDocument();
+    expect(screen.getByTestId("team-members-team-1")).toHaveTextContent(
+      "1 member",
+    );
+    expect(screen.getByTestId("team-members-team-2")).toHaveTextContent(
+      "2 members",
+    );
   });
 });

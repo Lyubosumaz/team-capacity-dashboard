@@ -11,13 +11,10 @@ import {
   riskEvents,
 } from "@/lib/domain/mockData";
 
-// Without this line, Next.js might try to run the route on the Edge (depending on config/version),
-// which can cause subtle or hard errors with Firebase.
-// Keeping it forces a safe, compatible environment for your Firebase-backed API routes.
+// Run on Node, not the Edge, where Firebase can break.
 export const runtime = "nodejs";
 
-// Dev-only endpoint to populate Firestore with all mock domain data.
-// Call once locally: POST /api/dev/seed-all
+// Dev only: fills Firestore with the mock data. POST /api/dev/seed-all
 export const POST = async () => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
     return NextResponse.json(

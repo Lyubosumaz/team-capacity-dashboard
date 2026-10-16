@@ -1,8 +1,5 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { vi } from "vitest";
-
-// Extend expect with jest-dom matchers when using globals
-// (Vitest already wires expect; this import patches it.)
 
 // Mock next/font/google so layout tests can import font without errors.
 vi.mock("next/font/google", () => ({

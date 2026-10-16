@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { tzrTestId } from "@tzardom-ui/react";
 import { AppFooter } from "./AppFooter";
 import { Providers } from "../../providers/Providers";
 
@@ -14,14 +13,12 @@ describe("AppFooter", () => {
 
     const year = new Date().getFullYear();
 
-    expect(screen.getByTestId(tzrTestId("footer", "app"))).toBeInTheDocument();
+    const footer = screen.getByTestId("app-footer");
 
-    expect(
-      screen.getByText(new RegExp(`©\\s*${year}\\s*lyubosumaz-projects`, "i")),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/team capacity dashboard/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/built with next.js & tailwind css/i),
-    ).toBeInTheDocument();
+    expect(footer).toHaveTextContent(
+      new RegExp(`©\\s*${year}\\s*lyubosumaz-projects`, "i"),
+    );
+    expect(footer).toHaveTextContent(/team capacity dashboard/i);
+    expect(footer).toHaveTextContent(/built with next.js & tailwind css/i);
   });
 });

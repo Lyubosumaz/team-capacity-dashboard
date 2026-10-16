@@ -9,20 +9,8 @@ type FirebaseGateProps = {
   children: ReactNode;
 };
 
-/**
- * Client-side guard for pages that only render client UI (login, register,
- * user). Renders `FirebaseUnavailable` instead of `children` when Firebase
- * isn't configured.
- *
- *   const LoginPage = () => (
- *     <FirebaseGate feature="Sign in">
- *       <LoginPageClient />
- *     </FirebaseGate>
- *   );
- *
- * NOT for pages that fetch data on the server: their server code runs before
- * this component ever sees `children`. Use `requireFirebase()` there.
- */
+// Shows FirebaseUnavailable instead of children when Firebase isn't configured.
+// For client-only pages; pages that fetch on the server use requireFirebase().
 export const FirebaseGate: FC<FirebaseGateProps> = ({ feature, children }) => {
   const { isConfigured } = useFirebase();
 

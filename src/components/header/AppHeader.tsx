@@ -15,9 +15,9 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useLocalization } from "@/providers/LocalizationProvider";
 
 const NAV_ITEMS = [
-  { href: "/", labelKey: "header.nav.overview", testId: "overview" },
-  { href: "/risk", labelKey: "header.nav.risk", testId: "risk" },
-  { href: "/teams", labelKey: "header.nav.teams", testId: "teams" },
+  { href: "/", labelKey: "header.nav.overview", name: "overview" },
+  { href: "/risk", labelKey: "header.nav.risk", name: "risk" },
+  { href: "/teams", labelKey: "header.nav.teams", name: "teams" },
 ];
 
 const LANGUAGES: TzarLanguage<Locale>[] = [
@@ -30,11 +30,11 @@ export const AppHeader: FC = () => {
   const { t, locale, setLocale } = useLocalization();
   const { user, logout } = useAuth();
 
-  const renderNav = (testId: string) => (
+  const renderNav = (area: string) => (
     <nav
       className="flex gap-3 text-sm font-medium"
       aria-label="Primary navigation"
-      data-testid={testId}
+      data-testid={`${area}-nav`}
     >
       {NAV_ITEMS.map((item) => (
         <TzarCommonLink
@@ -42,7 +42,7 @@ export const AppHeader: FC = () => {
           as={Link}
           href={item.href}
           variant="ghost"
-          data-testid={`${testId}-${item.testId}`}
+          data-testid={`${area}-nav-${item.name}-link`}
         >
           {t(item.labelKey)}
         </TzarCommonLink>
@@ -58,52 +58,68 @@ export const AppHeader: FC = () => {
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
           <TzarBrand
+            data-testid="header-brand"
             title={t("header.title")}
             subtitle={t("header.subtitle")}
-            data-testid="header"
           />
 
           <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden md:block">{renderNav("nav")}</div>
+            <div className="hidden lg:block">{renderNav("header")}</div>
             <div className="flex items-center gap-2">
-              <TzarThemeToggle data-testid="header" />
+              <TzarThemeToggle data-testid="header-theme-toggle" />
               <TzarLanguageSelect
+                data-testid="header-language-select"
                 languages={LANGUAGES}
                 value={locale}
                 onChange={setLocale}
-                data-testid="header"
               />
-              <div className="hidden md:block">
+              <div className="hidden lg:block">
                 {!user && (
-                  <TzarCommonLink as={Link} href="/login" data-testid="login">
+                  <TzarCommonLink
+                    as={Link}
+                    href="/login"
+                    data-testid="header-login-link"
+                  >
                     {t("header.login")}
                   </TzarCommonLink>
+                )}
+                {user?.email && (
+                  <TzarUserMenu
+                    data-testid="header-user-menu"
+                    email={user.email}
+                    accountHref="/user"
+                    linkAs={Link}
+                    onLogout={logout}
+                  />
                 )}
               </div>
             </div>
           </div>
         </div>
       </header>
-      <div className="border-b border-border-subtle bg-accent-soft/60 shadow-sm lg:hidden">
+      <div
+        className="border-b border-border-subtle bg-accent-soft/60 shadow-sm lg:hidden"
+        data-testid="mobile-header"
+      >
         <div className="mx-auto flex max-w-5xl items-center justify-between py-2 px-6 gap-3">
-          {renderNav("mobile-nav")}
+          {renderNav("mobile")}
           <div className="flex items-center gap-2">
             {!user && (
               <TzarCommonLink
                 as={Link}
                 href="/login"
-                data-testid="mobile-login"
+                data-testid="mobile-login-link"
               >
                 {t("header.login")}
               </TzarCommonLink>
             )}
             {user?.email && (
               <TzarUserMenu
+                data-testid="mobile-user-menu"
                 email={user.email}
                 accountHref="/user"
                 linkAs={Link}
                 onLogout={logout}
-                data-testid="mobile"
               />
             )}
           </div>

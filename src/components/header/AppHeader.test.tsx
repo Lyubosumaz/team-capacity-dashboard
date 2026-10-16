@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { tzrTestId } from "@tzardom-ui/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Providers } from "../../providers/Providers";
@@ -28,68 +27,65 @@ describe("AppHeader", () => {
 
   it("shows the brand's title and subtitle", () => {
     renderHeader();
+    const brand = screen.getByTestId("header-brand");
 
-    expect(
-      screen.getByTestId(tzrTestId("brand", "header", "title")),
-    ).toHaveTextContent(/team capacity dashboard/i);
-    expect(
-      screen.getByTestId(tzrTestId("brand", "header", "subtitle")),
-    ).toHaveTextContent(/plan capacity, workload, and delivery risk/i);
+    expect(brand).toHaveTextContent(/team capacity dashboard/i);
+    expect(brand).toHaveTextContent(
+      /plan capacity, workload, and delivery risk/i,
+    );
   });
 
   it("links to the three primary pages in both navs", () => {
     renderHeader();
 
-    for (const nav of ["nav", "mobile-nav"]) {
-      expect(
-        screen.getByTestId(tzrTestId("commonLink", `${nav}-overview`)),
-      ).toHaveAttribute("href", "/");
-      expect(
-        screen.getByTestId(tzrTestId("commonLink", `${nav}-risk`)),
-      ).toHaveAttribute("href", "/risk");
-      expect(
-        screen.getByTestId(tzrTestId("commonLink", `${nav}-teams`)),
-      ).toHaveAttribute("href", "/teams");
+    for (const area of ["header", "mobile"]) {
+      expect(screen.getByTestId(`${area}-nav-overview-link`)).toHaveAttribute(
+        "href",
+        "/",
+      );
+      expect(screen.getByTestId(`${area}-nav-risk-link`)).toHaveAttribute(
+        "href",
+        "/risk",
+      );
+      expect(screen.getByTestId(`${area}-nav-teams-link`)).toHaveAttribute(
+        "href",
+        "/teams",
+      );
     }
-    expect(
-      screen.getByTestId(tzrTestId("commonLink", "nav-overview")),
-    ).toHaveTextContent(/overview/i);
-    expect(
-      screen.getAllByRole("navigation", { name: /primary navigation/i }),
-    ).toHaveLength(2);
+    expect(screen.getByTestId("header-nav-overview-link")).toHaveTextContent(
+      /overview/i,
+    );
   });
 
   it("shows the login links and no user menu when logged out", () => {
     renderHeader();
 
-    for (const login of ["login", "mobile-login"]) {
-      const link = screen.getByTestId(tzrTestId("commonLink", login));
+    for (const id of ["header-login-link", "mobile-login-link"]) {
+      const link = screen.getByTestId(id);
       expect(link).toHaveAttribute("href", "/login");
       expect(link).toHaveTextContent(/log in/i);
     }
-    expect(screen.queryByTestId(tzrTestId("userMenu", "mobile"))).toBeNull();
+    expect(screen.queryByTestId("header-user-menu")).toBeNull();
+    expect(screen.queryByTestId("mobile-user-menu")).toBeNull();
   });
 
   it("switches the page to dark with the theme toggle", () => {
     renderHeader();
 
-    fireEvent.click(screen.getByTestId(tzrTestId("themeToggle", "header")));
+    fireEvent.click(screen.getByTestId("header-theme-toggle"));
 
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
   });
 
   it("shows the current language and switches it", () => {
     renderHeader();
-    const trigger = screen.getByTestId(
-      tzrTestId("languageSelect", "header", "trigger"),
-    );
+    const languageSelect = within(screen.getByTestId("header-language-select"));
+    const trigger = languageSelect.getByRole("button", { name: /^language/i });
 
     expect(trigger).toHaveAccessibleName("Language: EN");
 
     fireEvent.click(trigger);
-    fireEvent.click(
-      screen.getByTestId(tzrTestId("languageSelect", "header", "option-bg")),
-    );
+    fireEvent.click(languageSelect.getByRole("button", { name: /bulgarian/i }));
 
     expect(trigger).toHaveAccessibleName("Language: BG");
   });

@@ -31,19 +31,19 @@ export const KeyMetricsSection: FC<KeyMetricsSectionProps> = ({
       data-testid="key-metrics-wrapper"
     >
       <TzarMetricCard
-        data-testid="1"
+        data-testid="key-metrics-card-1"
         label={texts.section1.label}
         value={section1}
         helperText={texts.section1.helperText}
       />
       <TzarMetricCard
-        data-testid="2"
+        data-testid="key-metrics-card-2"
         label={texts.section2.label}
         value={section2}
         helperText={texts.section2.helperText}
       />
       <TzarMetricCard
-        data-testid="3"
+        data-testid="key-metrics-card-3"
         label={texts.section3.label}
         value={section3}
         helperText={texts.section3.helperText}

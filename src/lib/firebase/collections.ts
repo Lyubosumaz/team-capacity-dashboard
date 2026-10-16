@@ -6,8 +6,6 @@ import {
 } from "firebase/firestore";
 import { getDb } from "./firestore";
 
-// Callers must only invoke these after confirming `isFirebaseConfigured`
-// (see firebase/config.ts); otherwise `getDb()` throws a descriptive error.
 export const getCollectionWithId = async <T extends { id: string }>(
   name: string,
 ): Promise<T[]> => {

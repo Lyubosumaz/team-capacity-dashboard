@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useLocalization } from "@/providers/LocalizationProvider";
-import { TzarPageHeader } from "@tzardom-ui/react";
+import { TzarButton, TzarPageHeader, TzarTextField } from "@tzardom-ui/react";
 import { auth } from "@/lib/firebase/client";
 
 export const LoginPageClient: FC = () => {
@@ -23,7 +23,7 @@ export const LoginPageClient: FC = () => {
     setIsSubmitting(true);
 
     try {
-      await signInWithEmailAndPassword(auth!, email, password); // page.tsx only renders this when Firebase is configured
+      await signInWithEmailAndPassword(auth!, email, password);
       router.push("/");
     } catch (err) {
       console.error("Login failed", err);
@@ -40,7 +40,7 @@ export const LoginPageClient: FC = () => {
     >
       <div className="w-full max-w-sm">
         <TzarPageHeader
-          data-testid="login"
+          data-testid="login-header"
           title={t("auth.login.title")}
           description={t("auth.login.description")}
         />
@@ -50,41 +50,25 @@ export const LoginPageClient: FC = () => {
           className="space-y-4 rounded-lg border border-border-subtle bg-background p-4 shadow-sm"
           data-testid="login-form"
         >
-          <div className="space-y-1">
-            <label
-              htmlFor="email"
-              className="block text-xs font-medium uppercase tracking-wide opacity-70"
-            >
-              {t("auth.login.emailLabel")}
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            />
-          </div>
+          <TzarTextField
+            data-testid="login-email"
+            label={t("auth.login.emailLabel")}
+            name="email"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
 
-          <div className="space-y-1">
-            <label
-              htmlFor="password"
-              className="block text-xs font-medium uppercase tracking-wide opacity-70"
-            >
-              {t("auth.login.passwordLabel")}
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            />
-          </div>
+          <TzarTextField
+            data-testid="login-password"
+            label={t("auth.login.passwordLabel")}
+            name="password"
+            type="password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
 
           {error ? (
             <p className="text-xs text-danger" data-testid="login-error">
@@ -92,16 +76,18 @@ export const LoginPageClient: FC = () => {
             </p>
           ) : null}
 
-          <button
-            type="submit"
-            className="inline-flex w-full items-center justify-center rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-secondary-soft hover:bg-accent/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            disabled={isSubmitting}
+          <TzarButton
             data-testid="login-submit"
+            variant="primary"
+            size="md"
+            className="w-full"
+            type="submit"
+            disabled={isSubmitting}
           >
             {isSubmitting
               ? t("auth.login.submittingLabel")
               : t("auth.login.submitLabel")}
-          </button>
+          </TzarButton>
         </form>
 
         <p className="mt-3 text-xs text-muted text-center">

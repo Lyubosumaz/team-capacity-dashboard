@@ -22,6 +22,7 @@ export const TeamProjectsAndRisksSection: FC<
     <section className="space-y-3">
       <h2
         id="projects-heading"
+        data-testid="team-projects-heading"
         className="text-sm font-semibold uppercase tracking-wide opacity-70"
       >
         {texts.heading}

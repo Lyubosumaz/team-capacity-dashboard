@@ -10,7 +10,7 @@ vi.mock("../components/footer/AppFooter", () => ({
   AppFooter: () => <footer>mock-footer</footer>,
 }));
 
-vi.mock("../components/Providers", () => ({
+vi.mock("../providers/Providers", () => ({
   Providers: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 

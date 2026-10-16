@@ -8,6 +8,7 @@ import { useLocalization } from "@/providers/LocalizationProvider";
 import { TeamMembersSection } from "./TeamMembersSection";
 import { TeamProjectsAndRisksSection } from "./TeamProjectsAndRisksSection";
 import { ChartsSection } from "../../common/ChartsSection/ChartsSection";
+import { TzarButton, TzarDialog, TzarTextField } from "@tzardom-ui/react";
 
 type TeamDetailPageClientProps = {
   team: Team;
@@ -72,10 +73,14 @@ export const TeamDetailPageClient: FC<TeamDetailPageClientProps> = ({
     <section className="flex w-full flex-col gap-6">
       <header className="space-y-2 pb-10">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">{teamName}</h1>
-          <button
-            type="button"
-            className="inline-flex h-8 items-center justify-center rounded-md border border-border-subtle bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          <h1
+            data-testid="team-detail-name"
+            className="text-2xl font-semibold tracking-tight"
+          >
+            {teamName}
+          </h1>
+          <TzarButton
+            data-testid="team-detail-edit-button"
             onClick={() => {
               setEditNameError(null);
               setEditNameValue(teamName);
@@ -83,7 +88,7 @@ export const TeamDetailPageClient: FC<TeamDetailPageClientProps> = ({
             }}
           >
             Edit name
-          </button>
+          </TzarButton>
         </div>
         <p className="max-w-2xl text-sm opacity-80">
           {t("teams.detail.pageDescription")}
@@ -106,91 +111,78 @@ export const TeamDetailPageClient: FC<TeamDetailPageClientProps> = ({
 
       <ChartsSection teamId={team.id} texts={chartsTexts} />
 
-      {isEditNameModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-sm rounded-lg border border-border-subtle bg-background p-4 shadow-lg">
-            <h2 className="text-sm font-semibold">Edit team name</h2>
-            <form
-              className="mt-3 space-y-3"
-              onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                const trimmedName = editNameValue.trim();
+      <TzarDialog
+        data-testid="team-detail-edit-dialog"
+        open={isEditNameModalOpen}
+        onClose={() => {
+          setIsEditNameModalOpen(false);
+          setEditNameError(null);
+          setEditNameValue(teamName);
+        }}
+        title="Edit team name"
+        confirmLabel={isUpdatingName ? "Saving..." : "Save"}
+        confirmDisabled={isUpdatingName}
+        form="edit-team-name-form"
+      >
+        <form
+          data-testid="team-detail-edit-form"
+          id="edit-team-name-form"
+          className="space-y-3"
+          onSubmit={async (event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const trimmedName = editNameValue.trim();
 
-                if (!trimmedName) {
-                  setEditNameError("Team name is required");
-                  return;
-                }
+            if (!trimmedName) {
+              setEditNameError("Team name is required");
+              return;
+            }
 
-                try {
-                  setIsUpdatingName(true);
-                  setEditNameError(null);
+            try {
+              setIsUpdatingName(true);
+              setEditNameError(null);
 
-                  const response = await fetch("/api/teams", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ id: team.id, name: trimmedName }),
-                  });
+              const response = await fetch("/api/teams", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: team.id, name: trimmedName }),
+              });
 
-                  if (!response.ok) {
-                    setEditNameError(
-                      "Failed to update team name. Please try again.",
-                    );
-                    return;
-                  }
+              if (!response.ok) {
+                setEditNameError(
+                  "Failed to update team name. Please try again.",
+                );
+                return;
+              }
 
-                  setTeamName(trimmedName);
-                  setIsEditNameModalOpen(false);
-                } catch (error) {
-                  console.error("Error updating team name", error);
-                  setEditNameError(
-                    "Failed to update team name. Please try again.",
-                  );
-                } finally {
-                  setIsUpdatingName(false);
-                }
-              }}
+              setTeamName(trimmedName);
+              setIsEditNameModalOpen(false);
+            } catch (error) {
+              console.error("Error updating team name", error);
+              setEditNameError("Failed to update team name. Please try again.");
+            } finally {
+              setIsUpdatingName(false);
+            }
+          }}
+        >
+          <TzarTextField
+            data-testid="team-detail-name-input"
+            label="Team name"
+            value={editNameValue}
+            onChange={(event) => setEditNameValue(event.target.value)}
+          />
+
+          {editNameError ? (
+            <p
+              data-testid="team-detail-edit-error"
+              className="text-xs text-danger"
             >
-              <label className="block text-xs font-medium">
-                Team name
-                <input
-                  type="text"
-                  value={editNameValue}
-                  onChange={(event) => setEditNameValue(event.target.value)}
-                  className="mt-1 w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  autoFocus
-                />
-              </label>
-
-              {editNameError ? (
-                <p className="text-xs text-danger">{editNameError}</p>
-              ) : null}
-
-              <div className="flex justify-end gap-2 pt-1">
-                <button
-                  type="button"
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-border-subtle bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  onClick={() => {
-                    setIsEditNameModalOpen(false);
-                    setEditNameError(null);
-                    setEditNameValue(teamName);
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="inline-flex h-8 items-center justify-center rounded-md bg-accent px-3 text-xs font-medium text-background shadow-sm hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-60"
-                  disabled={isUpdatingName}
-                >
-                  {isUpdatingName ? "Saving..." : "Save"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+              {editNameError}
+            </p>
+          ) : null}
+        </form>
+      </TzarDialog>
     </section>
   );
 };

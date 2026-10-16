@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useLocalization } from "@/providers/LocalizationProvider";
-import { TzarPageHeader } from "@tzardom-ui/react";
+import { TzarButton, TzarPageHeader, TzarTextField } from "@tzardom-ui/react";
 import { auth } from "@/lib/firebase/client";
 
 export const RegisterPageClient: FC = () => {
@@ -30,7 +30,7 @@ export const RegisterPageClient: FC = () => {
     setIsSubmitting(true);
 
     try {
-      await createUserWithEmailAndPassword(auth!, email, password); // page.tsx only renders this when Firebase is configured
+      await createUserWithEmailAndPassword(auth!, email, password);
       router.push("/");
     } catch (err) {
       console.error("Registration failed", err);
@@ -47,7 +47,7 @@ export const RegisterPageClient: FC = () => {
     >
       <div className="w-full max-w-sm">
         <TzarPageHeader
-          data-testid="register"
+          data-testid="register-header"
           title={t("auth.register.title")}
           description={t("auth.register.description")}
         />
@@ -57,59 +57,35 @@ export const RegisterPageClient: FC = () => {
           className="space-y-4 rounded-lg border border-border-subtle bg-background p-4 shadow-sm"
           data-testid="register-form"
         >
-          <div className="space-y-1">
-            <label
-              htmlFor="register-email"
-              className="block text-xs font-medium uppercase tracking-wide opacity-70"
-            >
-              {t("auth.register.emailLabel")}
-            </label>
-            <input
-              id="register-email"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            />
-          </div>
+          <TzarTextField
+            data-testid="register-email"
+            label={t("auth.register.emailLabel")}
+            name="email"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
 
-          <div className="space-y-1">
-            <label
-              htmlFor="register-password"
-              className="block text-xs font-medium uppercase tracking-wide opacity-70"
-            >
-              {t("auth.register.passwordLabel")}
-            </label>
-            <input
-              id="register-password"
-              name="password"
-              type="password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            />
-          </div>
+          <TzarTextField
+            data-testid="register-password"
+            label={t("auth.register.passwordLabel")}
+            name="password"
+            type="password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
 
-          <div className="space-y-1">
-            <label
-              htmlFor="register-confirm-password"
-              className="block text-xs font-medium uppercase tracking-wide opacity-70"
-            >
-              {t("auth.register.confirmPasswordLabel")}
-            </label>
-            <input
-              id="register-confirm-password"
-              name="confirmPassword"
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              className="w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            />
-          </div>
+          <TzarTextField
+            data-testid="register-confirm-password"
+            label={t("auth.register.confirmPasswordLabel")}
+            name="confirmPassword"
+            type="password"
+            required
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
 
           {error ? (
             <p className="text-xs text-danger" data-testid="register-error">
@@ -117,16 +93,18 @@ export const RegisterPageClient: FC = () => {
             </p>
           ) : null}
 
-          <button
-            type="submit"
-            className="inline-flex w-full items-center justify-center rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-secondary-soft hover:bg-accent/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            disabled={isSubmitting}
+          <TzarButton
             data-testid="register-submit"
+            variant="primary"
+            size="md"
+            className="w-full"
+            type="submit"
+            disabled={isSubmitting}
           >
             {isSubmitting
               ? t("auth.register.submittingLabel")
               : t("auth.register.submitLabel")}
-          </button>
+          </TzarButton>
         </form>
 
         <p className="mt-3 text-xs text-muted text-center">

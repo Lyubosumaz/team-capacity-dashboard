@@ -24,8 +24,8 @@ export type ChartsSectionTexts = {
 };
 
 const CAPACITY_SERIES = [
-  { key: "capacity", label: "Capacity" },
-  { key: "workload", label: "Workload" },
+  { key: "capacity", label: "Capacity", color: "#db2777" },
+  { key: "workload", label: "Workload", color: "#0891b2" },
 ];
 
 type ChartsSectionProps = {
@@ -96,7 +96,7 @@ export const ChartsSection: FC<ChartsSectionProps> = ({
     <section className="space-y-4">
       {withHeader && texts?.heading && texts?.description && (
         <TzarPageHeader
-          data-testid="charts"
+          data-testid="charts-section-header"
           title={texts.heading}
           description={texts.description}
           as="h2"
@@ -106,6 +106,7 @@ export const ChartsSection: FC<ChartsSectionProps> = ({
       <div className="grid gap-4 md:grid-cols-2">
         {snapshots.length > 0 && (
           <TzarChart
+            data-testid="capacity-over-time-chart"
             type="line"
             data={snapshots}
             xKey="sprintName"
@@ -113,18 +114,17 @@ export const ChartsSection: FC<ChartsSectionProps> = ({
             series={CAPACITY_SERIES}
             title={texts.capacityOverTimeTitle}
             subtitle={team.name}
-            data-testid="capacity-over-time"
           />
         )}
 
         {workloadData.length > 0 && (
           <TzarChart
+            data-testid="workload-vs-capacity-chart"
             type="bar"
             data={workloadData}
             xKey="name"
             xLabel="Team"
             series={CAPACITY_SERIES}
-            data-testid="workload-vs-capacity"
             title={texts.workloadVsCapacityTitle}
             subtitle={
               currentSprint ? currentSprint.name : texts.currentSprintFallback

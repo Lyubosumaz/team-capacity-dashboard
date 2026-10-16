@@ -28,6 +28,7 @@ export const TeamMembersSection: FC<TeamMembersSectionProps> = ({
     <section className="space-y-3">
       <h2
         id="members-heading"
+        data-testid="team-members-heading"
         className="text-sm font-semibold uppercase tracking-wide opacity-70"
       >
         {texts.heading}

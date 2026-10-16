@@ -12,7 +12,6 @@ vi.mock("@/lib/domain/metrics", () => ({
 }));
 
 import { useQuery } from "@tanstack/react-query";
-import { tzrTestId } from "@tzardom-ui/react";
 import {
   getCapacitySnapshotsForTeam,
   getTeamCapacityForSprint,
@@ -48,7 +47,9 @@ describe("ChartsSection", () => {
     render(<ChartsSection teamId="team-1" texts={baseTexts} />);
 
     expect(screen.getByTestId("charts-section")).toBeInTheDocument();
-    expect(screen.getByText(/Loading charts/i)).toBeInTheDocument();
+    expect(screen.getByTestId("charts-section-message")).toHaveTextContent(
+      /Loading charts/i,
+    );
   });
 
   it("shows error state", () => {
@@ -57,9 +58,9 @@ describe("ChartsSection", () => {
     render(<ChartsSection teamId="team-1" texts={baseTexts} />);
 
     expect(screen.getByTestId("charts-section")).toBeInTheDocument();
-    expect(
-      screen.getByText(/Unable to load charts for this team right now/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("charts-section-message")).toHaveTextContent(
+      /Unable to load charts for this team right now/i,
+    );
   });
 
   it("shows not found state when team is missing", () => {
@@ -76,9 +77,9 @@ describe("ChartsSection", () => {
     render(<ChartsSection teamId="team-1" texts={baseTexts} />);
 
     expect(screen.getByTestId("charts-section")).toBeInTheDocument();
-    expect(
-      screen.getByText(/This team could not be found/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("charts-section-message")).toHaveTextContent(
+      /This team could not be found/i,
+    );
   });
 
   it("shows not enough data state when no snapshots or workload", () => {
@@ -103,9 +104,9 @@ describe("ChartsSection", () => {
     render(<ChartsSection teamId="team-1" texts={baseTexts} />);
 
     expect(screen.getByTestId("charts-section")).toBeInTheDocument();
-    expect(
-      screen.getByText(/Not enough data yet to show charts for this team/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("charts-section-message")).toHaveTextContent(
+      /Not enough data yet to show charts for this team/i,
+    );
   });
 
   it("renders charts when data is available", () => {
@@ -153,14 +154,14 @@ describe("ChartsSection", () => {
 
     render(<ChartsSection teamId="team-1" texts={baseTexts} />);
 
-    expect(
-      screen.getByRole("heading", { name: /capacity & workload/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId(tzrTestId("chart", "capacity-over-time", "title")),
-    ).toHaveTextContent(/Capacity over time/i);
-    expect(
-      screen.getByTestId(tzrTestId("chart", "workload-vs-capacity", "title")),
-    ).toHaveTextContent(/Workload vs capacity/i);
+    expect(screen.getByTestId("charts-section-header")).toHaveTextContent(
+      /capacity & workload/i,
+    );
+    expect(screen.getByTestId("capacity-over-time-chart")).toHaveTextContent(
+      "Capacity over time",
+    );
+    expect(screen.getByTestId("workload-vs-capacity-chart")).toHaveTextContent(
+      "Workload vs capacity",
+    );
   });
 });

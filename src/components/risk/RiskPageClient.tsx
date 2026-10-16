@@ -32,7 +32,7 @@ export const RiskPageClient: FC<RiskPageClientProps> = ({
   return (
     <section className="flex w-full flex-col gap-6">
       <TzarPageHeader
-        data-testid="risk"
+        data-testid="risk-header"
         title={t("risk.overviewHeader.title")}
         description={t("risk.overviewHeader.description")}
       />

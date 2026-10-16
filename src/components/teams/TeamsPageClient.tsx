@@ -7,7 +7,12 @@ import { useRouter } from "next/navigation";
 import type { Team } from "@/lib/domain/types";
 import { useLocalization } from "@/providers/LocalizationProvider";
 import { TeamsList } from "./TeamsList";
-import { TzarPageHeader } from "@tzardom-ui/react";
+import {
+  TzarButton,
+  TzarDialog,
+  TzarPageHeader,
+  TzarTextField,
+} from "@tzardom-ui/react";
 
 type TeamsPageClientProps = {
   teams: Team[];
@@ -35,19 +40,41 @@ export const TeamsPageClient: FC<TeamsPageClientProps> = ({ teams }) => {
     setTeamIdPendingDelete(teamId);
   };
 
+  const confirmDeleteTeam = async () => {
+    if (!teamIdPendingDelete) return;
+
+    try {
+      const response = await fetch(
+        `/api/teams?id=${encodeURIComponent(teamIdPendingDelete)}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      if (!response.ok && response.status !== 204) {
+        console.error("Failed to delete team");
+        return;
+      }
+
+      setTeamIdPendingDelete(null);
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting team", error);
+    }
+  };
+
   return (
     <section className="flex w-full flex-col gap-4">
       <TzarPageHeader
-        data-testid="teams"
+        data-testid="teams-header"
         title={t("teams.overviewHeader.title")}
         description={t("teams.overviewHeader.description")}
       />
 
       <div className="flex justify-end">
-        <button
-          className="inline-flex gap-2 h-9 items-center justify-center rounded-md border border-border-subtle bg-background px-3 text-xs font-medium shadow-sm transition-colors hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          aria-label="Add team"
-          type="button"
+        <TzarButton
+          data-testid="teams-add-button"
+          className="h-9"
           onClick={() => {
             setSubmitError(null);
             setNewTeamName("");
@@ -55,189 +82,144 @@ export const TeamsPageClient: FC<TeamsPageClientProps> = ({ teams }) => {
             setIsAddModalOpen(true);
           }}
         >
-          <p className="text-xs font-medium">Add team</p>
+          Add team
           <Plus className="h-4 w-4" aria-hidden="true" />
-        </button>
+        </TzarButton>
       </div>
 
-      {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-sm rounded-lg border border-border-subtle bg-background p-4 shadow-lg">
-            <h2 className="text-sm font-semibold">Add team</h2>
-            <form
-              className="mt-3 space-y-3"
-              onSubmit={async (event: FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                const trimmedName = newTeamName.trim();
+      <TzarDialog
+        data-testid="teams-add-dialog"
+        open={isAddModalOpen}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setNewTeamName("");
+          setSubmitError(null);
+          setSelectedMembersTeamIds([]);
+        }}
+        title="Add team"
+        size="lg"
+        confirmLabel={isSubmitting ? "Adding..." : "Add"}
+        confirmDisabled={isSubmitting}
+        form="add-team-form"
+      >
+        <form
+          data-testid="teams-add-form"
+          id="add-team-form"
+          className="space-y-3"
+          onSubmit={async (event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const trimmedName = newTeamName.trim();
 
-                if (!trimmedName) {
-                  setSubmitError("Team name is required");
-                  return;
-                }
+            if (!trimmedName) {
+              setSubmitError("Team name is required");
+              return;
+            }
 
-                try {
-                  setIsSubmitting(true);
-                  setSubmitError(null);
+            try {
+              setIsSubmitting(true);
+              setSubmitError(null);
 
-                  const response = await fetch("/api/teams", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      name: trimmedName,
-                      members:
-                        selectedMembersTeamIds.length > 0
-                          ? (() => {
-                              const combined = teams
-                                .filter((team) =>
-                                  selectedMembersTeamIds.includes(team.id),
-                                )
-                                .flatMap((team) => team.members);
+              const response = await fetch("/api/teams", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: trimmedName,
+                  members:
+                    selectedMembersTeamIds.length > 0
+                      ? (() => {
+                          const combined = teams
+                            .filter((team) =>
+                              selectedMembersTeamIds.includes(team.id),
+                            )
+                            .flatMap((team) => team.members);
 
-                              const seen = new Set<string>();
-                              return combined.filter((member) => {
-                                if (seen.has(member.id)) return false;
-                                seen.add(member.id);
-                                return true;
-                              });
-                            })()
-                          : [],
-                    }),
-                  });
+                          const seen = new Set<string>();
+                          return combined.filter((member) => {
+                            if (seen.has(member.id)) return false;
+                            seen.add(member.id);
+                            return true;
+                          });
+                        })()
+                      : [],
+                }),
+              });
 
-                  if (!response.ok) {
-                    setSubmitError("Failed to add team. Please try again.");
-                    return;
-                  }
+              if (!response.ok) {
+                setSubmitError("Failed to add team. Please try again.");
+                return;
+              }
 
-                  setIsAddModalOpen(false);
-                  setNewTeamName("");
-                  setSubmitError(null);
-                  setSelectedMembersTeamIds([]);
-                  router.refresh();
-                } catch (error) {
-                  console.error("Error adding team", error);
-                  setSubmitError("Failed to add team. Please try again.");
-                } finally {
-                  setIsSubmitting(false);
-                }
-              }}
+              setIsAddModalOpen(false);
+              setNewTeamName("");
+              setSubmitError(null);
+              setSelectedMembersTeamIds([]);
+              router.refresh();
+            } catch (error) {
+              console.error("Error adding team", error);
+              setSubmitError("Failed to add team. Please try again.");
+            } finally {
+              setIsSubmitting(false);
+            }
+          }}
+        >
+          <TzarTextField
+            data-testid="teams-add-name"
+            label="Team name"
+            value={newTeamName}
+            onChange={(event) => setNewTeamName(event.target.value)}
+            placeholder="Enter team name"
+          />
+
+          <label className="block text-xs font-medium">
+            Members
+            <select
+              className="mt-1 w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              multiple
+              value={selectedMembersTeamIds}
+              onChange={(event) =>
+                setSelectedMembersTeamIds(
+                  Array.from(
+                    event.target.selectedOptions,
+                    (option) => option.value,
+                  ),
+                )
+              }
             >
-              <label className="block text-xs font-medium">
-                Team name
-                <input
-                  type="text"
-                  value={newTeamName}
-                  onChange={(event) => setNewTeamName(event.target.value)}
-                  className="mt-1 w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  placeholder="Enter team name"
-                  autoFocus
-                />
-              </label>
+              <option value="">No members (empty team)</option>
+              {teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  Copy members from {team.name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-              <label className="block text-xs font-medium">
-                Members
-                <select
-                  className="mt-1 w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  multiple
-                  value={selectedMembersTeamIds}
-                  onChange={(event) =>
-                    setSelectedMembersTeamIds(
-                      Array.from(
-                        event.target.selectedOptions,
-                        (option) => option.value,
-                      ),
-                    )
-                  }
-                >
-                  <option value="">No members (empty team)</option>
-                  {teams.map((team) => (
-                    <option key={team.id} value={team.id}>
-                      Copy members from {team.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {submitError ? (
-                <p className="text-xs text-danger">{submitError}</p>
-              ) : null}
-
-              <div className="flex justify-end gap-2 pt-1">
-                <button
-                  type="button"
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-border-subtle bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  onClick={() => {
-                    setIsAddModalOpen(false);
-                    setNewTeamName("");
-                    setSubmitError(null);
-                    setSelectedMembersTeamIds([]);
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="inline-flex h-8 items-center justify-center rounded-md bg-accent px-3 text-xs font-medium text-background shadow-sm hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-60"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Adding..." : "Add"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {teamIdPendingDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-sm rounded-lg border border-border-subtle bg-background p-4 shadow-lg">
-            <h2 className="text-sm font-semibold">Delete team</h2>
-            <p className="mt-2 text-xs opacity-80">
-              Are you sure you want to delete this team? This action cannot be
-              undone.
+          {submitError ? (
+            <p data-testid="teams-add-error" className="text-xs text-danger">
+              {submitError}
             </p>
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                className="inline-flex h-8 items-center justify-center rounded-md border border-border-subtle bg-background px-3 text-xs font-medium shadow-sm hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                onClick={() => setTeamIdPendingDelete(null)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="inline-flex h-8 items-center justify-center rounded-md bg-danger px-3 text-xs font-medium text-background shadow-sm hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
-                onClick={async () => {
-                  if (!teamIdPendingDelete) return;
+          ) : null}
+        </form>
+      </TzarDialog>
 
-                  try {
-                    const response = await fetch(
-                      `/api/teams?id=${encodeURIComponent(teamIdPendingDelete)}`,
-                      {
-                        method: "DELETE",
-                      },
-                    );
-
-                    if (!response.ok && response.status !== 204) {
-                      console.error("Failed to delete team");
-                      return;
-                    }
-
-                    setTeamIdPendingDelete(null);
-                    router.refresh();
-                  } catch (error) {
-                    console.error("Error deleting team", error);
-                  }
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <TzarDialog
+        data-testid="teams-delete-dialog"
+        open={teamIdPendingDelete !== null}
+        onClose={() => {
+          setTeamIdPendingDelete(null);
+        }}
+        title="Delete team"
+        confirmLabel="Delete"
+        confirmVariant="danger"
+        onConfirm={confirmDeleteTeam}
+      >
+        <p className="text-xs opacity-80">
+          Are you sure you want to delete this team? This action cannot be
+          undone.
+        </p>
+      </TzarDialog>
 
       <TeamsList
         teams={teams}

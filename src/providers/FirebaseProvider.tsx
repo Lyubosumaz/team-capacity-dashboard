@@ -11,9 +11,7 @@ const FirebaseContext = createContext<FirebaseContextValue | null>(null);
 
 type FirebaseProviderProps = {
   children: ReactNode;
-  // Defaults to the real config (NEXT_PUBLIC_ env vars, inlined at build
-  // time). Pass it explicitly in tests/Storybook to force either state
-  // without mocking modules.
+  // Defaults to the real config; pass it in tests to force a state.
   isConfigured?: boolean;
 };
 

@@ -14,10 +14,10 @@ export const AppFooter: FC = () => {
 
   return (
     <TzarFooter
+      data-testid="app-footer"
       copyright={copyright}
       appName={t("footer.appName")}
       builtWith={t("footer.builtWith")}
-      data-testid="app"
     />
   );
 };

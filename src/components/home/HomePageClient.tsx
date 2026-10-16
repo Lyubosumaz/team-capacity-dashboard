@@ -58,7 +58,7 @@ export const HomePageClient: FC<HomePageClientProps> = ({
       data-testid="home-overview-section"
     >
       <TzarPageHeader
-        data-testid="home"
+        data-testid="home-header"
         title={t("home.overviewHeader.title")}
         description={t("home.overviewHeader.description")}
       />

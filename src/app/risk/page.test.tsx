@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { tzrTestId } from "@tzardom-ui/react";
 
 import { Providers } from "@/providers/Providers";
 import { RiskPageClient } from "@/components/risk/RiskPageClient";
@@ -56,17 +55,19 @@ describe("Risk page", () => {
       </Providers>,
     );
 
-    expect(
-      screen.getByRole("heading", { name: /risk overview/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/High-risk insights/i)).toBeInTheDocument();
+    expect(screen.getByTestId("risk-header")).toHaveTextContent(
+      /risk overview/i,
+    );
+    expect(screen.getByTestId("key-metrics-card-1")).toHaveTextContent(
+      /high-risk insights/i,
+    );
     expect(screen.getByTestId("capacity-and-risk-widgets")).toBeInTheDocument();
-    expect(
-      screen.getByTestId(tzrTestId("teamsOverCapacity", "widgets")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId(tzrTestId("upcomingRiskEvents", "widgets")),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("teams-over-capacity")).toHaveTextContent(
+      "Teams over capacity this sprint",
+    );
+    expect(screen.getByTestId("upcoming-risk-events")).toHaveTextContent(
+      "Upcoming risk events",
+    );
     expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
   });
 });
