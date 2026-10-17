@@ -1,5 +1,5 @@
 import { UserPageClient } from "@/views/user/UserPageClient";
-import { FirebaseGate } from "@/components/firebase/FirebaseGate";
+import { FirebaseGate } from "@/components/firebase/FirebaseGate/FirebaseGate";
 
 const UserPage = () => (
   <FirebaseGate feature="Account">

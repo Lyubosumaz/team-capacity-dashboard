@@ -7,7 +7,7 @@ import type {
   RiskEvent,
 } from "@/lib/domain/types";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { requireFirebase } from "@/components/firebase/requireFirebase";
+import { requireFirebase } from "@/components/firebase/requireFirebase/requireFirebase";
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,

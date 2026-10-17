@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { AppHeader } from "@/components/layout/AppHeader";
-import { AppFooter } from "@/components/layout/AppFooter";
+import { AppHeader } from "@/components/layout/AppHeader/AppHeader";
+import { AppFooter } from "@/components/layout/AppFooter/AppFooter";
 import { Providers } from "@/providers/Providers";
 import "@/styles/globals.css";
 

@@ -9,29 +9,12 @@ import {
 } from "@/lib/domain/metrics";
 import { TzarChart, TzarPageHeader } from "@tzardom-ui/react";
 import { ChartsSectionLayout } from "./ChartsSectionLayout";
-
-export type ChartsSectionTexts = {
-  heading?: string;
-  description?: string;
-  loading: string;
-  error: string;
-  notFound: string;
-  noData: string;
-  capacityOverTimeTitle: string;
-  workloadVsCapacityTitle: string;
-  currentSprintFallback: string;
-};
+import type { ChartsSectionProps } from "./ChartsSection.types";
 
 const CAPACITY_SERIES = [
   { key: "capacity", label: "Capacity", color: "#db2777" },
   { key: "workload", label: "Workload", color: "#0891b2" },
 ];
-
-type ChartsSectionProps = {
-  teamId: string;
-  texts: ChartsSectionTexts;
-  withHeader?: boolean;
-};
 
 export const ChartsSection = ({
   teamId,

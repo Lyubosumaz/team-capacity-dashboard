@@ -1,13 +1,10 @@
-import { ChartsSectionTexts } from "./ChartsSection";
+import type { ChartsSectionLayoutProps } from "./ChartsSection.types";
 import { TzarPageHeader } from "@tzardom-ui/react";
 
 export const ChartsSectionLayout = ({
   texts,
   message,
-}: {
-  texts?: ChartsSectionTexts;
-  message?: string;
-}) => {
+}: ChartsSectionLayoutProps) => {
   return (
     <section
       className="rounded-lg border border-border-subtle bg-background p-4 shadow-sm"

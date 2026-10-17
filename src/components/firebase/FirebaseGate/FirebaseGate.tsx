@@ -1,13 +1,8 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useFirebase } from "@/providers/FirebaseProvider";
-import { FirebaseUnavailable } from "./FirebaseUnavailable";
-
-type FirebaseGateProps = {
-  feature: string;
-  children: ReactNode;
-};
+import { FirebaseUnavailable } from "@/components/firebase/FirebaseUnavailable/FirebaseUnavailable";
+import type { FirebaseGateProps } from "./FirebaseGate.types";
 
 // Shows FirebaseUnavailable instead of children when Firebase isn't configured.
 // For client-only pages; pages that fetch on the server use requireFirebase().

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { collection, doc, getDoc, query, where } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/firestore";
-import { requireFirebase } from "@/components/firebase/requireFirebase";
+import { requireFirebase } from "@/components/firebase/requireFirebase/requireFirebase";
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
 import { TeamDetailPageClient } from "@/views/teams/TeamDetailPageClient";
 import { getCollectionQueryWithId } from "@/lib/firebase/collections";

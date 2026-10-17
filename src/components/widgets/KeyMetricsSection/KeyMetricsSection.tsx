@@ -1,22 +1,5 @@
 import { TzarMetricCard } from "@tzardom-ui/react";
-
-type MetricTexts = {
-  label: string;
-  helperText: string;
-};
-
-type KeyMetricsSectionTexts = {
-  section1: MetricTexts;
-  section2: MetricTexts;
-  section3: MetricTexts;
-};
-
-type KeyMetricsSectionProps = {
-  section1: number;
-  section2: number;
-  section3: number;
-  texts: KeyMetricsSectionTexts;
-};
+import type { KeyMetricsSectionProps } from "./KeyMetricsSection.types";
 
 export const KeyMetricsSection = ({
   section1,

@@ -1,7 +1,7 @@
 import type { Team } from "@/lib/domain/types";
 import { TeamsPageClient } from "@/views/teams/TeamsPageClient";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { requireFirebase } from "@/components/firebase/requireFirebase";
+import { requireFirebase } from "@/components/firebase/requireFirebase/requireFirebase";
 
 export const dynamic = "force-static";
 

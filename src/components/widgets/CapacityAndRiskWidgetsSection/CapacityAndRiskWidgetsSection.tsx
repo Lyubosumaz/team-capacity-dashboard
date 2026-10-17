@@ -4,8 +4,8 @@ import {
   TzarTeamsOverCapacity,
   TzarUpcomingRiskEvents,
 } from "@tzardom-ui/react";
-import { useTeamsOverCapacity } from "./useTeamsOverCapacity";
-import { useUpcomingRiskEvents } from "./useUpcomingRiskEvents";
+import { useTeamsOverCapacity } from "@/hooks/useTeamsOverCapacity";
+import { useUpcomingRiskEvents } from "@/hooks/useUpcomingRiskEvents";
 
 const CARD_CLASSES = "rounded-lg border border-border-subtle bg-background p-4";
 

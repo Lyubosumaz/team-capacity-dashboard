@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { TzarCommonLink, TzarPageHeader } from "@tzardom-ui/react";
-
-type FirebaseUnavailableProps = {
-  feature: string;
-};
+import type { FirebaseUnavailableProps } from "./FirebaseUnavailable.types";
 
 // Shown when a page needs Firebase but the .env has no Firebase keys.
 export const FirebaseUnavailable = ({ feature }: FirebaseUnavailableProps) => {

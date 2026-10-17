@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
-import { FirebaseUnavailable } from "./FirebaseUnavailable";
+import { FirebaseUnavailable } from "@/components/firebase/FirebaseUnavailable/FirebaseUnavailable";
 
 export const requireFirebase = (feature: string): ReactNode | null => {
   if (isFirebaseConfigured) {
