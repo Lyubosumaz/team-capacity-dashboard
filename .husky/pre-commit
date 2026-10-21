@@ -1,2 +1,2 @@
-npm run lint && npm run format && npm run test:coverage
+pnpm lint && pnpm format && pnpm test:coverage
 git add -A

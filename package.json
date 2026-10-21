@@ -2,8 +2,9 @@
   "name": "team-capacity-dashboard",
   "version": "0.5.8",
   "private": true,
+  "packageManager": "pnpm@11.28.0",
   "scripts": {
-    "dev": "rm -rf .next && npx kill-port 3000 && next dev",
+    "dev": "rm -rf .next && pnpm dlx kill-port 3000 && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

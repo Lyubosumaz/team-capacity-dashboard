@@ -28,15 +28,15 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
 ### This repository is set up to feel like a "senior" engineering environment around the code:
 
 - **ESLint + Prettier**
-  - Lint the whole project with `npm run lint`.
-  - Check formatting with `npm run format` and auto-fix with `npm run format:fix`.
+  - Lint the whole project with `pnpm lint`.
+  - Check formatting with `pnpm format` and auto-fix with `pnpm format:fix`.
 - **TypeScript strictness**
   - `tsconfig.json` uses `"strict": true` for safer types across the app.
 - **GitHub Actions CI**
   - Workflow in `.github/workflows/ci.yml` runs on pushes and PRs to `main`.
-  - Steps: install dependencies, `npm run lint`, `npm run test:coverage`, and `npm run build`.
+  - Steps: install dependencies, `pnpm lint`, `pnpm test:coverage`, and `pnpm build`.
 - **Build & deployment pipeline**
-  - `npm run build` performs a production build used both locally and in CI.
+  - `pnpm build` performs a production build used both locally and in CI.
   - Recommended: connect the repo to Vercel so merges to `main` trigger automatic deployments.
 - **Contribution flow & code review**
   - See `CONTRIBUTING.md` for local workflow and pre-PR checks.
@@ -44,11 +44,12 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
 
 ## Getting Started
 
-You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25). Install
-the dependencies with `npm install`, then run the development server:
+You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25) and pnpm
+(`npm install -g pnpm`). Install the dependencies with `pnpm install`,
+then run the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -98,11 +99,11 @@ You can deploy this app either directly from your local machine or via a Git rep
 #### Deploy from your local machine using Vercel CLI
 
 1. From the project root, install dependencies (if not already done):
-   - `npm install`
+   - `pnpm install`
 2. (Optional) Verify the app builds locally:
-   - `npm run build`
+   - `pnpm build`
 3. Install the Vercel CLI (once):
-   - `npm install -g vercel`
+   - `pnpm add -g vercel`
 4. Deploy for the first time:
    - `vercel`
    - When prompted in the browser, sign up or log in to Vercel.

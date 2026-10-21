@@ -10,15 +10,16 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 
 2. **Set up locally**
    - Use Node 26 (22.12+ and 24 also work; Vitest doesn't support 25).
-   - Install dependencies: `npm install`
-   - Start the dev server: `npm run dev`
+   - Install pnpm once: `npm install -g pnpm`
+   - Install dependencies: `pnpm install`
+   - Start the dev server: `pnpm dev`
 
 3. **Before opening a PR**
-   - Lint: `npm run lint`
-   - Format (check): `npm run format`
-   - Fix formatting (if needed): `npm run format:fix`
-   - Run unit tests with coverage: `npm run test:coverage`
-   - Ensure the app builds: `npm run build`
+   - Lint: `pnpm lint`
+   - Format (check): `pnpm format`
+   - Fix formatting (if needed): `pnpm format:fix`
+   - Run unit tests with coverage: `pnpm test:coverage`
+   - Ensure the app builds: `pnpm build`
 
 4. **Pull Request guidelines**
    - Keep PRs focused and reasonably small.

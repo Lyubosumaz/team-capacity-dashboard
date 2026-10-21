@@ -32,7 +32,7 @@ function waitForServer(url, timeoutMs = 60000, intervalMs = 1000) {
 }
 
 async function main() {
-  const dev = spawn("npm", ["run", "dev"], {
+  const dev = spawn("pnpm", ["dev"], {
     stdio: "inherit",
     shell: process.platform === "win32",
   });
@@ -53,7 +53,7 @@ async function main() {
     process.exit(1);
   }
 
-  const cypress = spawn("npx", ["cypress", "run"], {
+  const cypress = spawn("pnpm", ["exec", "cypress", "run"], {
     stdio: "inherit",
     shell: true,
   });
