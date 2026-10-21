@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { Providers } from "@/providers/Providers";
-import { RiskPageClient } from "@/views/risk/RiskPageClient";
+import { Providers } from "@/shared/providers/Providers";
+import { RiskView } from "@/features/risk/RiskView";
 import {
   teams as mockTeams,
   projects as mockProjects,
@@ -43,7 +43,7 @@ describe("Risk page", () => {
 
     render(
       <Providers>
-        <RiskPageClient
+        <RiskView
           highRiskInsightsCount={highRiskInsights.length}
           highRiskTeamsCount={highRiskTeamsCount}
           upcomingEventsCount={upcomingEvents.length}

@@ -8,7 +8,7 @@ vi.mock("@/lib/firebase/config", () => ({
 }));
 
 import LoginPage from "./page";
-import { Providers } from "@/providers/Providers";
+import { Providers } from "@/shared/providers/Providers";
 
 describe("Login page", () => {
   it("renders login heading and form", () => {

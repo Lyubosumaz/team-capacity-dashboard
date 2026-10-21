@@ -7,12 +7,12 @@ import type {
   RiskEvent,
 } from "@/lib/domain/types";
 import { getCollectionWithId } from "@/lib/firebase/collections";
-import { requireFirebase } from "@/components/firebase/requireFirebase/requireFirebase";
+import { requireFirebase } from "@/features/auth/requireFirebase";
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
 } from "@/lib/domain/metrics";
-import { RiskPageClient } from "@/views/risk/RiskPageClient";
+import { RiskView } from "@/features/risk/RiskView";
 
 const RiskPage = async () => {
   const unavailable = requireFirebase("Risk insights");
@@ -51,7 +51,7 @@ const RiskPage = async () => {
   const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
 
   return (
-    <RiskPageClient
+    <RiskView
       highRiskInsightsCount={highRiskInsights.length}
       highRiskTeamsCount={highRiskTeamsCount}
       upcomingEventsCount={upcomingEvents.length}

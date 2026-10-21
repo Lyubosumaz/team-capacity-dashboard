@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { Providers } from "@/providers/Providers";
-import { TeamsPageClient } from "@/views/teams/TeamsPageClient";
+import { Providers } from "@/shared/providers/Providers";
+import { TeamsView } from "@/features/teams/TeamsView";
 import { teams as mockTeams } from "@/lib/domain/mockData";
 
 vi.mock("next/link", () => {
@@ -20,7 +20,7 @@ describe("TeamsPage", () => {
   it("renders teams heading and list", () => {
     render(
       <Providers>
-        <TeamsPageClient teams={mockTeams} />
+        <TeamsView teams={mockTeams} />
       </Providers>,
     );
 

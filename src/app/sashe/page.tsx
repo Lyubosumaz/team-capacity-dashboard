@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useLocalization } from "@/providers/LocalizationProvider";
+import { useLocalization } from "@/shared/i18n/LocalizationProvider";
 
 const SashePage = () => {
   const { t } = useLocalization();

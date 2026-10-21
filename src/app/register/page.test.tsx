@@ -8,7 +8,7 @@ vi.mock("@/lib/firebase/config", () => ({
 }));
 
 import RegisterPage from "./page";
-import { Providers } from "@/providers/Providers";
+import { Providers } from "@/shared/providers/Providers";
 
 describe("Register page", () => {
   it("renders register heading and form", () => {

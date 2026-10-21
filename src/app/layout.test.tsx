@@ -2,15 +2,15 @@ import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import RootLayout from "./layout";
 
-vi.mock("@/components/layout/AppHeader/AppHeader", () => ({
+vi.mock("@/shared/layout/AppHeader", () => ({
   AppHeader: () => <header>mock-header</header>,
 }));
 
-vi.mock("@/components/layout/AppFooter/AppFooter", () => ({
+vi.mock("@/shared/layout/AppFooter", () => ({
   AppFooter: () => <footer>mock-footer</footer>,
 }));
 
-vi.mock("@/providers/Providers", () => ({
+vi.mock("@/shared/providers/Providers", () => ({
   Providers: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 

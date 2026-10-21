@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { collection, doc, getDoc, query, where } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/firestore";
-import { requireFirebase } from "@/components/firebase/requireFirebase/requireFirebase";
+import { requireFirebase } from "@/features/auth/requireFirebase";
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
-import { TeamDetailPageClient } from "@/views/teams/TeamDetailPageClient";
+import { TeamDetailView } from "@/features/teams/TeamDetailView";
 import { getCollectionQueryWithId } from "@/lib/firebase/collections";
 
 type TeamPageParams = {
@@ -52,7 +52,7 @@ const TeamDetailPage = async ({
   );
 
   return (
-    <TeamDetailPageClient
+    <TeamDetailView
       team={team}
       projects={teamProjects}
       risks={teamRisks}

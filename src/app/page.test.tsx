@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/components/widgets/ChartsSection/ChartsSection", () => ({
+vi.mock("@/shared/widgets/ChartsSection", () => ({
   ChartsSection: () => <div data-testid="charts-section" />,
 }));
 
-import { Providers } from "@/providers/Providers";
-import { HomePageClient } from "@/views/home/HomePageClient";
+import { Providers } from "@/shared/providers/Providers";
+import { OverviewView } from "@/features/overview/OverviewView";
 import {
   teams as mockTeams,
   projects as mockProjects,
@@ -23,7 +23,7 @@ describe("Home page", () => {
 
     render(
       <Providers>
-        <HomePageClient
+        <OverviewView
           totalTeams={totalTeams}
           totalProjects={totalProjects}
           highRiskCount={highRiskCount}

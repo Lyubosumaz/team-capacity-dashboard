@@ -1,5 +1,5 @@
 import type { Team, Project, RiskInsight } from "@/lib/domain/types";
-import { HomePageClient } from "@/views/home/HomePageClient";
+import { OverviewView } from "@/features/overview/OverviewView";
 import { getCollectionWithId } from "@/lib/firebase/collections";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import {
@@ -25,7 +25,7 @@ const Home = async () => {
   ).length;
 
   return (
-    <HomePageClient
+    <OverviewView
       totalTeams={totalTeams}
       totalProjects={totalProjects}
       highRiskCount={highRiskCount}

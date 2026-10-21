@@ -1,9 +1,9 @@
-import { LoginPageClient } from "@/views/auth/LoginPageClient";
-import { FirebaseGate } from "@/components/firebase/FirebaseGate/FirebaseGate";
+import { LoginView } from "@/features/auth/LoginView";
+import { FirebaseGate } from "@/features/auth/FirebaseGate";
 
 const LoginPage = () => (
   <FirebaseGate feature="Sign in">
-    <LoginPageClient />
+    <LoginView />
   </FirebaseGate>
 );
 

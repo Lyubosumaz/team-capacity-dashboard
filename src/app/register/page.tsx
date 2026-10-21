@@ -1,9 +1,9 @@
-import { RegisterPageClient } from "@/views/auth/RegisterPageClient";
-import { FirebaseGate } from "@/components/firebase/FirebaseGate/FirebaseGate";
+import { RegisterView } from "@/features/auth/RegisterView";
+import { FirebaseGate } from "@/features/auth/FirebaseGate";
 
 const RegisterPage = () => (
   <FirebaseGate feature="Registration">
-    <RegisterPageClient />
+    <RegisterView />
   </FirebaseGate>
 );
 
