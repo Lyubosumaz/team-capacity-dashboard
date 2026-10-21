@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { AppFooter } from "./AppFooter";
+import { AppFooter } from "@/shared/layout/AppFooter";
 import { Providers } from "@/shared/providers/Providers";
 
 describe("AppFooter", () => {

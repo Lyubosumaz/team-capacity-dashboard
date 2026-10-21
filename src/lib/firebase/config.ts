@@ -7,7 +7,7 @@ export const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// True when the .env has the Firebase keys. If false, the app runs without
+// True when local.env has the Firebase keys. If false, the app runs without
 // Firebase: no login and no database.
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey &&

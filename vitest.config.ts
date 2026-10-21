@@ -1,14 +1,12 @@
 import { defineConfig } from "vitest/config";
-import { fileURLToPath } from "node:url";
-import { resolve } from "node:path";
-
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./vitest.setup.ts"],
+    setupFiles: ["./tests/setup.ts"],
+    include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],
@@ -19,19 +17,6 @@ export default defineConfig({
         functions: 10,
         statements: 10,
       },
-      exclude: [
-        "**/node_modules/**",
-        "**/.next/**",
-        "**/cypress/**",
-        "**/*.test.*",
-        "**/*.spec.*",
-      ],
-    },
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
-  },
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src"),
     },
   },
 });

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { useTzarTheme } from "@tzardom-ui/react";
-import { Providers } from "./Providers";
+import { Providers } from "@/shared/providers/Providers";
 
 const Child = () => <div data-testid="child">child-content</div>;
 

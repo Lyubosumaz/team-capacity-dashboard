@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { useTeamsOverCapacity } from "./useTeamsOverCapacity";
-import { useUpcomingRiskEvents } from "./useUpcomingRiskEvents";
-import { CapacityAndRiskWidgetsSection } from "./CapacityAndRiskWidgetsSection";
+import { useTeamsOverCapacity } from "@/features/risk/useTeamsOverCapacity";
+import { useUpcomingRiskEvents } from "@/features/risk/useUpcomingRiskEvents";
+import { CapacityAndRiskWidgetsSection } from "@/features/risk/CapacityAndRiskWidgetsSection";
 
-vi.mock("./useTeamsOverCapacity", () => ({
+vi.mock("@/features/risk/useTeamsOverCapacity", () => ({
   useTeamsOverCapacity: vi.fn(),
 }));
-vi.mock("./useUpcomingRiskEvents", () => ({
+vi.mock("@/features/risk/useUpcomingRiskEvents", () => ({
   useUpcomingRiskEvents: vi.fn(),
 }));
 

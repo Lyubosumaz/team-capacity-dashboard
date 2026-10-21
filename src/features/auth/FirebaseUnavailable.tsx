@@ -2,7 +2,7 @@ import Link from "next/link";
 import { TzarCommonLink, TzarPageHeader } from "@tzardom-ui/react";
 import type { FirebaseUnavailableProps } from "./FirebaseUnavailable.types";
 
-// Shown when a page needs Firebase but the .env has no Firebase keys.
+// Shown when a page needs Firebase but local.env has no Firebase keys.
 export const FirebaseUnavailable = ({ feature }: FirebaseUnavailableProps) => {
   return (
     <section
@@ -12,7 +12,7 @@ export const FirebaseUnavailable = ({ feature }: FirebaseUnavailableProps) => {
       <TzarPageHeader
         data-testid="firebase-unavailable-header"
         title={`${feature} needs Firebase configured`}
-        description="No Firebase environment variables were found on this machine, so this page can't load real data. Copy example.env to .env and fill in your Firebase project's values, then restart the dev server."
+        description="No Firebase environment variables were found on this machine, so this page can't load real data. Copy example.env to local.env and fill in your Firebase project's values, then restart the dev server."
       />
       <TzarCommonLink
         as={Link}

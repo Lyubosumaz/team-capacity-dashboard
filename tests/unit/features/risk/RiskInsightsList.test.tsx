@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { RiskInsightsList } from "./RiskInsightsList";
+import { RiskInsightsList } from "@/features/risk/RiskInsightsList";
 import { Providers } from "@/shared/providers/Providers";
 
 describe("RiskInsightsList", () => {

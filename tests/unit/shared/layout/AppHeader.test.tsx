@@ -2,7 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Providers } from "@/shared/providers/Providers";
-import { AppHeader } from "./AppHeader";
+import { AppHeader } from "@/shared/layout/AppHeader";
 
 vi.mock("next/link", () => ({
   __esModule: true,

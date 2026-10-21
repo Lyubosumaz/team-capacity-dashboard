@@ -59,7 +59,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Running with or without Firebase
 
-Copy `example.env` to `.env` to use real data. Restart the dev server after changing it. Without it, the app falls back to mock data or a "Firebase unavailable" page.
+Copy `example.env` to `local.env` to use real data. Restart the dev server after changing it. Without it, the app falls back to mock data or a "Firebase unavailable" page.
 
 | Page type | Guard |
 |---|---|

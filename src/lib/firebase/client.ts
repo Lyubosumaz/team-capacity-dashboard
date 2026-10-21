@@ -10,5 +10,5 @@ const app: FirebaseApp | null = isFirebaseConfigured
     : initializeApp(firebaseConfig)
   : null;
 
-// null without Firebase keys in the .env. Check it before using it.
+// null without Firebase keys in local.env. Check it before using it.
 export const auth: Auth | null = app ? getAuth(app) : null;

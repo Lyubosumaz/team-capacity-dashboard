@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { useQuery } from "@tanstack/react-query";
-import { useTeamsOverCapacity } from "./useTeamsOverCapacity";
+import { useTeamsOverCapacity } from "@/features/risk/useTeamsOverCapacity";
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: vi.fn(),

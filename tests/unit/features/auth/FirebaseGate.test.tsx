@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { FirebaseProvider } from "@/shared/providers/FirebaseProvider";
-import { FirebaseGate } from "./FirebaseGate";
+import { FirebaseGate } from "@/features/auth/FirebaseGate";
 
 const renderGate = (isConfigured: boolean) =>
   render(

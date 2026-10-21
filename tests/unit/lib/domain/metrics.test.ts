@@ -5,8 +5,8 @@ import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
   getCapacitySnapshotsForTeam,
-} from "./metrics";
-import type { Team, Project, Sprint, RiskEvent } from "./types";
+} from "@/lib/domain/metrics";
+import type { Team, Project, Sprint, RiskEvent } from "@/lib/domain/types";
 
 const team: Team = {
   id: "team-1",

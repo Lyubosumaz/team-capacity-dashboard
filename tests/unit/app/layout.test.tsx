@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import RootLayout from "./layout";
+import RootLayout from "@/app/layout";
 
 vi.mock("@/shared/layout/AppHeader", () => ({
   AppHeader: () => <header>mock-header</header>,

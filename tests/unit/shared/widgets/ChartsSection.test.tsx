@@ -17,7 +17,7 @@ import {
   getTeamCapacityForSprint,
   getTeamWorkloadForSprint,
 } from "@/lib/domain/metrics";
-import { ChartsSection } from "./ChartsSection";
+import { ChartsSection } from "@/shared/widgets/ChartsSection";
 
 const mockedUseQuery = useQuery as unknown as ReturnType<typeof vi.fn>;
 const mockedGetCapacitySnapshotsForTeam =

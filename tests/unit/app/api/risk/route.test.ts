@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { GET } from "./route";
+import { GET } from "@/app/api/risk/route";
 
 describe("GET /api/risk", () => {
   it("returns risk bundle with rules, insights, and events", async () => {

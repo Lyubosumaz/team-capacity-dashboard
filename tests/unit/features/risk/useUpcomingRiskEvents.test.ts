@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { useQuery } from "@tanstack/react-query";
-import { useUpcomingRiskEvents } from "./useUpcomingRiskEvents";
+import { useUpcomingRiskEvents } from "@/features/risk/useUpcomingRiskEvents";
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: vi.fn(),

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { GET } from "./route";
+import { GET } from "@/app/api/projects/route";
 
 describe("GET /api/projects", () => {
   it("returns a list of projects", async () => {

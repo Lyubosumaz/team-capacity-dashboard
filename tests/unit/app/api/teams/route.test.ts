@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { GET } from "./route";
+import { GET } from "@/app/api/teams/route";
 
-describe("GET /api/sprints", () => {
-  it("returns a list of sprints", async () => {
+describe("GET /api/teams", () => {
+  it("returns a list of teams", async () => {
     const response = await GET();
     const data = await response.json();
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { FirebaseUnavailable } from "./FirebaseUnavailable";
+import { FirebaseUnavailable } from "@/features/auth/FirebaseUnavailable";
 
 vi.mock("next/link", () => ({
   default: ({

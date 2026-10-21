@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { requireFirebase } from "./requireFirebase";
+import { requireFirebase } from "@/features/auth/requireFirebase";
 
 const firebase = vi.hoisted(() => ({ isConfigured: false }));
 

@@ -7,7 +7,7 @@ vi.mock("@/lib/firebase/config", () => ({
   firebaseConfig: {},
 }));
 
-import LoginPage from "./page";
+import LoginPage from "@/app/login/page";
 import { Providers } from "@/shared/providers/Providers";
 
 describe("Login page", () => {

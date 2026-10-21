@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { KeyMetricsSection } from "./KeyMetricsSection";
+import { KeyMetricsSection } from "@/shared/widgets/KeyMetricsSection";
 
 const texts = {
   section1: { label: "Section 1", helperText: "First metric" },
