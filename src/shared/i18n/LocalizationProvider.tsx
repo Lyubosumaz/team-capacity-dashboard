@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import {
   createContext,
+  type ReactNode,
   useContext,
   useMemo,
   useState,
-  type ReactNode,
-} from "react";
-import { defaultLocale, messages, type Locale } from "./messages";
+} from 'react';
+import { defaultLocale, type Locale, messages } from './messages';
 
 type LocalizationContextValue = {
   locale: Locale;
@@ -27,13 +27,13 @@ export const LocalizationProvider = ({ children }: { children: ReactNode }) => {
       locale,
       setLocale,
       t: (key: string) => {
-        const segments = key.split(".");
+        const segments = key.split('.');
         let current: unknown = messages[locale];
 
         for (const segment of segments) {
           if (
             current &&
-            typeof current === "object" &&
+            typeof current === 'object' &&
             segment in (current as Record<string, unknown>)
           ) {
             current = (current as Record<string, unknown>)[segment];
@@ -42,7 +42,7 @@ export const LocalizationProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        return typeof current === "string" ? current : key;
+        return typeof current === 'string' ? current : key;
       },
     }),
     [locale],
@@ -60,7 +60,7 @@ export const useLocalization = (): LocalizationContextValue => {
 
   if (!context) {
     throw new Error(
-      "useLocalization must be used within a LocalizationProvider",
+      'useLocalization must be used within a LocalizationProvider',
     );
   }
 

@@ -1,23 +1,23 @@
-import type { ReactNode } from "react";
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import { AppHeader } from "@/shared/layout/AppHeader";
-import { AppFooter } from "@/shared/layout/AppFooter";
-import { Providers } from "@/shared/providers/Providers";
-import "@/styles/globals.css";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import type { ReactNode } from 'react';
+import { AppFooter } from '@/shared/layout/AppFooter';
+import { AppHeader } from '@/shared/layout/AppHeader';
+import { Providers } from '@/shared/providers/Providers';
+import '@/styles/globals.css';
 
 const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  variable: '--font-poppins',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
-  title: "Team Capacity Dashboard",
+  title: 'Team Capacity Dashboard',
   description:
-    "Team capacity dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS, React Query, Recharts, Vitest, and Cypress.",
+    'Team capacity dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS, React Query, Recharts, Vitest, and Cypress.',
   icons: {
-    icon: "/favicon.ico",
+    icon: '/favicon.ico',
   },
 };
 

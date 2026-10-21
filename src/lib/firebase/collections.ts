@@ -1,10 +1,10 @@
 import {
   collection,
-  getDocs,
   type DocumentData,
+  getDocs,
   type Query,
-} from "firebase/firestore";
-import { getDb } from "./firestore";
+} from 'firebase/firestore';
+import { getDb } from './firestore';
 
 export const getCollectionWithId = async <T extends { id: string }>(
   name: string,
@@ -12,7 +12,7 @@ export const getCollectionWithId = async <T extends { id: string }>(
   const snapshot = await getDocs(collection(getDb(), name));
 
   return snapshot.docs.map((doc) => {
-    const data = doc.data() as Omit<T, "id">;
+    const data = doc.data() as Omit<T, 'id'>;
     return {
       ...data,
       id: doc.id,
@@ -26,7 +26,7 @@ export const getCollectionQueryWithId = async <T extends { id: string }>(
   const snapshot = await getDocs(q);
 
   return snapshot.docs.map((doc) => {
-    const data = doc.data() as Omit<T, "id">;
+    const data = doc.data() as Omit<T, 'id'>;
     return {
       ...data,
       id: doc.id,

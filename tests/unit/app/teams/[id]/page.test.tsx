@@ -1,21 +1,21 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
-vi.mock("@/shared/widgets/ChartsSection", () => ({
+vi.mock('@/shared/widgets/ChartsSection', () => ({
   ChartsSection: () => <div data-testid="charts-section" />,
 }));
 
-import { Providers } from "@/shared/providers/Providers";
-import { TeamDetailView } from "@/features/teams/TeamDetailView";
+import { TeamDetailView } from '@/features/teams/TeamDetailView';
 import {
-  teams as mockTeams,
   projects as mockProjects,
   riskInsights as mockRiskInsights,
-} from "@/lib/domain/mockData";
+  teams as mockTeams,
+} from '@/lib/domain/mockData';
+import { Providers } from '@/shared/providers/Providers';
 
-describe("TeamDetailPage", () => {
-  it("renders team detail heading when team exists", async () => {
-    const team = mockTeams.find((t) => t.id === "team-alpha");
+describe('TeamDetailPage', () => {
+  it('renders team detail heading when team exists', async () => {
+    const team = mockTeams.find((t) => t.id === 'team-alpha');
 
     if (!team) {
       throw new Error("Expected mock team 'team-alpha' to exist");
@@ -44,10 +44,10 @@ describe("TeamDetailPage", () => {
       </Providers>,
     );
 
-    expect(screen.getByTestId("team-members-heading")).toHaveTextContent(
+    expect(screen.getByTestId('team-members-heading')).toHaveTextContent(
       /members & capacity/i,
     );
-    expect(screen.getByTestId("team-projects-heading")).toHaveTextContent(
+    expect(screen.getByTestId('team-projects-heading')).toHaveTextContent(
       /projects & risks/i,
     );
   });

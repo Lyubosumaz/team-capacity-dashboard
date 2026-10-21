@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
+import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import {
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
-} from "react";
-import { onAuthStateChanged, signOut, type User } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+} from 'react';
+import { auth } from '@/lib/firebase/client';
 
 export type AuthContextValue = {
   user: User | null;
@@ -58,7 +58,7 @@ export const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
 
   return context;

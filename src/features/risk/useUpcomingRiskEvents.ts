@@ -1,13 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import type { TzarRiskEvent, TzarWidgetStatus } from "@tzardom-ui/react";
-import { api } from "@/lib/api/client";
-import type { RiskEvent } from "@/lib/domain/types";
-import { getUpcomingRiskEvents } from "@/lib/domain/metrics";
+import { useQuery } from '@tanstack/react-query';
+import type { TzarRiskEvent, TzarWidgetStatus } from '@tzardom-ui/react';
+import { api } from '@/lib/api/client';
+import { getUpcomingRiskEvents } from '@/lib/domain/metrics';
+import type { RiskEvent } from '@/lib/domain/types';
 
-const EVENT_LABELS: Record<RiskEvent["type"], string> = {
-  vacation: "Vacation",
-  absence: "Absence",
-  key_person_unavailable: "Key person unavailable",
+const EVENT_LABELS: Record<RiskEvent['type'], string> = {
+  vacation: 'Vacation',
+  absence: 'Absence',
+  key_person_unavailable: 'Key person unavailable',
 };
 
 type UpcomingRiskEvents = {
@@ -17,7 +17,7 @@ type UpcomingRiskEvents = {
 
 export const useUpcomingRiskEvents = (): UpcomingRiskEvents => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["upcoming-risk-events"],
+    queryKey: ['upcoming-risk-events'],
     queryFn: async () => {
       const [teams, riskBundle] = await Promise.all([
         api.getTeams(),
@@ -28,11 +28,11 @@ export const useUpcomingRiskEvents = (): UpcomingRiskEvents => {
   });
 
   if (isLoading) {
-    return { status: "loading", events: [] };
+    return { status: 'loading', events: [] };
   }
 
   if (isError || !data) {
-    return { status: "error", events: [] };
+    return { status: 'error', events: [] };
   }
 
   const events = getUpcomingRiskEvents(data.events, new Date(), 5).map(
@@ -45,5 +45,5 @@ export const useUpcomingRiskEvents = (): UpcomingRiskEvents => {
     }),
   );
 
-  return { status: "ready", events };
+  return { status: 'ready', events };
 };

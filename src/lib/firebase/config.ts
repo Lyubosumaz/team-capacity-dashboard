@@ -11,6 +11,6 @@ export const firebaseConfig = {
 // Firebase: no login and no database.
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey &&
-  firebaseConfig.authDomain &&
-  firebaseConfig.projectId,
+    firebaseConfig.authDomain &&
+    firebaseConfig.projectId,
 );

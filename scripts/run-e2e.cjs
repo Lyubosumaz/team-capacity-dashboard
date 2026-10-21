@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const { spawn } = require("child_process");
-const http = require("http");
+const { spawn } = require('node:child_process');
+const http = require('node:http');
 
-const DEV_URL = process.env.E2E_BASE_URL || "http://localhost:3000";
+const DEV_URL = process.env.E2E_BASE_URL || 'http://localhost:3000';
 
 function waitForServer(url, timeoutMs = 60000, intervalMs = 1000) {
   const start = Date.now();
@@ -22,7 +22,7 @@ function waitForServer(url, timeoutMs = 60000, intervalMs = 1000) {
         resolve(true);
       });
 
-      req.on("error", () => {
+      req.on('error', () => {
         setTimeout(check, intervalMs);
       });
     }
@@ -32,13 +32,13 @@ function waitForServer(url, timeoutMs = 60000, intervalMs = 1000) {
 }
 
 async function main() {
-  const dev = spawn("pnpm", ["dev"], {
-    stdio: "inherit",
-    shell: process.platform === "win32",
+  const dev = spawn('pnpm', ['dev'], {
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
   });
 
   let devExited = false;
-  dev.on("exit", (code) => {
+  dev.on('exit', (code) => {
     devExited = true;
     if (code !== 0) {
       console.error(`Dev server exited early with code ${code}`);
@@ -49,18 +49,18 @@ async function main() {
     await waitForServer(DEV_URL);
   } catch (err) {
     console.error(String(err));
-    if (!devExited) dev.kill("SIGINT");
+    if (!devExited) dev.kill('SIGINT');
     process.exit(1);
   }
 
-  const cypress = spawn("pnpm", ["exec", "cypress", "run"], {
-    stdio: "inherit",
+  const cypress = spawn('pnpm', ['exec', 'cypress', 'run'], {
+    stdio: 'inherit',
     shell: true,
   });
 
-  cypress.on("exit", (code) => {
+  cypress.on('exit', (code) => {
     if (!devExited) {
-      dev.kill("SIGINT");
+      dev.kill('SIGINT');
     }
     process.exit(code ?? 0);
   });

@@ -1,4 +1,4 @@
-import type { Project, RiskInsight } from "@/lib/domain/types";
+import type { Project, RiskInsight } from '@/lib/domain/types';
 
 type TeamProjectsAndRisksSectionTexts = {
   heading: string;

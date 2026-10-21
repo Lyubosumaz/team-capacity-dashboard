@@ -1,21 +1,21 @@
-import type {
-  Team,
-  Project,
-  Sprint,
-  RiskRule,
-  RiskInsight,
-  RiskEvent,
-} from "@/lib/domain/types";
-import { getCollectionWithId } from "@/lib/firebase/collections";
-import { requireFirebase } from "@/features/auth/requireFirebase";
+import { requireFirebase } from '@/features/auth/requireFirebase';
+import { RiskView } from '@/features/risk/RiskView';
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
-} from "@/lib/domain/metrics";
-import { RiskView } from "@/features/risk/RiskView";
+} from '@/lib/domain/metrics';
+import type {
+  Project,
+  RiskEvent,
+  RiskInsight,
+  RiskRule,
+  Sprint,
+  Team,
+} from '@/lib/domain/types';
+import { getCollectionWithId } from '@/lib/firebase/collections';
 
 const RiskPage = async () => {
-  const unavailable = requireFirebase("Risk insights");
+  const unavailable = requireFirebase('Risk insights');
 
   if (unavailable) {
     return unavailable;
@@ -23,16 +23,16 @@ const RiskPage = async () => {
 
   const [teams, projects, sprints, riskRules, riskInsights, riskEvents] =
     await Promise.all([
-      getCollectionWithId<Team>("teams"),
-      getCollectionWithId<Project>("projects"),
-      getCollectionWithId<Sprint>("sprints"),
-      getCollectionWithId<RiskRule>("riskRules"),
-      getCollectionWithId<RiskInsight>("riskInsights"),
-      getCollectionWithId<RiskEvent>("riskEvents"),
+      getCollectionWithId<Team>('teams'),
+      getCollectionWithId<Project>('projects'),
+      getCollectionWithId<Sprint>('sprints'),
+      getCollectionWithId<RiskRule>('riskRules'),
+      getCollectionWithId<RiskInsight>('riskInsights'),
+      getCollectionWithId<RiskEvent>('riskEvents'),
     ]);
 
   const highRiskInsights = riskInsights.filter(
-    (insight) => insight.severity === "high",
+    (insight) => insight.severity === 'high',
   );
 
   const highRiskTeamsCount = new Set(

@@ -1,4 +1,4 @@
-import type { Team, RiskInsight, RiskRule } from "@/lib/domain/types";
+import type { RiskInsight, RiskRule, Team } from '@/lib/domain/types';
 
 type RiskInsightsListProps = {
   insights: RiskInsight[];
@@ -62,18 +62,18 @@ export const RiskInsightsList = ({
             : undefined;
 
           const severityLabel =
-            insight.severity === "high"
+            insight.severity === 'high'
               ? texts.severityHigh
-              : insight.severity === "medium"
+              : insight.severity === 'medium'
                 ? texts.severityMedium
                 : texts.severityLow;
 
           const severityClassName =
-            insight.severity === "high"
-              ? "bg-danger-soft text-danger"
-              : insight.severity === "medium"
-                ? "bg-warning-soft text-warning"
-                : "bg-success-soft text-success";
+            insight.severity === 'high'
+              ? 'bg-danger-soft text-danger'
+              : insight.severity === 'medium'
+                ? 'bg-warning-soft text-warning'
+                : 'bg-success-soft text-success';
 
           const isTeamOverCapacity = team && overCapacitySet.has(team.id);
 

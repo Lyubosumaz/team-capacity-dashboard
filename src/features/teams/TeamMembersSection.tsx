@@ -1,4 +1,4 @@
-import type { Team } from "@/lib/domain/types";
+import type { Team } from '@/lib/domain/types';
 
 type TeamMembersSectionTexts = {
   heading: string;
@@ -51,14 +51,14 @@ export const TeamMembersSection = ({
               <p className="opacity-80">{member.role}</p>
             </div>
             <p className="mt-1 text-[11px] opacity-80">
-              <span className="font-semibold">{texts.skillsColumn}:</span>{" "}
-              {member.skills.map((skill) => skill.name).join(", ") ||
+              <span className="font-semibold">{texts.skillsColumn}:</span>{' '}
+              {member.skills.map((skill) => skill.name).join(', ') ||
                 texts.noSkillsPlaceholder}
             </p>
             <p className="mt-1 text-[11px] opacity-80 text-right">
               <span className="font-semibold">
                 {texts.capacityPerSprintColumn}:
-              </span>{" "}
+              </span>{' '}
               {member.capacityPerSprint}
             </p>
           </div>
@@ -100,7 +100,7 @@ export const TeamMembersSection = ({
                 </th>
                 <td className="px-4 py-2 text-sm">{member.role}</td>
                 <td className="px-4 py-2 text-xs opacity-80">
-                  {member.skills.map((skill) => skill.name).join(", ") ||
+                  {member.skills.map((skill) => skill.name).join(', ') ||
                     texts.noSkillsPlaceholder}
                 </td>
                 <td className="px-4 py-2 text-right text-sm">

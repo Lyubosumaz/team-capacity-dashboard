@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { FirebaseProvider } from "@/shared/providers/FirebaseProvider";
-import { FirebaseGate } from "@/features/auth/FirebaseGate";
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { FirebaseGate } from '@/features/auth/FirebaseGate';
+import { FirebaseProvider } from '@/shared/providers/FirebaseProvider';
 
 const renderGate = (isConfigured: boolean) =>
   render(
@@ -12,20 +12,20 @@ const renderGate = (isConfigured: boolean) =>
     </FirebaseProvider>,
   );
 
-describe("FirebaseGate", () => {
-  it("shows its children when Firebase is configured", () => {
+describe('FirebaseGate', () => {
+  it('shows its children when Firebase is configured', () => {
     renderGate(true);
 
-    expect(screen.getByTestId("gated-content")).toBeInTheDocument();
-    expect(screen.queryByTestId("firebase-unavailable")).toBeNull();
+    expect(screen.getByTestId('gated-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('firebase-unavailable')).toBeNull();
   });
 
   it("shows the unavailable screen when Firebase isn't configured", () => {
     renderGate(false);
 
-    expect(screen.queryByTestId("gated-content")).toBeNull();
-    expect(screen.getByTestId("firebase-unavailable-header")).toHaveTextContent(
-      "Sign in needs Firebase configured",
+    expect(screen.queryByTestId('gated-content')).toBeNull();
+    expect(screen.getByTestId('firebase-unavailable-header')).toHaveTextContent(
+      'Sign in needs Firebase configured',
     );
   });
 });

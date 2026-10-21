@@ -1,6 +1,6 @@
-import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
-import { getFirestore, type Firestore } from "firebase/firestore";
-import { firebaseConfig, isFirebaseConfigured } from "./config";
+import { type FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
+import { type Firestore, getFirestore } from 'firebase/firestore';
+import { firebaseConfig, isFirebaseConfigured } from './config';
 
 const app: FirebaseApp | null = isFirebaseConfigured
   ? getApps().length
@@ -14,7 +14,7 @@ const db: Firestore | null = app ? getFirestore(app) : null;
 export const getDb = (): Firestore => {
   if (!db) {
     throw new Error(
-      "Firestore used without Firebase configured. Guard the page with requireFirebase() (or check isFirebaseConfigured in API routes) before calling it.",
+      'Firestore used without Firebase configured. Guard the page with requireFirebase() (or check isFirebaseConfigured in API routes) before calling it.',
     );
   }
 

@@ -1,5 +1,5 @@
-import { TzarMetricCard } from "@tzardom-ui/react";
-import type { KeyMetricsSectionProps } from "./KeyMetricsSection.types";
+import { TzarMetricCard } from '@tzardom-ui/react';
+import type { KeyMetricsSectionProps } from './KeyMetricsSection.types';
 
 export const KeyMetricsSection = ({
   section1,

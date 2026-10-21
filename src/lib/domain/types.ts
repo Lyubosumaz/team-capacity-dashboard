@@ -39,7 +39,7 @@ export type RiskRule = {
   id: string;
   name: string;
   description: string;
-  severity: "low" | "medium" | "high";
+  severity: 'low' | 'medium' | 'high';
 };
 
 export type RiskInsight = {
@@ -50,7 +50,7 @@ export type RiskInsight = {
   projectId?: string;
   sprintId?: string;
   message: string;
-  severity: "low" | "medium" | "high";
+  severity: 'low' | 'medium' | 'high';
 };
 
 export type RiskEvent = {
@@ -58,7 +58,7 @@ export type RiskEvent = {
   teamId: string;
   memberId?: string;
   date: string;
-  type: "vacation" | "absence" | "key_person_unavailable";
+  type: 'vacation' | 'absence' | 'key_person_unavailable';
   description: string;
 };
 

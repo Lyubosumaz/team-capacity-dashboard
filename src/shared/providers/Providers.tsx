@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TzarProvider } from "@tzardom-ui/react";
-import { LocalizationProvider } from "@/shared/i18n/LocalizationProvider";
-import { AuthProvider } from "@/features/auth/AuthProvider";
-import { FirebaseProvider } from "./FirebaseProvider";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TzarProvider } from '@tzardom-ui/react';
+import { type ReactNode, useState } from 'react';
+import { AuthProvider } from '@/features/auth/AuthProvider';
+import { LocalizationProvider } from '@/shared/i18n/LocalizationProvider';
+import { FirebaseProvider } from './FirebaseProvider';
 
-const THEME_STORAGE_KEY = "theme";
+const THEME_STORAGE_KEY = 'theme';
 
 type ProvidersProps = {
   children: ReactNode;

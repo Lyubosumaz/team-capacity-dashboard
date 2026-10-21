@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import {
-  riskRules as mockRiskRules,
-  riskInsights as mockRiskInsights,
   riskEvents as mockRiskEvents,
-} from "@/lib/domain/mockData";
-import type { RiskRule, RiskInsight, RiskEvent } from "@/lib/domain/types";
-import { getCollectionWithId } from "@/lib/firebase/collections";
+  riskInsights as mockRiskInsights,
+  riskRules as mockRiskRules,
+} from '@/lib/domain/mockData';
+import type { RiskEvent, RiskInsight, RiskRule } from '@/lib/domain/types';
+import { getCollectionWithId } from '@/lib/firebase/collections';
 
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 export const GET = async () => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
@@ -20,16 +20,16 @@ export const GET = async () => {
 
   try {
     const [rules, insights, events] = await Promise.all([
-      getCollectionWithId<RiskRule>("riskRules"),
-      getCollectionWithId<RiskInsight>("riskInsights"),
-      getCollectionWithId<RiskEvent>("riskEvents"),
+      getCollectionWithId<RiskRule>('riskRules'),
+      getCollectionWithId<RiskInsight>('riskInsights'),
+      getCollectionWithId<RiskEvent>('riskEvents'),
     ]);
 
     return NextResponse.json({ rules, insights, events });
   } catch (error) {
-    console.error("Error fetching risk data from Firestore", error);
+    console.error('Error fetching risk data from Firestore', error);
     return NextResponse.json(
-      { error: "Failed to load risk data" },
+      { error: 'Failed to load risk data' },
       { status: 500 },
     );
   }

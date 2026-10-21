@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api/client";
+import { useQuery } from '@tanstack/react-query';
+import { TzarChart, TzarPageHeader } from '@tzardom-ui/react';
+import { api } from '@/lib/api/client';
 import {
   getCapacitySnapshotsForTeam,
   getTeamCapacityForSprint,
   getTeamWorkloadForSprint,
-} from "@/lib/domain/metrics";
-import { TzarChart, TzarPageHeader } from "@tzardom-ui/react";
-import { ChartsSectionLayout } from "./ChartsSectionLayout";
-import type { ChartsSectionProps } from "./ChartsSection.types";
+} from '@/lib/domain/metrics';
+import type { ChartsSectionProps } from './ChartsSection.types';
+import { ChartsSectionLayout } from './ChartsSectionLayout';
 
 const CAPACITY_SERIES = [
-  { key: "capacity", label: "Capacity", color: "#db2777" },
-  { key: "workload", label: "Workload", color: "#0891b2" },
+  { key: 'capacity', label: 'Capacity', color: '#db2777' },
+  { key: 'workload', label: 'Workload', color: '#0891b2' },
 ];
 
 export const ChartsSection = ({
@@ -22,7 +22,7 @@ export const ChartsSection = ({
   withHeader = true,
 }: ChartsSectionProps) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["team-charts", teamId],
+    queryKey: ['team-charts', teamId],
     queryFn: async () => {
       const [teams, sprints, projects] = await Promise.all([
         api.getTeams(),

@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 
-import { GET } from "@/app/api/projects/route";
+import { GET } from '@/app/api/projects/route';
 
-describe("GET /api/projects", () => {
-  it("returns a list of projects", async () => {
+describe('GET /api/projects', () => {
+  it('returns a list of projects', async () => {
     const response = await GET();
     const data = await response.json();
 

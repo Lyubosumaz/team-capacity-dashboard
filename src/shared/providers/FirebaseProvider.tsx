@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createContext, useContext, type ReactNode } from "react";
-import { isFirebaseConfigured } from "@/lib/firebase/config";
+import { createContext, type ReactNode, useContext } from 'react';
+import { isFirebaseConfigured } from '@/lib/firebase/config';
 
 export type FirebaseContextValue = {
   isConfigured: boolean;
@@ -28,7 +28,7 @@ export const useFirebase = (): FirebaseContextValue => {
   const context = useContext(FirebaseContext);
 
   if (!context) {
-    throw new Error("useFirebase must be used within a FirebaseProvider");
+    throw new Error('useFirebase must be used within a FirebaseProvider');
   }
 
   return context;

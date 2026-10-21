@@ -20,16 +20,16 @@ This project is also used as a playground to practice senior‑level frontend sk
 - **Styling & UI**: Tailwind CSS, custom components, lucide-react icons
 - **State & Data**: @tanstack/react-query for server state, Recharts for data visualisation
 - **Backend & Auth**: Next.js API routes, Firebase SDK integration
-- **Quality & Tooling**: ESLint, Prettier, Husky git hooks, strict TypeScript config
+- **Quality & Tooling**: Biome, a git pre-commit hook (`.githooks/`), strict TypeScript config
 - **Testing**: Vitest (unit/integration), Testing Library, Cypress (end-to-end)
 
 Planned backend (coming soon): a Go service exposing a JSON API, connected to a PostgreSQL database and deployed on Render alongside the database for managed, scalable hosting.
 
 ### This repository is set up to feel like a "senior" engineering environment around the code:
 
-- **ESLint + Prettier**
-  - Lint the whole project with `pnpm lint`.
-  - Check formatting with `pnpm format` and auto-fix with `pnpm format:fix`.
+- **Biome**
+  - Lint and check formatting with `pnpm lint`; auto-fix with
+    `pnpm lint:fix`.
 - **TypeScript strictness**
   - `tsconfig.json` uses `"strict": true` for safer types across the app.
 - **GitHub Actions CI**

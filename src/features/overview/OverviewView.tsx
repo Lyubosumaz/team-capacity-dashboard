@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useLocalization } from "@/shared/i18n/LocalizationProvider";
-import { KeyMetricsSection } from "@/shared/widgets/KeyMetricsSection";
-import { CapacityAndRiskWidgetsSection } from "@/features/risk/CapacityAndRiskWidgetsSection";
-import { TzarPageHeader } from "@tzardom-ui/react";
-import { ChartsSection } from "@/shared/widgets/ChartsSection";
+import { TzarPageHeader } from '@tzardom-ui/react';
+import { CapacityAndRiskWidgetsSection } from '@/features/risk/CapacityAndRiskWidgetsSection';
+import { useLocalization } from '@/shared/i18n/LocalizationProvider';
+import { ChartsSection } from '@/shared/widgets/ChartsSection';
+import { KeyMetricsSection } from '@/shared/widgets/KeyMetricsSection';
 
 type OverviewViewProps = {
   totalTeams: number;
@@ -21,32 +21,32 @@ export const OverviewView = ({
 
   const keyMetricsLabels = {
     section1: {
-      label: t("home.keyMetricsSection.teams.label"),
-      helperText: t("home.keyMetricsSection.teams.helperText"),
+      label: t('home.keyMetricsSection.teams.label'),
+      helperText: t('home.keyMetricsSection.teams.helperText'),
     },
     section2: {
-      label: t("home.keyMetricsSection.projects.label"),
-      helperText: t("home.keyMetricsSection.projects.helperText"),
+      label: t('home.keyMetricsSection.projects.label'),
+      helperText: t('home.keyMetricsSection.projects.helperText'),
     },
     section3: {
-      label: t("home.keyMetricsSection.highRiskInsights.label"),
-      helperText: t("home.keyMetricsSection.highRiskInsights.helperText"),
+      label: t('home.keyMetricsSection.highRiskInsights.label'),
+      helperText: t('home.keyMetricsSection.highRiskInsights.helperText'),
     },
   };
 
   const chartsTexts = {
-    loading: t("teams.detail.chartsSection.loading"),
-    error: t("teams.detail.chartsSection.error"),
-    notFound: t("teams.detail.chartsSection.notFound"),
-    noData: t("teams.detail.chartsSection.noData"),
+    loading: t('teams.detail.chartsSection.loading'),
+    error: t('teams.detail.chartsSection.error'),
+    notFound: t('teams.detail.chartsSection.notFound'),
+    noData: t('teams.detail.chartsSection.noData'),
     capacityOverTimeTitle: t(
-      "teams.detail.chartsSection.capacityOverTimeTitle",
+      'teams.detail.chartsSection.capacityOverTimeTitle',
     ),
     workloadVsCapacityTitle: t(
-      "teams.detail.chartsSection.workloadVsCapacityTitle",
+      'teams.detail.chartsSection.workloadVsCapacityTitle',
     ),
     currentSprintFallback: t(
-      "teams.detail.chartsSection.currentSprintFallback",
+      'teams.detail.chartsSection.currentSprintFallback',
     ),
   };
 
@@ -57,8 +57,8 @@ export const OverviewView = ({
     >
       <TzarPageHeader
         data-testid="home-header"
-        title={t("home.overviewHeader.title")}
-        description={t("home.overviewHeader.description")}
+        title={t('home.overviewHeader.title')}
+        description={t('home.overviewHeader.description')}
       />
 
       <KeyMetricsSection

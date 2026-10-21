@@ -1,25 +1,24 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-
-import { Providers } from "@/shared/providers/Providers";
-import { RiskView } from "@/features/risk/RiskView";
-import {
-  teams as mockTeams,
-  projects as mockProjects,
-  riskRules as mockRiskRules,
-  riskInsights as mockRiskInsights,
-  riskEvents as mockRiskEvents,
-  sprints as mockSprints,
-} from "@/lib/domain/mockData";
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { RiskView } from '@/features/risk/RiskView';
 import {
   getTeamsOverCapacity,
   getUpcomingRiskEvents,
-} from "@/lib/domain/metrics";
+} from '@/lib/domain/metrics';
+import {
+  projects as mockProjects,
+  riskEvents as mockRiskEvents,
+  riskInsights as mockRiskInsights,
+  riskRules as mockRiskRules,
+  sprints as mockSprints,
+  teams as mockTeams,
+} from '@/lib/domain/mockData';
+import { Providers } from '@/shared/providers/Providers';
 
-describe("Risk page", () => {
-  it("renders risk overview heading and key sections", () => {
+describe('Risk page', () => {
+  it('renders risk overview heading and key sections', () => {
     const highRiskInsights = mockRiskInsights.filter(
-      (insight) => insight.severity === "high",
+      (insight) => insight.severity === 'high',
     );
 
     const highRiskTeamsCount = new Set(
@@ -55,19 +54,19 @@ describe("Risk page", () => {
       </Providers>,
     );
 
-    expect(screen.getByTestId("risk-header")).toHaveTextContent(
+    expect(screen.getByTestId('risk-header')).toHaveTextContent(
       /risk overview/i,
     );
-    expect(screen.getByTestId("key-metrics-card-1")).toHaveTextContent(
+    expect(screen.getByTestId('key-metrics-card-1')).toHaveTextContent(
       /high-risk insights/i,
     );
-    expect(screen.getByTestId("capacity-and-risk-widgets")).toBeInTheDocument();
-    expect(screen.getByTestId("teams-over-capacity")).toHaveTextContent(
-      "Teams over capacity this sprint",
+    expect(screen.getByTestId('capacity-and-risk-widgets')).toBeInTheDocument();
+    expect(screen.getByTestId('teams-over-capacity')).toHaveTextContent(
+      'Teams over capacity this sprint',
     );
-    expect(screen.getByTestId("upcoming-risk-events")).toHaveTextContent(
-      "Upcoming risk events",
+    expect(screen.getByTestId('upcoming-risk-events')).toHaveTextContent(
+      'Upcoming risk events',
     );
-    expect(screen.getByTestId("risk-insights-list")).toBeInTheDocument();
+    expect(screen.getByTestId('risk-insights-list')).toBeInTheDocument();
   });
 });

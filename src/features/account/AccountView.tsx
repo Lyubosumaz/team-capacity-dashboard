@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import type { FormEvent } from "react";
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  deleteUser,
-  updateEmail,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-} from "firebase/auth";
-import { useAuth } from "@/features/auth/AuthProvider";
 import {
   TzarButton,
   TzarCommonLink,
   TzarDialog,
   TzarPageHeader,
   TzarTextField,
-} from "@tzardom-ui/react";
+} from '@tzardom-ui/react';
+import {
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+} from 'firebase/auth';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import { useAuth } from '@/features/auth/AuthProvider';
 
 export const AccountView = () => {
   const { user, loading } = useAuth();
@@ -25,9 +25,9 @@ export const AccountView = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
-  const [newEmail, setNewEmail] = useState(user?.email ?? "");
+  const [newEmail, setNewEmail] = useState(user?.email ?? '');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [deletePassword, setDeletePassword] = useState("");
+  const [deletePassword, setDeletePassword] = useState('');
 
   if (loading) {
     return null;
@@ -59,7 +59,7 @@ export const AccountView = () => {
     if (!user) return;
 
     if (!deletePassword) {
-      setError("Please enter your password to confirm account deletion.");
+      setError('Please enter your password to confirm account deletion.');
       return;
     }
 
@@ -68,17 +68,17 @@ export const AccountView = () => {
 
     try {
       const credential = EmailAuthProvider.credential(
-        user.email ?? "",
+        user.email ?? '',
         deletePassword,
       );
       await reauthenticateWithCredential(user, credential);
       await deleteUser(user);
       setIsDeleteDialogOpen(false);
-      setDeletePassword("");
-      router.push("/login");
+      setDeletePassword('');
+      router.push('/login');
     } catch (err) {
-      console.error("Delete account failed", err);
-      setError("Unable to delete account. Check your password and try again.");
+      console.error('Delete account failed', err);
+      setError('Unable to delete account. Check your password and try again.');
     } finally {
       setIsDeleting(false);
     }
@@ -98,9 +98,9 @@ export const AccountView = () => {
     try {
       await updateEmail(user, newEmail);
     } catch (err) {
-      console.error("Update email failed", err);
+      console.error('Update email failed', err);
       setError(
-        "Unable to change email. You may need to log in again and try once more.",
+        'Unable to change email. You may need to log in again and try once more.',
       );
     } finally {
       setIsUpdatingEmail(false);
@@ -136,7 +136,7 @@ export const AccountView = () => {
               type="submit"
               disabled={isUpdatingEmail}
             >
-              {isUpdatingEmail ? "Updating email…" : "Change email"}
+              {isUpdatingEmail ? 'Updating email…' : 'Change email'}
             </TzarButton>
             <TzarButton
               data-testid="user-delete-account"
@@ -166,7 +166,7 @@ export const AccountView = () => {
           setIsDeleteDialogOpen(false);
         }}
         title="Delete account"
-        confirmLabel={isDeleting ? "Deleting…" : "Delete"}
+        confirmLabel={isDeleting ? 'Deleting…' : 'Delete'}
         confirmVariant="danger"
         confirmDisabled={isDeleting}
         onConfirm={handleDeleteAccount}

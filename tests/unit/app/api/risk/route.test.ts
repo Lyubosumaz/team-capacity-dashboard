@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 
-import { GET } from "@/app/api/risk/route";
+import { GET } from '@/app/api/risk/route';
 
-describe("GET /api/risk", () => {
-  it("returns risk bundle with rules, insights, and events", async () => {
+describe('GET /api/risk', () => {
+  it('returns risk bundle with rules, insights, and events', async () => {
     const response = await GET();
     const data = await response.json();
 

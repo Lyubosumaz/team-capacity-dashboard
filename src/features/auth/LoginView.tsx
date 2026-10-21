@@ -1,33 +1,36 @@
-"use client";
+'use client';
 
-import type { FormEvent } from "react";
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useLocalization } from "@/shared/i18n/LocalizationProvider";
-import { TzarButton, TzarPageHeader, TzarTextField } from "@tzardom-ui/react";
-import { auth } from "@/lib/firebase/client";
+import { TzarButton, TzarPageHeader, TzarTextField } from '@tzardom-ui/react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import { auth } from '@/lib/firebase/client';
+import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 
 export const LoginView = () => {
   const { t } = useLocalization();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!auth) {
+      return;
+    }
     setError(null);
     setIsSubmitting(true);
 
     try {
-      await signInWithEmailAndPassword(auth!, email, password);
-      router.push("/");
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/');
     } catch (err) {
-      console.error("Login failed", err);
-      setError(t("auth.login.error"));
+      console.error('Login failed', err);
+      setError(t('auth.login.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -41,8 +44,8 @@ export const LoginView = () => {
       <div className="w-full max-w-sm">
         <TzarPageHeader
           data-testid="login-header"
-          title={t("auth.login.title")}
-          description={t("auth.login.description")}
+          title={t('auth.login.title')}
+          description={t('auth.login.description')}
         />
 
         <form
@@ -52,7 +55,7 @@ export const LoginView = () => {
         >
           <TzarTextField
             data-testid="login-email"
-            label={t("auth.login.emailLabel")}
+            label={t('auth.login.emailLabel')}
             name="email"
             type="email"
             required
@@ -62,7 +65,7 @@ export const LoginView = () => {
 
           <TzarTextField
             data-testid="login-password"
-            label={t("auth.login.passwordLabel")}
+            label={t('auth.login.passwordLabel')}
             name="password"
             type="password"
             required
@@ -85,8 +88,8 @@ export const LoginView = () => {
             disabled={isSubmitting}
           >
             {isSubmitting
-              ? t("auth.login.submittingLabel")
-              : t("auth.login.submitLabel")}
+              ? t('auth.login.submittingLabel')
+              : t('auth.login.submitLabel')}
           </TzarButton>
         </form>
 

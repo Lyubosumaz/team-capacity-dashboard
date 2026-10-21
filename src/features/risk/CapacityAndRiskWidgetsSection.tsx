@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import {
   TzarTeamsOverCapacity,
   TzarUpcomingRiskEvents,
-} from "@tzardom-ui/react";
-import { useTeamsOverCapacity } from "./useTeamsOverCapacity";
-import { useUpcomingRiskEvents } from "./useUpcomingRiskEvents";
+} from '@tzardom-ui/react';
+import { useTeamsOverCapacity } from './useTeamsOverCapacity';
+import { useUpcomingRiskEvents } from './useUpcomingRiskEvents';
 
-const CARD_CLASSES = "rounded-lg border border-border-subtle bg-background p-4";
+const CARD_CLASSES = 'rounded-lg border border-border-subtle bg-background p-4';
 
 export const CapacityAndRiskWidgetsSection = () => {
   const teamsOverCapacity = useTeamsOverCapacity();

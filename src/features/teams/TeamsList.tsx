@@ -1,8 +1,8 @@
-import type { MouseEvent } from "react";
-import Link from "next/link";
-import { Trash2 } from "lucide-react";
-import type { Team } from "@/lib/domain/types";
-import { TzarButton } from "@tzardom-ui/react";
+import { TzarButton } from '@tzardom-ui/react';
+import { Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import type { MouseEvent } from 'react';
+import type { Team } from '@/lib/domain/types';
 
 type TeamsListProps = {
   teams: Team[];
@@ -44,7 +44,7 @@ export const TeamsList = ({
                   className="mt-0.5 text-xs opacity-70"
                   data-testid={`team-members-${team.id}`}
                 >
-                  {team.members.length}{" "}
+                  {team.members.length}{' '}
                   {team.members.length === 1
                     ? memberSuffixSingular
                     : memberSuffixPlural}

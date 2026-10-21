@@ -1,40 +1,43 @@
-"use client";
+'use client';
 
-import type { FormEvent } from "react";
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useLocalization } from "@/shared/i18n/LocalizationProvider";
-import { TzarButton, TzarPageHeader, TzarTextField } from "@tzardom-ui/react";
-import { auth } from "@/lib/firebase/client";
+import { TzarButton, TzarPageHeader, TzarTextField } from '@tzardom-ui/react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import { auth } from '@/lib/firebase/client';
+import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 
 export const RegisterView = () => {
   const { t } = useLocalization();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!auth) {
+      return;
+    }
     setError(null);
 
     if (password !== confirmPassword) {
-      setError(t("auth.register.error"));
+      setError(t('auth.register.error'));
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await createUserWithEmailAndPassword(auth!, email, password);
-      router.push("/");
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/');
     } catch (err) {
-      console.error("Registration failed", err);
-      setError(t("auth.register.error"));
+      console.error('Registration failed', err);
+      setError(t('auth.register.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -48,8 +51,8 @@ export const RegisterView = () => {
       <div className="w-full max-w-sm">
         <TzarPageHeader
           data-testid="register-header"
-          title={t("auth.register.title")}
-          description={t("auth.register.description")}
+          title={t('auth.register.title')}
+          description={t('auth.register.description')}
         />
 
         <form
@@ -59,7 +62,7 @@ export const RegisterView = () => {
         >
           <TzarTextField
             data-testid="register-email"
-            label={t("auth.register.emailLabel")}
+            label={t('auth.register.emailLabel')}
             name="email"
             type="email"
             required
@@ -69,7 +72,7 @@ export const RegisterView = () => {
 
           <TzarTextField
             data-testid="register-password"
-            label={t("auth.register.passwordLabel")}
+            label={t('auth.register.passwordLabel')}
             name="password"
             type="password"
             required
@@ -79,7 +82,7 @@ export const RegisterView = () => {
 
           <TzarTextField
             data-testid="register-confirm-password"
-            label={t("auth.register.confirmPasswordLabel")}
+            label={t('auth.register.confirmPasswordLabel')}
             name="confirmPassword"
             type="password"
             required
@@ -102,8 +105,8 @@ export const RegisterView = () => {
             disabled={isSubmitting}
           >
             {isSubmitting
-              ? t("auth.register.submittingLabel")
-              : t("auth.register.submitLabel")}
+              ? t('auth.register.submittingLabel')
+              : t('auth.register.submitLabel')}
           </TzarButton>
         </form>
 

@@ -1,13 +1,13 @@
-import "@testing-library/jest-dom/vitest";
-import { vi } from "vitest";
+import '@testing-library/jest-dom/vitest';
+import { vi } from 'vitest';
 
 // Mock next/font/google so layout tests can import font without errors.
-vi.mock("next/font/google", () => ({
-  Poppins: () => ({ variable: "--font-poppins" }),
+vi.mock('next/font/google', () => ({
+  Poppins: () => ({ variable: '--font-poppins' }),
 }));
 
 // Mock Firebase Auth so tests don't hit real Firebase or require valid keys.
-vi.mock("firebase/auth", () => {
+vi.mock('firebase/auth', () => {
   const authMock = {} as unknown;
 
   return {
@@ -32,7 +32,7 @@ vi.mock("firebase/auth", () => {
 });
 
 // Mock Next.js app router hooks used by client components in tests.
-vi.mock("next/navigation", () => {
+vi.mock('next/navigation', () => {
   const push = vi.fn();
   const replace = vi.fn();
   const back = vi.fn();
@@ -41,7 +41,7 @@ vi.mock("next/navigation", () => {
 
   return {
     useRouter: () => ({ push, replace, back, forward, refresh }),
-    usePathname: () => "/",
+    usePathname: () => '/',
     useSearchParams: () => new URLSearchParams(),
   };
 });

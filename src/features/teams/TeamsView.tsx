@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import type { FormEvent } from "react";
-import { useState } from "react";
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import type { Team } from "@/lib/domain/types";
-import { useLocalization } from "@/shared/i18n/LocalizationProvider";
-import { TeamsList } from "./TeamsList";
 import {
   TzarButton,
   TzarDialog,
   TzarPageHeader,
   TzarTextField,
-} from "@tzardom-ui/react";
+} from '@tzardom-ui/react';
+import { Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
+import type { Team } from '@/lib/domain/types';
+import { useLocalization } from '@/shared/i18n/LocalizationProvider';
+import { TeamsList } from './TeamsList';
 
 type TeamsViewProps = {
   teams: Team[];
@@ -21,7 +21,7 @@ type TeamsViewProps = {
 export const TeamsView = ({ teams }: TeamsViewProps) => {
   const router = useRouter();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [newTeamName, setNewTeamName] = useState("");
+  const [newTeamName, setNewTeamName] = useState('');
   const [selectedMembersTeamIds, setSelectedMembersTeamIds] = useState<
     string[]
   >([]);
@@ -32,9 +32,9 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { t } = useLocalization();
 
-  const memberSuffixSingular = t("teams.list.membersSuffixSingular");
-  const memberSuffixPlural = t("teams.list.membersSuffixPlural");
-  const viewLabel = t("teams.list.viewLabel");
+  const memberSuffixSingular = t('teams.list.membersSuffixSingular');
+  const memberSuffixPlural = t('teams.list.membersSuffixPlural');
+  const viewLabel = t('teams.list.viewLabel');
 
   const handleDeleteTeam = (teamId: string) => {
     setTeamIdPendingDelete(teamId);
@@ -47,19 +47,19 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
       const response = await fetch(
         `/api/teams?id=${encodeURIComponent(teamIdPendingDelete)}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
         },
       );
 
       if (!response.ok && response.status !== 204) {
-        console.error("Failed to delete team");
+        console.error('Failed to delete team');
         return;
       }
 
       setTeamIdPendingDelete(null);
       router.refresh();
     } catch (error) {
-      console.error("Error deleting team", error);
+      console.error('Error deleting team', error);
     }
   };
 
@@ -67,8 +67,8 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
     <section className="flex w-full flex-col gap-4">
       <TzarPageHeader
         data-testid="teams-header"
-        title={t("teams.overviewHeader.title")}
-        description={t("teams.overviewHeader.description")}
+        title={t('teams.overviewHeader.title')}
+        description={t('teams.overviewHeader.description')}
       />
 
       <div className="flex justify-end">
@@ -77,7 +77,7 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
           className="h-9"
           onClick={() => {
             setSubmitError(null);
-            setNewTeamName("");
+            setNewTeamName('');
             setSelectedMembersTeamIds([]);
             setIsAddModalOpen(true);
           }}
@@ -92,13 +92,13 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
         open={isAddModalOpen}
         onClose={() => {
           setIsAddModalOpen(false);
-          setNewTeamName("");
+          setNewTeamName('');
           setSubmitError(null);
           setSelectedMembersTeamIds([]);
         }}
         title="Add team"
         size="lg"
-        confirmLabel={isSubmitting ? "Adding..." : "Add"}
+        confirmLabel={isSubmitting ? 'Adding...' : 'Add'}
         confirmDisabled={isSubmitting}
         form="add-team-form"
       >
@@ -111,7 +111,7 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
             const trimmedName = newTeamName.trim();
 
             if (!trimmedName) {
-              setSubmitError("Team name is required");
+              setSubmitError('Team name is required');
               return;
             }
 
@@ -119,10 +119,10 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
               setIsSubmitting(true);
               setSubmitError(null);
 
-              const response = await fetch("/api/teams", {
-                method: "POST",
+              const response = await fetch('/api/teams', {
+                method: 'POST',
                 headers: {
-                  "Content-Type": "application/json",
+                  'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                   name: trimmedName,
@@ -147,18 +147,18 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
               });
 
               if (!response.ok) {
-                setSubmitError("Failed to add team. Please try again.");
+                setSubmitError('Failed to add team. Please try again.');
                 return;
               }
 
               setIsAddModalOpen(false);
-              setNewTeamName("");
+              setNewTeamName('');
               setSubmitError(null);
               setSelectedMembersTeamIds([]);
               router.refresh();
             } catch (error) {
-              console.error("Error adding team", error);
-              setSubmitError("Failed to add team. Please try again.");
+              console.error('Error adding team', error);
+              setSubmitError('Failed to add team. Please try again.');
             } finally {
               setIsSubmitting(false);
             }

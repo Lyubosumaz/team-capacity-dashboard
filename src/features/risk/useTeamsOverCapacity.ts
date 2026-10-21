@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import type { TzarTeamCapacity, TzarWidgetStatus } from "@tzardom-ui/react";
-import { api } from "@/lib/api/client";
-import { getTeamsOverCapacity } from "@/lib/domain/metrics";
+import { useQuery } from '@tanstack/react-query';
+import type { TzarTeamCapacity, TzarWidgetStatus } from '@tzardom-ui/react';
+import { api } from '@/lib/api/client';
+import { getTeamsOverCapacity } from '@/lib/domain/metrics';
 
 type TeamsOverCapacity = {
   status: TzarWidgetStatus;
@@ -10,7 +10,7 @@ type TeamsOverCapacity = {
 
 export const useTeamsOverCapacity = (): TeamsOverCapacity => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["teams-over-capacity"],
+    queryKey: ['teams-over-capacity'],
     queryFn: async () => {
       const [teams, projects, sprints] = await Promise.all([
         api.getTeams(),
@@ -22,11 +22,11 @@ export const useTeamsOverCapacity = (): TeamsOverCapacity => {
   });
 
   if (isLoading) {
-    return { status: "loading", teams: [] };
+    return { status: 'loading', teams: [] };
   }
 
   if (isError || !data || data.sprints.length === 0) {
-    return { status: "error", teams: [] };
+    return { status: 'error', teams: [] };
   }
 
   const teams = getTeamsOverCapacity(
@@ -41,5 +41,5 @@ export const useTeamsOverCapacity = (): TeamsOverCapacity => {
     capacity,
   }));
 
-  return { status: "ready", teams };
+  return { status: 'ready', teams };
 };

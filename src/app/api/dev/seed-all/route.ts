@@ -1,31 +1,31 @@
-import { NextResponse } from "next/server";
-import { collection, doc, setDoc } from "firebase/firestore";
-import { getDb } from "@/lib/firebase/firestore";
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { NextResponse } from 'next/server';
 import {
-  skills,
-  teams,
-  sprints,
   projects,
-  riskRules,
-  riskInsights,
   riskEvents,
-} from "@/lib/domain/mockData";
+  riskInsights,
+  riskRules,
+  skills,
+  sprints,
+  teams,
+} from '@/lib/domain/mockData';
+import { getDb } from '@/lib/firebase/firestore';
 
 // Run on Node, not the Edge, where Firebase can break.
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 // Dev only: fills Firestore with the mock data. POST /api/dev/seed-all
 export const POST = async () => {
   if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
     return NextResponse.json(
-      { error: "Firebase is not configured (missing project ID)." },
+      { error: 'Firebase is not configured (missing project ID).' },
       { status: 400 },
     );
   }
 
   const stripMockPrefix = (value: unknown): unknown => {
-    if (typeof value === "string" && value.startsWith("mock_")) {
-      return value.slice("mock_".length);
+    if (typeof value === 'string' && value.startsWith('mock_')) {
+      return value.slice('mock_'.length);
     }
     return value;
   };
@@ -36,16 +36,16 @@ export const POST = async () => {
     const result: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(obj)) {
-      if (typeof value === "string") {
+      if (typeof value === 'string') {
         result[key] = stripMockPrefix(value);
-      } else if (value && typeof value === "object" && !Array.isArray(value)) {
+      } else if (value && typeof value === 'object' && !Array.isArray(value)) {
         result[key] = stripMockPrefixesFromObject(
           value as Record<string, unknown>,
         );
       } else if (Array.isArray(value)) {
         result[key] = value.map((item) => {
-          if (typeof item === "string") return stripMockPrefix(item);
-          if (item && typeof item === "object") {
+          if (typeof item === 'string') return stripMockPrefix(item);
+          if (item && typeof item === 'object') {
             return stripMockPrefixesFromObject(item as Record<string, unknown>);
           }
           return item;
@@ -74,13 +74,13 @@ export const POST = async () => {
 
   try {
     const promises = [
-      ...seedCollection("skills", skills),
-      ...seedCollection("teams", teams),
-      ...seedCollection("sprints", sprints),
-      ...seedCollection("projects", projects),
-      ...seedCollection("riskRules", riskRules),
-      ...seedCollection("riskInsights", riskInsights),
-      ...seedCollection("riskEvents", riskEvents),
+      ...seedCollection('skills', skills),
+      ...seedCollection('teams', teams),
+      ...seedCollection('sprints', sprints),
+      ...seedCollection('projects', projects),
+      ...seedCollection('riskRules', riskRules),
+      ...seedCollection('riskInsights', riskInsights),
+      ...seedCollection('riskEvents', riskEvents),
     ];
 
     await Promise.all(promises);
@@ -98,9 +98,9 @@ export const POST = async () => {
       },
     });
   } catch (error) {
-    console.error("Error seeding all mock data to Firestore", error);
+    console.error('Error seeding all mock data to Firestore', error);
     return NextResponse.json(
-      { error: "Failed to seed all mock data" },
+      { error: 'Failed to seed all mock data' },
       { status: 500 },
     );
   }

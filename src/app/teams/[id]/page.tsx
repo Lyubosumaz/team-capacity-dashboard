@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
-import { collection, doc, getDoc, query, where } from "firebase/firestore";
-import { getDb } from "@/lib/firebase/firestore";
-import { requireFirebase } from "@/features/auth/requireFirebase";
-import type { Team, Project, RiskInsight } from "@/lib/domain/types";
-import { TeamDetailView } from "@/features/teams/TeamDetailView";
-import { getCollectionQueryWithId } from "@/lib/firebase/collections";
+import { collection, doc, getDoc, query, where } from 'firebase/firestore';
+import { notFound } from 'next/navigation';
+import { requireFirebase } from '@/features/auth/requireFirebase';
+import { TeamDetailView } from '@/features/teams/TeamDetailView';
+import type { Project, RiskInsight, Team } from '@/lib/domain/types';
+import { getCollectionQueryWithId } from '@/lib/firebase/collections';
+import { getDb } from '@/lib/firebase/firestore';
 
 type TeamPageParams = {
   id: string;
@@ -17,7 +17,7 @@ const TeamDetailPage = async ({
 }) => {
   const { id } = await params;
 
-  const unavailable = requireFirebase("Team details");
+  const unavailable = requireFirebase('Team details');
 
   if (unavailable) {
     return unavailable;
@@ -28,21 +28,21 @@ const TeamDetailPage = async ({
   }
 
   const db = getDb();
-  const teamDoc = await getDoc(doc(db, "teams", id));
+  const teamDoc = await getDoc(doc(db, 'teams', id));
 
   if (!teamDoc.exists()) {
     notFound();
   }
 
-  const teamData = teamDoc.data() as Omit<Team, "id">;
+  const teamData = teamDoc.data() as Omit<Team, 'id'>;
   const team: Team = { ...teamData, id: teamDoc.id };
 
   const [teamProjects, teamRisks] = await Promise.all([
     getCollectionQueryWithId<Project>(
-      query(collection(db, "projects"), where("teamId", "==", id)),
+      query(collection(db, 'projects'), where('teamId', '==', id)),
     ),
     getCollectionQueryWithId<RiskInsight>(
-      query(collection(db, "riskInsights"), where("teamId", "==", id)),
+      query(collection(db, 'riskInsights'), where('teamId', '==', id)),
     ),
   ]);
 

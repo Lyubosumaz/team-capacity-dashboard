@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import Link from "next/link";
 import {
   TzarBrand,
   TzarCommonLink,
+  type TzarLanguage,
   TzarLanguageSelect,
   TzarThemeToggle,
   TzarUserMenu,
-  type TzarLanguage,
-} from "@tzardom-ui/react";
-import type { Locale } from "@/shared/i18n/messages";
-import { useAuth } from "@/features/auth/AuthProvider";
-import { useLocalization } from "@/shared/i18n/LocalizationProvider";
+} from '@tzardom-ui/react';
+import Link from 'next/link';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useLocalization } from '@/shared/i18n/LocalizationProvider';
+import type { Locale } from '@/shared/i18n/messages';
 
 const NAV_ITEMS = [
-  { href: "/", labelKey: "header.nav.overview", name: "overview" },
-  { href: "/risk", labelKey: "header.nav.risk", name: "risk" },
-  { href: "/teams", labelKey: "header.nav.teams", name: "teams" },
+  { href: '/', labelKey: 'header.nav.overview', name: 'overview' },
+  { href: '/risk', labelKey: 'header.nav.risk', name: 'risk' },
+  { href: '/teams', labelKey: 'header.nav.teams', name: 'teams' },
 ];
 
 const LANGUAGES: TzarLanguage<Locale>[] = [
-  { code: "en", short: "EN", label: "English" },
-  { code: "bg", short: "BG", label: "Bulgarian" },
-  { code: "ka", short: "KA", label: "Georgian" },
+  { code: 'en', short: 'EN', label: 'English' },
+  { code: 'bg', short: 'BG', label: 'Bulgarian' },
+  { code: 'ka', short: 'KA', label: 'Georgian' },
 ];
 
 export const AppHeader = () => {
@@ -58,12 +58,12 @@ export const AppHeader = () => {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6">
           <TzarBrand
             data-testid="header-brand"
-            title={t("header.title")}
-            subtitle={t("header.subtitle")}
+            title={t('header.title')}
+            subtitle={t('header.subtitle')}
           />
 
           <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden lg:block">{renderNav("header")}</div>
+            <div className="hidden lg:block">{renderNav('header')}</div>
             <div className="flex items-center gap-2">
               <TzarThemeToggle data-testid="header-theme-toggle" />
               <TzarLanguageSelect
@@ -79,7 +79,7 @@ export const AppHeader = () => {
                     href="/login"
                     data-testid="header-login-link"
                   >
-                    {t("header.login")}
+                    {t('header.login')}
                   </TzarCommonLink>
                 )}
                 {user?.email && (
@@ -101,7 +101,7 @@ export const AppHeader = () => {
         data-testid="mobile-header"
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between py-2 px-6 gap-3">
-          {renderNav("mobile")}
+          {renderNav('mobile')}
           <div className="flex items-center gap-2">
             {!user && (
               <TzarCommonLink
@@ -109,7 +109,7 @@ export const AppHeader = () => {
                 href="/login"
                 data-testid="mobile-login-link"
               >
-                {t("header.login")}
+                {t('header.login')}
               </TzarCommonLink>
             )}
             {user?.email && (

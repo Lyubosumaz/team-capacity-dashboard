@@ -1,5 +1,5 @@
-import type { ChartsSectionLayoutProps } from "./ChartsSection.types";
-import { TzarPageHeader } from "@tzardom-ui/react";
+import { TzarPageHeader } from '@tzardom-ui/react';
+import type { ChartsSectionLayoutProps } from './ChartsSection.types';
 
 export const ChartsSectionLayout = ({
   texts,

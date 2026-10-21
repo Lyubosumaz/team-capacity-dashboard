@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+IFS=$'\n'
+
+files=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$files" ] && exit 0
+
+# Half-staged files would sneak unstaged changes into the commit.
+half=$(git diff --name-only -- $files)
+if [ -n "$half" ]; then
+  echo "Stage these files fully first (git add):"
+  echo "$half"
+  exit 1
+fi
+
+pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true $files
+
+git add -- $files
+pnpm test:coverage

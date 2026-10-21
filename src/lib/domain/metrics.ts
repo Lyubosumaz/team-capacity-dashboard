@@ -1,10 +1,10 @@
 import type {
-  Team,
-  Project,
-  Sprint,
-  RiskEvent,
   CapacitySnapshot,
-} from "./types";
+  Project,
+  RiskEvent,
+  Sprint,
+  Team,
+} from './types';
 
 export const getTeamCapacityForSprint = (team: Team): number => {
   return team.members.reduce(

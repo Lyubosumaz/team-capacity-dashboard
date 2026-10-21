@@ -15,9 +15,8 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
    - Start the dev server: `pnpm dev`
 
 3. **Before opening a PR**
-   - Lint: `pnpm lint`
-   - Format (check): `pnpm format`
-   - Fix formatting (if needed): `pnpm format:fix`
+   - Lint and format check: `pnpm lint`
+   - Fix lint and formatting: `pnpm lint:fix`
    - Run unit tests with coverage: `pnpm test:coverage`
    - Ensure the app builds: `pnpm build`
 
@@ -30,7 +29,7 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 
 - TypeScript with `strict` mode is enabled; keep types precise.
 - React components are arrow functions with typed props, no `FC`.
-- Use ESLint and Prettier to keep the codebase consistent.
+- Use Biome (`pnpm lint`) to keep the codebase consistent.
 
 ## CI/CD
 
