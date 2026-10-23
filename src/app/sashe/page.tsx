@@ -1,10 +1,8 @@
-'use client';
-
 import { Heart } from 'lucide-react';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
+import { useTranslations } from 'next-intl';
 
 const SashePage = () => {
-  const { t } = useLocalization();
+  const t = useTranslations();
 
   return (
     <div className="mx-auto flex w-full flex-1 items-center justify-center px-4 pb-8 pt-6 md:px-6 gap-4">

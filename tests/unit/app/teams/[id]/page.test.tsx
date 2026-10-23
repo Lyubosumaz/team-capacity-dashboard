@@ -5,13 +5,13 @@ vi.mock('@/shared/widgets/ChartsSection', () => ({
   ChartsSection: () => <div data-testid="charts-section" />,
 }));
 
+import { TestProviders } from '@tests/TestProviders';
 import { TeamDetailView } from '@/features/teams/TeamDetailView';
 import {
   projects as mockProjects,
   riskInsights as mockRiskInsights,
   teams as mockTeams,
 } from '@/lib/domain/mockData';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('TeamDetailPage', () => {
   it('renders team detail heading when team exists', async () => {
@@ -34,14 +34,14 @@ describe('TeamDetailPage', () => {
     );
 
     render(
-      <Providers>
+      <TestProviders>
         <TeamDetailView
           team={team}
           projects={teamProjects}
           risks={teamRisks}
           totalCapacity={totalCapacity}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('team-members-heading')).toHaveTextContent(

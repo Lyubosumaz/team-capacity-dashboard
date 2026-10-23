@@ -8,10 +8,10 @@ import {
 } from '@tzardom-ui/react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Team } from '@/lib/domain/types';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 import { TeamsList } from './TeamsList';
 
 type TeamsViewProps = {
@@ -30,7 +30,7 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const { t } = useLocalization();
+  const t = useTranslations();
 
   const memberSuffixSingular = t('teams.list.membersSuffixSingular');
   const memberSuffixPlural = t('teams.list.membersSuffixPlural');

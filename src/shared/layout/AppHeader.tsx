@@ -9,9 +9,10 @@ import {
   TzarUserMenu,
 } from '@tzardom-ui/react';
 import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
-import type { Locale } from '@/shared/i18n/messages';
+import { setLocale } from '@/shared/i18n/actions';
+import type { Locale } from '@/shared/i18n/messages/types';
 
 const NAV_ITEMS = [
   { href: '/', labelKey: 'header.nav.overview', name: 'overview' },
@@ -26,7 +27,8 @@ const LANGUAGES: TzarLanguage<Locale>[] = [
 ];
 
 export const AppHeader = () => {
-  const { t, locale, setLocale } = useLocalization();
+  const t = useTranslations();
+  const locale = useLocale();
   const { user, logout } = useAuth();
 
   const renderNav = (area: string) => (

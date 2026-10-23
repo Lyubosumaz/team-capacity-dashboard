@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it, vi } from 'vitest';
 import { TeamsView } from '@/features/teams/TeamsView';
 import { teams as mockTeams } from '@/lib/domain/mockData';
-import { Providers } from '@/shared/providers/Providers';
 
 vi.mock('next/link', () => {
   return {
@@ -18,9 +18,9 @@ vi.mock('next/link', () => {
 describe('TeamsPage', () => {
   it('renders teams heading and list', () => {
     render(
-      <Providers>
+      <TestProviders>
         <TeamsView teams={mockTeams} />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('teams-header')).toHaveTextContent(/teams/i);

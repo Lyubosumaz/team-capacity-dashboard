@@ -16,4 +16,4 @@ fi
 pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true $files
 
 git add -- $files
-pnpm test:coverage
+pnpm test

@@ -8,7 +8,7 @@
 Describe how you tested this change:
 
 - [ ] `pnpm lint`
-- [ ] `pnpm test:coverage`
+- [ ] `pnpm test`
 - [ ] `pnpm build`
 - [ ] Manual testing (describe scenarios)
 

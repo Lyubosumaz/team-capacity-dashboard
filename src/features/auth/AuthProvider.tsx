@@ -1,6 +1,6 @@
 'use client';
 
-import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import {
   createContext,
   type ReactNode,
@@ -9,7 +9,16 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { auth } from '@/lib/firebase/client';
+import { isFirebaseConfigured } from '@/lib/firebase/config';
+
+// Firebase Auth loads after the page shows, so it's not in every page's bundle.
+const loadAuth = async () => {
+  const [{ auth }, firebaseAuth] = await Promise.all([
+    import('@/lib/firebase/client'),
+    import('firebase/auth'),
+  ]);
+  return { auth, firebaseAuth };
+};
 
 export type AuthContextValue = {
   user: User | null;
@@ -22,19 +31,30 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   // Without Firebase there's no user to wait for, so we start not loading.
-  const [loading, setLoading] = useState(Boolean(auth));
+  const [loading, setLoading] = useState(isFirebaseConfigured);
 
   useEffect(() => {
-    if (!auth) {
+    if (!isFirebaseConfigured) {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
+    let unsubscribe = () => {};
+    let stopped = false;
+
+    loadAuth().then(({ auth, firebaseAuth }) => {
+      if (stopped || !auth) {
+        return;
+      }
+      unsubscribe = firebaseAuth.onAuthStateChanged(auth, (firebaseUser) => {
+        setUser(firebaseUser);
+        setLoading(false);
+      });
     });
 
-    return () => unsubscribe();
+    return () => {
+      stopped = true;
+      unsubscribe();
+    };
   }, []);
 
   const value: AuthContextValue = useMemo(
@@ -42,10 +62,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       user,
       loading,
       logout: async () => {
+        const { auth, firebaseAuth } = await loadAuth();
         if (!auth) {
           return;
         }
-        await signOut(auth);
+        await firebaseAuth.signOut(auth);
       },
     }),
     [user, loading],

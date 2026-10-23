@@ -7,15 +7,15 @@ vi.mock('@/lib/firebase/config', () => ({
   firebaseConfig: {},
 }));
 
+import { TestProviders } from '@tests/TestProviders';
 import RegisterPage from '@/app/register/page';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('Register page', () => {
   it('renders register heading and form', () => {
     render(
-      <Providers>
+      <TestProviders>
         <RegisterPage />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('register-page')).toBeInTheDocument();

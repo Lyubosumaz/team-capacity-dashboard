@@ -1,10 +1,10 @@
 'use client';
 
 import { TzarButton, TzarDialog, TzarTextField } from '@tzardom-ui/react';
+import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import type { Project, RiskInsight, Team } from '@/lib/domain/types';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 import { ChartsSection } from '@/shared/widgets/ChartsSection';
 import { TeamMembersSection } from './TeamMembersSection';
 import { TeamProjectsAndRisksSection } from './TeamProjectsAndRisksSection';
@@ -22,7 +22,7 @@ export const TeamDetailView = ({
   risks,
   totalCapacity,
 }: TeamDetailViewProps) => {
-  const { t } = useLocalization();
+  const t = useTranslations();
   const [teamName, setTeamName] = useState(team.name);
   const [isEditNameModalOpen, setIsEditNameModalOpen] = useState(false);
   const [editNameValue, setEditNameValue] = useState(team.name);

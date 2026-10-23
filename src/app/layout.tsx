@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { AppFooter } from '@/shared/layout/AppFooter';
 import { AppHeader } from '@/shared/layout/AppHeader';
@@ -21,23 +23,27 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
+const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+    <html lang={locale} className={`${poppins.variable} h-full antialiased`}>
       <body
         className="min-h-full flex flex-col bg-background text-foreground"
         suppressHydrationWarning
       >
-        <Providers>
-          <AppHeader />
-          <main
-            className="mx-auto flex w-full max-w-5xl flex-1 px-4 pb-8 pt-6 md:px-6"
-            data-testid="main-content"
-          >
-            {children}
-          </main>
-          <AppFooter />
-        </Providers>
+        <NextIntlClientProvider>
+          <Providers>
+            <AppHeader />
+            <main
+              className="mx-auto flex w-full max-w-5xl flex-1 px-4 pb-8 pt-6 md:px-6"
+              data-testid="main-content"
+            >
+              {children}
+            </main>
+            <AppFooter />
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

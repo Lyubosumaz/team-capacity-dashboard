@@ -1,8 +1,8 @@
 'use client';
 
 import { TzarPageHeader } from '@tzardom-ui/react';
+import { useTranslations } from 'next-intl';
 import type { RiskInsight, RiskRule, Team } from '@/lib/domain/types';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 import { KeyMetricsSection } from '@/shared/widgets/KeyMetricsSection';
 import { CapacityAndRiskWidgetsSection } from './CapacityAndRiskWidgetsSection';
 import { RiskInsightsList } from './RiskInsightsList';
@@ -26,7 +26,7 @@ export const RiskView = ({
   teams,
   overCapacityTeamIds,
 }: RiskViewProps) => {
-  const { t } = useLocalization();
+  const t = useTranslations();
 
   return (
     <section className="flex w-full flex-col gap-6">

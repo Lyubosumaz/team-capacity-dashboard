@@ -11,7 +11,8 @@ vi.mock('firebase/auth', () => {
   const authMock = {} as unknown;
 
   return {
-    getAuth: vi.fn(() => authMock),
+    initializeAuth: vi.fn(() => authMock),
+    browserLocalPersistence: {},
 
     onAuthStateChanged: vi.fn((_auth, callback: (user: unknown) => void) => {
       callback(null);

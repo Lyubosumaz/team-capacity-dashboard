@@ -10,16 +10,22 @@ vi.mock('@/shared/layout/AppFooter', () => ({
   AppFooter: () => <footer>mock-footer</footer>,
 }));
 
+vi.mock('next-intl', () => ({
+  NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}));
+
+vi.mock('next-intl/server', () => ({ getLocale: async () => 'en' }));
+
 vi.mock('@/shared/providers/Providers', () => ({
   Providers: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe('RootLayout', () => {
-  it('renders header, main content, and footer', () => {
+  it('renders header, main content, and footer', async () => {
     const htmlString = renderToStaticMarkup(
-      <RootLayout>
-        <div>page-content</div>
-      </RootLayout>,
+      await RootLayout({ children: <div>page-content</div> }),
     );
 
     expect(htmlString).toContain('mock-header');

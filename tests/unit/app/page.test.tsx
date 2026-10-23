@@ -5,13 +5,13 @@ vi.mock('@/shared/widgets/ChartsSection', () => ({
   ChartsSection: () => <div data-testid="charts-section" />,
 }));
 
+import { TestProviders } from '@tests/TestProviders';
 import { OverviewView } from '@/features/overview/OverviewView';
 import {
   projects as mockProjects,
   riskInsights as mockRiskInsights,
   teams as mockTeams,
 } from '@/lib/domain/mockData';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('Home page', () => {
   it('renders overview heading and key sections', () => {
@@ -22,13 +22,13 @@ describe('Home page', () => {
     ).length;
 
     render(
-      <Providers>
+      <TestProviders>
         <OverviewView
           totalTeams={totalTeams}
           totalProjects={totalProjects}
           highRiskCount={highRiskCount}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('home-overview-section')).toBeInTheDocument();

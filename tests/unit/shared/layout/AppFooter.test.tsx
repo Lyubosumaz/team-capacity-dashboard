@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
+import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it } from 'vitest';
 import { AppFooter } from '@/shared/layout/AppFooter';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('AppFooter', () => {
   it('renders current year, app name, and tech stack', () => {
     render(
-      <Providers>
+      <TestProviders>
         <AppFooter />
-      </Providers>,
+      </TestProviders>,
     );
 
     const year = new Date().getFullYear();

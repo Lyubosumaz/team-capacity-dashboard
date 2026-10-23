@@ -34,7 +34,7 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
   - `tsconfig.json` uses `"strict": true` for safer types across the app.
 - **GitHub Actions CI**
   - Workflow in `.github/workflows/ci.yml` runs on pushes and PRs to `main`.
-  - Steps: install dependencies, `pnpm lint`, `pnpm test:coverage`, and `pnpm build`.
+  - Steps: install dependencies, `pnpm lint`, `pnpm test`, and `pnpm build`.
 - **Build & deployment pipeline**
   - `pnpm build` performs a production build used both locally and in CI.
   - Recommended: connect the repo to Vercel so merges to `main` trigger automatic deployments.

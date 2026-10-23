@@ -17,7 +17,7 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 3. **Before opening a PR**
    - Lint and format check: `pnpm lint`
    - Fix lint and formatting: `pnpm lint:fix`
-   - Run unit tests with coverage: `pnpm test:coverage`
+   - Run unit tests with coverage: `pnpm test`
    - Ensure the app builds: `pnpm build`
 
 4. **Pull Request guidelines**

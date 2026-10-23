@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it } from 'vitest';
 import { RiskView } from '@/features/risk/RiskView';
 import {
@@ -13,7 +14,6 @@ import {
   sprints as mockSprints,
   teams as mockTeams,
 } from '@/lib/domain/mockData';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('Risk page', () => {
   it('renders risk overview heading and key sections', () => {
@@ -41,7 +41,7 @@ describe('Risk page', () => {
     const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
 
     render(
-      <Providers>
+      <TestProviders>
         <RiskView
           highRiskInsightsCount={highRiskInsights.length}
           highRiskTeamsCount={highRiskTeamsCount}
@@ -51,7 +51,7 @@ describe('Risk page', () => {
           teams={mockTeams}
           overCapacityTeamIds={overCapacityTeamIds}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('risk-header')).toHaveTextContent(

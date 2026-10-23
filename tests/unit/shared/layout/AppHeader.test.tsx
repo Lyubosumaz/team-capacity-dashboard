@@ -1,7 +1,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import { TestProviders } from '@tests/TestProviders';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { setLocale } from '@/shared/i18n/actions';
 import { AppHeader } from '@/shared/layout/AppHeader';
-import { Providers } from '@/shared/providers/Providers';
+
+// The server action only saves a cookie; check that the header calls it.
+vi.mock('@/shared/i18n/actions', () => ({ setLocale: vi.fn() }));
 
 vi.mock('next/link', () => ({
   __esModule: true,
@@ -14,9 +18,9 @@ vi.mock('next/link', () => ({
 
 const renderHeader = () =>
   render(
-    <Providers>
+    <TestProviders>
       <AppHeader />
-    </Providers>,
+    </TestProviders>,
   );
 
 describe('AppHeader', () => {
@@ -76,7 +80,7 @@ describe('AppHeader', () => {
     expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
   });
 
-  it('shows the current language and switches it', () => {
+  it('shows the current language and saves the picked one', () => {
     renderHeader();
     const languageSelect = within(screen.getByTestId('header-language-select'));
     const trigger = languageSelect.getByRole('button', { name: /^language/i });
@@ -86,6 +90,6 @@ describe('AppHeader', () => {
     fireEvent.click(trigger);
     fireEvent.click(languageSelect.getByRole('button', { name: /bulgarian/i }));
 
-    expect(trigger).toHaveAccessibleName('Language: BG');
+    expect(setLocale).toHaveBeenCalledWith('bg');
   });
 });

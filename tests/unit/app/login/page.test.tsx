@@ -7,15 +7,15 @@ vi.mock('@/lib/firebase/config', () => ({
   firebaseConfig: {},
 }));
 
+import { TestProviders } from '@tests/TestProviders';
 import LoginPage from '@/app/login/page';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('Login page', () => {
   it('renders login heading and form', () => {
     render(
-      <Providers>
+      <TestProviders>
         <LoginPage />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('login-page')).toBeInTheDocument();

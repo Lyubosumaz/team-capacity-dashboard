@@ -4,13 +4,13 @@ import { TzarButton, TzarPageHeader, TzarTextField } from '@tzardom-ui/react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { auth } from '@/lib/firebase/client';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 
 export const LoginView = () => {
-  const { t } = useLocalization();
+  const t = useTranslations();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

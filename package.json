@@ -4,16 +4,14 @@
   "private": true,
   "packageManager": "pnpm@11.28.0",
   "scripts": {
-    "dev": "rm -rf .next && pnpm dlx kill-port 3000 && next dev",
+    "dev": "pnpm dlx kill-port 3000 && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "test": "vitest run",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage",
+    "test": "vitest run --coverage",
     "test:e2e": "node scripts/run-e2e.cjs",
-    "test:e2e:open": "cypress open",
+    "cypress": "cypress open",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
@@ -23,6 +21,7 @@
     "firebase": "^11.0.0",
     "lucide-react": "^1.0.1",
     "next": "16.2.1",
+    "next-intl": "^4.0.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
@@ -36,7 +35,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^5.0.4",
-    "@vitest/ui": "^5.0.4",
     "cypress": "^15.12.0",
     "jsdom": "^29.0.1",
     "tailwindcss": "^4",

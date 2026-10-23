@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
+import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it } from 'vitest';
 import { RiskInsightsList } from '@/features/risk/RiskInsightsList';
-import { Providers } from '@/shared/providers/Providers';
 
 describe('RiskInsightsList', () => {
   it('renders empty state when there are no insights', () => {
     render(
-      <Providers>
+      <TestProviders>
         <RiskInsightsList
           insights={[]}
           rules={[]}
@@ -23,7 +23,7 @@ describe('RiskInsightsList', () => {
             severityLow: 'Low',
           }}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('risk-insights-list')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('RiskInsightsList', () => {
     ];
 
     render(
-      <Providers>
+      <TestProviders>
         <RiskInsightsList
           insights={insights}
           rules={rules}
@@ -79,7 +79,7 @@ describe('RiskInsightsList', () => {
             severityLow: 'Low',
           }}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('risk-insights-list')).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('RiskInsightsList', () => {
     ];
 
     render(
-      <Providers>
+      <TestProviders>
         <RiskInsightsList
           insights={insights}
           rules={[]}
@@ -126,7 +126,7 @@ describe('RiskInsightsList', () => {
             severityLow: 'Low',
           }}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('risk-insights-list')).toBeInTheDocument();
@@ -165,7 +165,7 @@ describe('RiskInsightsList', () => {
     ];
 
     render(
-      <Providers>
+      <TestProviders>
         <RiskInsightsList
           insights={insights}
           rules={rules}
@@ -182,7 +182,7 @@ describe('RiskInsightsList', () => {
             severityLow: 'Low',
           }}
         />
-      </Providers>,
+      </TestProviders>,
     );
 
     expect(screen.getByTestId('risk-insight-team-insight-1')).toHaveTextContent(

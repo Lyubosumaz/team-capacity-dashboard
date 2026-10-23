@@ -1,8 +1,8 @@
 'use client';
 
 import { TzarPageHeader } from '@tzardom-ui/react';
+import { useTranslations } from 'next-intl';
 import { CapacityAndRiskWidgetsSection } from '@/features/risk/CapacityAndRiskWidgetsSection';
-import { useLocalization } from '@/shared/i18n/LocalizationProvider';
 import { ChartsSection } from '@/shared/widgets/ChartsSection';
 import { KeyMetricsSection } from '@/shared/widgets/KeyMetricsSection';
 
@@ -17,7 +17,7 @@ export const OverviewView = ({
   totalProjects,
   highRiskCount,
 }: OverviewViewProps) => {
-  const { t } = useLocalization();
+  const t = useTranslations();
 
   const keyMetricsLabels = {
     section1: {
