@@ -15,8 +15,6 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
    - Start the dev server: `pnpm dev`
 
 3. **Before opening a PR**
-   - Lint and format check: `pnpm lint`
-   - Fix lint and formatting: `pnpm lint:fix`
    - Run unit tests with coverage: `pnpm test`
    - Ensure the app builds: `pnpm build`
 
@@ -29,8 +27,8 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 
 - TypeScript with `strict` mode is enabled; keep types precise.
 - React components are arrow functions with typed props, no `FC`.
-- Use Biome (`pnpm lint`) to keep the codebase consistent.
+- Biome lints and formats your files on every commit (pre-commit hook).
 
 ## CI/CD
 
-GitHub Actions runs lint, tests (with coverage), and build on every PR targeting `main`. Please make sure your changes pass locally before opening or updating a PR.
+GitHub Actions runs tests (with coverage), and build on every PR targeting `main`. Please make sure your changes pass locally before opening or updating a PR.

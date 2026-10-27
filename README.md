@@ -28,13 +28,13 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
 ### This repository is set up to feel like a "senior" engineering environment around the code:
 
 - **Biome**
-  - Lint and check formatting with `pnpm lint`; auto-fix with
-    `pnpm lint:fix`.
+  - The pre-commit hook lints and formats the files you commit.
+  - Fix the whole project with `pnpm lint`.
 - **TypeScript strictness**
   - `tsconfig.json` uses `"strict": true` for safer types across the app.
 - **GitHub Actions CI**
   - Workflow in `.github/workflows/ci.yml` runs on pushes and PRs to `main`.
-  - Steps: install dependencies, `pnpm lint`, `pnpm test`, and `pnpm build`.
+  - Steps: install dependencies, `pnpm test`, and `pnpm build`.
 - **Build & deployment pipeline**
   - `pnpm build` performs a production build used both locally and in CI.
   - Recommended: connect the repo to Vercel so merges to `main` trigger automatic deployments.
@@ -52,7 +52,7 @@ then run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3333](http://localhost:3333) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
@@ -74,21 +74,22 @@ Access Firestore only through `getDb()` (`src/lib/firebase/firestore.ts`). Never
 To populate Firebase/Firestore with the mock domain data used by the app (skills, teams, sprints, projects, risk rules/insights/events), run the dev seed endpoint while the dev server is running:
 
 ```bash
-curl -X POST http://localhost:3000/api/dev/seed-all
+curl -X POST http://localhost:3333/api/dev/seed-all
 ```
 
 This calls the handler in `src/app/api/dev/seed-all/route.ts` and will create or update the corresponding collections in your Firestore project. Use this only in development; for production, configure real data and proper Firestore security rules.
 
 ## End-to-end tests
 
-The end-to-end tests use Playwright and need Firebase set up (`local.env`) with seeded data. Install the browser once, then run them:
+The end-to-end tests use Playwright and run in Chromium, Firefox and WebKit (Safari). They need Firebase set up (`local.env`) with seeded data. Install the browsers once, then run them:
 
 ```bash
-pnpm exec playwright install chromium
-pnpm test:e2e
+pnpm exec playwright install chromium firefox webkit
+pnpm e2e
 ```
 
-Playwright starts the dev server by itself. `pnpm test:e2e:ui` opens the interactive runner.
+Playwright starts the dev server on port 3333 by itself, so stop your own
+`pnpm dev` (or anything else on port 3333) first. `pnpm e2e:ui` opens the interactive runner.
 
 ## Learn More
 

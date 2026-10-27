@@ -7,10 +7,8 @@ import type {
   Team,
 } from '@/lib/domain/types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
-
 const getJson = async <T>(path: string): Promise<T> => {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await fetch(path, {
     cache: 'no-store',
   });
 

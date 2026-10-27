@@ -28,10 +28,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
 
   return (
     <html lang={locale} className={`${poppins.variable} h-full antialiased`}>
-      <body
-        className="min-h-full flex flex-col bg-background text-foreground"
-        suppressHydrationWarning
-      >
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider>
           <Providers>
             <AppHeader />
