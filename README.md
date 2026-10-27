@@ -21,7 +21,7 @@ This project is also used as a playground to practice senior‑level frontend sk
 - **State & Data**: @tanstack/react-query for server state, Recharts for data visualisation
 - **Backend & Auth**: Next.js API routes, Firebase SDK integration
 - **Quality & Tooling**: Biome, a git pre-commit hook (`.githooks/`), strict TypeScript config
-- **Testing**: Vitest (unit/integration), Testing Library, Cypress (end-to-end)
+- **Testing**: Vitest (unit/integration), Testing Library, Playwright (end-to-end)
 
 Planned backend (coming soon): a Go service exposing a JSON API, connected to a PostgreSQL database and deployed on Render alongside the database for managed, scalable hosting.
 
@@ -78,6 +78,17 @@ curl -X POST http://localhost:3000/api/dev/seed-all
 ```
 
 This calls the handler in `src/app/api/dev/seed-all/route.ts` and will create or update the corresponding collections in your Firestore project. Use this only in development; for production, configure real data and proper Firestore security rules.
+
+## End-to-end tests
+
+The end-to-end tests use Playwright and need Firebase set up (`local.env`) with seeded data. Install the browser once, then run them:
+
+```bash
+pnpm exec playwright install chromium
+pnpm test:e2e
+```
+
+Playwright starts the dev server by itself. `pnpm test:e2e:ui` opens the interactive runner.
 
 ## Learn More
 

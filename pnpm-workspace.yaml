@@ -3,7 +3,6 @@ allowBuilds:
   "@firebase/util": false
   "@parcel/watcher": false
   "@swc/core": false
-  cypress: true
   esbuild: true
   protobufjs: false
   sharp: true

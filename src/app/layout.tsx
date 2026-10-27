@@ -17,7 +17,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'Team Capacity Dashboard',
   description:
-    'Team capacity dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS, React Query, Recharts, Vitest, and Cypress.',
+    'Team capacity dashboard built with Next.js 16, React 19, TypeScript, Tailwind CSS, React Query, Recharts, Vitest, and Playwright.',
   icons: {
     icon: '/favicon.ico',
   },
