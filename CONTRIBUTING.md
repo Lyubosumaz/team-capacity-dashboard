@@ -9,15 +9,14 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
    - Create a feature branch from `main` (e.g. `feat/add-new-widget`).
 
 2. **Set up locally**
-   - Install dependencies: `npm install`
-   - Start the dev server: `npm run dev`
+   - Use Node 26 (22.12+ and 24 also work; Vitest doesn't support 25).
+   - Install pnpm once: `npm install -g pnpm`
+   - Install dependencies: `pnpm install`
+   - Start the dev server: `pnpm dev`
 
 3. **Before opening a PR**
-   - Lint: `npm run lint`
-   - Format (check): `npm run format`
-   - Fix formatting (if needed): `npm run format:fix`
-   - Run unit tests with coverage: `npm run test:coverage`
-   - Ensure the app builds: `npm run build`
+   - Run unit tests with coverage: `pnpm test`
+   - Ensure the app builds: `pnpm build`
 
 4. **Pull Request guidelines**
    - Keep PRs focused and reasonably small.
@@ -27,9 +26,9 @@ Thanks for taking the time to contribute to the Team Capacity Dashboard!
 ## Code style
 
 - TypeScript with `strict` mode is enabled; keep types precise.
-- React components use arrow functions and `FC<...>` where appropriate.
-- Use ESLint and Prettier to keep the codebase consistent.
+- React components are arrow functions with typed props, no `FC`.
+- Biome lints and formats your files on every commit (pre-commit hook).
 
 ## CI/CD
 
-GitHub Actions runs lint, tests (with coverage), and build on every PR targeting `main`. Please make sure your changes pass locally before opening or updating a PR.
+GitHub Actions runs tests (with coverage), and build on every PR targeting `main`. Please make sure your changes pass locally before opening or updating a PR.

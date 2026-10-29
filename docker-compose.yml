@@ -1,0 +1,16 @@
+# PostgreSQL for local development. Start it with pnpm db:up; the data is
+# kept in the db-data volume between restarts.
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: team_capacity
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

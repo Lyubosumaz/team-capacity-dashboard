@@ -1,0 +1,32 @@
+import { render, screen } from '@testing-library/react';
+import { useTzarTheme } from '@tzardom-ui/react';
+import { describe, expect, it } from 'vitest';
+import { Providers } from '@/shared/providers/Providers';
+
+const Child = () => <div data-testid="child">child-content</div>;
+
+describe('Providers', () => {
+  it('renders its children', () => {
+    render(
+      <Providers>
+        <Child />
+      </Providers>,
+    );
+
+    expect(screen.getByTestId('child')).toHaveTextContent('child-content');
+  });
+
+  it('gives children the tzardom-ui theme', () => {
+    const ThemeName = () => (
+      <div data-testid="theme-name">{useTzarTheme().theme}</div>
+    );
+
+    render(
+      <Providers>
+        <ThemeName />
+      </Providers>,
+    );
+
+    expect(screen.getByTestId('theme-name')).toHaveTextContent('light');
+  });
+});

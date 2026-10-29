@@ -7,9 +7,8 @@
 
 Describe how you tested this change:
 
-- [ ] `npm run lint`
-- [ ] `npm run test:coverage`
-- [ ] `npm run build`
+- [ ] `pnpm test`
+- [ ] `pnpm build`
 - [ ] Manual testing (describe scenarios)
 
 ## Checklist (reviewer & author)
