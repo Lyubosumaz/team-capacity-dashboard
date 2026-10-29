@@ -42,6 +42,16 @@ Planned backend (coming soon): a Go service exposing a JSON API, connected to a 
   - See `CONTRIBUTING.md` for local workflow and pre-PR checks.
   - PRs use `.github/pull_request_template.md` with a lightweight code review checklist.
 
+## Project structure
+
+One repo with two apps. Run every `pnpm` command from the repo root.
+
+```
+apps/
+├── web/      Next.js dashboard (UI): src/, tests/, its configs and local.env
+└── server/   Go API with PostgreSQL (coming next)
+```
+
 ## Getting Started
 
 You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25) and pnpm
@@ -54,20 +64,20 @@ pnpm dev
 
 Open [http://localhost:3333](http://localhost:3333) with your browser to see the result.
 
-There's no page at `/`: it redirects to `/overview`. You can start editing that page in `src/app/overview/page.tsx`. The page auto-updates as you edit the file.
+There's no page at `/`: it redirects to `/overview`. You can start editing that page in `apps/web/src/app/overview/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Running with or without Firebase
 
-Copy `example.env` to `local.env` to use real data. Restart the dev server after changing it. Without it, nobody can log in: pages with data ask you to log in, and the login page shows a "needs Firebase configured" message. The mock data in `tests/mockData.ts` is only for tests.
+Copy `apps/web/example.env` to `apps/web/local.env` to use real data. Restart the dev server after changing it. Without it, nobody can log in: pages with data ask you to log in, and the login page shows a "needs Firebase configured" message. The mock data in `apps/web/tests/mockData.ts` is only for tests.
 
 | Page type | Guard |
 |---|---|
 | Page with data (`overview`, `risk`, `teams`, `teams/[id]`, `user`) | `getCurrentUser()`; shows `<LoginRequired>` when nobody is logged in |
 | Login and sign-up (`login`, `register`) | `<FirebaseGate feature="Feature">` |
 
-Read and write Firestore only on the server, through the helpers in `src/lib/firebase/collections.ts`.
+Read and write Firestore only on the server, through the helpers in `apps/web/src/lib/firebase/collections.ts`.
 
 ## Login and teams
 
@@ -88,10 +98,10 @@ Team members are accounts. Each time someone logs in, their email is saved in th
 
 ## End-to-end tests
 
-The end-to-end tests use Playwright and run in Chromium, Firefox and WebKit (Safari). They need Firebase set up (`local.env`) with some teams in Firestore, and a test user to log in as: `E2E_EMAIL` and `E2E_PASSWORD` in `local.env`. Install the browsers once, then run them:
+The end-to-end tests use Playwright and run in Chromium, Firefox and WebKit (Safari). They need Firebase set up (`apps/web/local.env`) with some teams in Firestore, and a test user to log in as: `E2E_EMAIL` and `E2E_PASSWORD` in the same file. Install the browsers once, then run them:
 
 ```bash
-pnpm exec playwright install chromium firefox webkit
+pnpm --filter web exec playwright install chromium firefox webkit
 pnpm e2e
 ```
 
@@ -112,6 +122,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ### Option 1: Deploy with Vercel (recommended)
 
 This project is currently deployed on Vercel; the steps below describe how to deploy your own instance.
+
+The app lives in `apps/web`, so set the Vercel project's **Root Directory** to `apps/web` (Project → Settings → Build and Deployment).
 
 You can deploy this app either directly from your local machine or via a Git repository.
 

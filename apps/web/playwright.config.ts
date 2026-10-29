@@ -1,7 +1,6 @@
 import { existsSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
-// The tests log in with E2E_EMAIL and E2E_PASSWORD from local.env.
 if (existsSync('local.env')) {
   process.loadEnvFile('local.env');
 }

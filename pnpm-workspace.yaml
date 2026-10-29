@@ -1,3 +1,8 @@
+# The apps in this repo that use pnpm. The Go server (apps/server) has
+# its own tooling.
+packages:
+  - apps/web
+
 # Packages allowed (true) or not (false) to run install scripts.
 allowBuilds:
   "@firebase/util": false
