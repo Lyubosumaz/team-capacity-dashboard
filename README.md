@@ -49,8 +49,38 @@ One repo with two apps. Run every `pnpm` command from the repo root.
 ```
 apps/
 ├── web/      Next.js dashboard (UI): src/, tests/, its configs and local.env
-└── server/   Go API with PostgreSQL (coming next)
+└── server/   Go API with PostgreSQL
 ```
+
+`pnpm dev` starts both: the dashboard on port 3333 and the API on port 4444.
+
+## Server (Go + PostgreSQL)
+
+You need Go 1.24 or newer (`brew install go`) and Docker. The first time:
+
+```bash
+pnpm db:up                                  # starts PostgreSQL in Docker
+cd apps/server && go mod tidy && cd ../..   # downloads the Go packages and writes go.sum (commit it)
+pnpm seed                                   # optional: fills the local database with demo data
+pnpm dev
+```
+
+The server builds its tables when it starts, from the numbered SQL files in `apps/server/migrations/`. To change a table, add a new numbered file; never edit one that has already run. `pnpm seed` replaces everything in the local database with `apps/server/cmd/seed/seed.sql`, and refuses to run on a database that isn't on your computer.
+
+Settings come from `apps/server/local.env` (see `example.env`). Without it, the server uses the local database from `docker-compose.yml`.
+
+| Route | Answers |
+|---|---|
+| `GET /health` | `{"status":"ok"}` when the server and database are up |
+| `GET /users` | every user |
+| `GET /teams`, `GET /teams/{id}` | teams with their members and skills |
+| `GET /projects?teamId=` | projects, optionally only one team's |
+| `GET /sprints` | sprints, the earliest first |
+| `GET /risk/rules`, `/risk/insights?teamId=`, `/risk/events?teamId=` | risk rules, the risks they found, and events like vacations |
+
+The routes don't check who is asking yet: login comes in the next step, so only run the server on your own computer for now.
+
+`pnpm test` also runs the Go tests (`*_test.go`, next to the code). The ones that need a database each get an empty schema of their own in the local database, and are skipped when it isn't running.
 
 ## Getting Started
 

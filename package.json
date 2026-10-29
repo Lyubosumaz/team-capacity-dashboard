@@ -4,11 +4,13 @@
   "private": true,
   "packageManager": "pnpm@11.28.0",
   "scripts": {
-    "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
-    "test": "pnpm --filter web test",
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
     "e2e": "pnpm --filter web e2e",
     "e2e:ui": "pnpm --filter web e2e:ui",
+    "db:up": "docker compose up -d",
+    "seed": "pnpm --filter server seed",
     "lint": "biome check --write .",
     "prepare": "git config core.hooksPath .githooks"
   },

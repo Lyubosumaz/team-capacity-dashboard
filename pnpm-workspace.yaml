@@ -1,7 +1,7 @@
-# The apps in this repo that use pnpm. The Go server (apps/server) has
-# its own tooling.
+# The apps in this repo. apps/server is Go; its package.json only holds
+# scripts, so the root pnpm commands run both apps.
 packages:
-  - apps/web
+  - apps/*
 
 # Packages allowed (true) or not (false) to run install scripts.
 allowBuilds:

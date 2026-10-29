@@ -15,5 +15,11 @@ fi
 
 pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true $files
 
+# Biome doesn't know Go; gofmt formats it.
+go_files=$(echo "$files" | grep '\.go$' || true)
+if [ -n "$go_files" ]; then
+  gofmt -w $go_files
+fi
+
 git add -- $files
 pnpm test
