@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it, vi } from 'vitest';
 import { TeamsView } from '@/features/teams/TeamsView';
-import { teams as mockTeams } from '@/lib/domain/mockData';
+import { teams as mockTeams } from '@tests/mockData';
 
 vi.mock('next/link', () => {
   return {
@@ -19,7 +19,7 @@ describe('TeamsPage', () => {
   it('renders teams heading and list', () => {
     render(
       <TestProviders>
-        <TeamsView teams={mockTeams} />
+        <TeamsView teams={mockTeams} accounts={[]} />
       </TestProviders>,
     );
 

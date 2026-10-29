@@ -12,9 +12,9 @@ import {
   riskInsights as mockRiskInsights,
   sprints as mockSprints,
   teams as mockTeams,
-} from '@/lib/domain/mockData';
+} from '@tests/mockData';
 
-describe('Home page', () => {
+describe('Overview page', () => {
   it('renders overview heading and key sections', () => {
     const totalTeams = mockTeams.length;
     const totalProjects = mockProjects.length;

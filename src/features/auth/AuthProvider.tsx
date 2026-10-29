@@ -10,6 +10,16 @@ import {
   useState,
 } from 'react';
 import { isFirebaseConfigured } from '@/lib/firebase/config';
+import { deleteSession, saveSession } from './session';
+
+// Gives the server the browser's current login, or removes it on logout.
+const syncSession = async (firebaseUser: User | null) => {
+  if (firebaseUser) {
+    await saveSession(await firebaseUser.getIdToken());
+  } else {
+    await deleteSession();
+  }
+};
 
 // Firebase Auth loads after the page shows, so it's not in every page's bundle.
 const loadAuth = async () => {
@@ -30,6 +40,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  // True until the browser's login is known and shared with the server.
   // Without Firebase there's no user to wait for, so we start not loading.
   const [loading, setLoading] = useState(isFirebaseConfigured);
 
@@ -45,9 +56,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (stopped || !auth) {
         return;
       }
-      unsubscribe = firebaseAuth.onAuthStateChanged(auth, (firebaseUser) => {
+      // Runs on login and logout, and each time Firebase renews the login
+      // token (about every hour), so the server's copy never goes stale.
+      unsubscribe = firebaseAuth.onIdTokenChanged(auth, (firebaseUser) => {
         setUser(firebaseUser);
-        setLoading(false);
+        syncSession(firebaseUser)
+          .catch((error) => console.error('Could not share the login', error))
+          .finally(() => setLoading(false));
       });
     });
 
@@ -62,6 +77,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       user,
       loading,
       logout: async () => {
+        // Remove the server session first, so the pages lock right away.
+        await deleteSession();
         const { auth, firebaseAuth } = await loadAuth();
         if (!auth) {
           return;

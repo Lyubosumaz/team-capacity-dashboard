@@ -79,3 +79,15 @@ export const getCapacitySnapshotsForTeam = (
     };
   });
 };
+
+// Keeps only the items (projects, risks, events) that belong to these teams.
+export const forTeams = <T extends { teamId?: string }>(
+  items: T[],
+  teams: Team[],
+): T[] => {
+  const teamIds = new Set(teams.map((team) => team.id));
+
+  return items.filter(
+    (item) => item.teamId !== undefined && teamIds.has(item.teamId),
+  );
+};

@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// The app reads and writes Firestore as the logged-in user, so these rules
+// are what keeps the data private. Publish them in the Firebase console.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+
+    // Any logged-in user can create teams. Each team belongs to the user who
+    // created it (ownerId): only they can see it, change it or delete it.
+    match /teams/{teamId} {
+      allow create: if isLoggedIn()
+        && request.resource.data.ownerId == request.auth.uid;
+      allow read, delete: if isLoggedIn()
+        && resource.data.ownerId == request.auth.uid;
+      allow update: if isLoggedIn()
+        && resource.data.ownerId == request.auth.uid
+        && request.resource.data.ownerId == request.auth.uid;
+    }
+
+    // Each account's profile, so people can be added to teams. Everyone
+    // logged in can see the list; each user only writes their own profile,
+    // with their real email.
+    match /users/{userId} {
+      allow read: if isLoggedIn();
+      allow create, update: if isLoggedIn()
+        && request.auth.uid == userId
+        && request.resource.data.email == request.auth.token.email;
+    }
+
+    // The rest of the dashboard data is read-only in the app.
+    match /{collection}/{docId} {
+      allow read: if isLoggedIn()
+        && collection in ['projects', 'sprints', 'riskRules', 'riskInsights', 'riskEvents'];
+    }
+  }
+}

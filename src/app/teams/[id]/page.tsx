@@ -1,13 +1,19 @@
-import { collection, doc, getDoc, query, where } from 'firebase/firestore';
 import { notFound } from 'next/navigation';
-import { requireFirebase } from '@/features/auth/requireFirebase';
+import { getCurrentUser } from '@/features/auth/currentUser';
+import { LoginRequired } from '@/features/auth/LoginRequired';
 import { TeamDetailView } from '@/features/teams/TeamDetailView';
-import type { Project, RiskInsight, Sprint, Team } from '@/lib/domain/types';
+import type {
+  Project,
+  RiskInsight,
+  Sprint,
+  Team,
+  UserProfile,
+} from '@/lib/domain/types';
 import {
-  getCollectionQueryWithId,
+  getCollectionWhere,
   getCollectionWithId,
+  getDocWithId,
 } from '@/lib/firebase/collections';
-import { getDb } from '@/lib/firebase/firestore';
 
 type TeamPageParams = {
   id: string;
@@ -20,34 +26,28 @@ const TeamDetailPage = async ({
 }) => {
   const { id } = await params;
 
-  const unavailable = requireFirebase('Team details');
+  const user = await getCurrentUser();
 
-  if (unavailable) {
-    return unavailable;
+  if (!user) {
+    return <LoginRequired />;
   }
 
   if (!id) {
     notFound();
   }
 
-  const db = getDb();
-  const teamDoc = await getDoc(doc(db, 'teams', id));
+  const team = await getDocWithId<Team>('teams', id);
 
-  if (!teamDoc.exists()) {
+  // Other people's teams look like missing ones.
+  if (!team || team.ownerId !== user.uid) {
     notFound();
   }
 
-  const teamData = teamDoc.data() as Omit<Team, 'id'>;
-  const team: Team = { ...teamData, id: teamDoc.id };
-
-  const [teamProjects, teamRisks, sprints] = await Promise.all([
-    getCollectionQueryWithId<Project>(
-      query(collection(db, 'projects'), where('teamId', '==', id)),
-    ),
-    getCollectionQueryWithId<RiskInsight>(
-      query(collection(db, 'riskInsights'), where('teamId', '==', id)),
-    ),
+  const [teamProjects, teamRisks, sprints, accounts] = await Promise.all([
+    getCollectionWhere<Project>('projects', 'teamId', id),
+    getCollectionWhere<RiskInsight>('riskInsights', 'teamId', id),
     getCollectionWithId<Sprint>('sprints'),
+    getCollectionWithId<UserProfile>('users', 'email'),
   ]);
 
   const totalCapacity = team.members.reduce(
@@ -62,6 +62,7 @@ const TeamDetailPage = async ({
       risks={teamRisks}
       sprints={sprints}
       totalCapacity={totalCapacity}
+      accounts={accounts}
     />
   );
 };

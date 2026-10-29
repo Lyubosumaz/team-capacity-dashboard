@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { deleteSession } from '@/features/auth/session';
 
 export const AccountView = () => {
   const { user, loading } = useAuth();
@@ -73,6 +74,7 @@ export const AccountView = () => {
       );
       await reauthenticateWithCredential(user, credential);
       await deleteUser(user);
+      await deleteSession();
       setIsDeleteDialogOpen(false);
       setDeletePassword('');
       router.push('/login');

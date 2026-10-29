@@ -12,7 +12,7 @@ import {
   riskInsights as mockRiskInsights,
   sprints as mockSprints,
   teams as mockTeams,
-} from '@/lib/domain/mockData';
+} from '@tests/mockData';
 
 describe('TeamDetailPage', () => {
   it('renders team detail heading when team exists', async () => {
@@ -42,6 +42,7 @@ describe('TeamDetailPage', () => {
           risks={teamRisks}
           sprints={mockSprints}
           totalCapacity={totalCapacity}
+          accounts={[]}
         />
       </TestProviders>,
     );

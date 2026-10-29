@@ -1,10 +1,15 @@
 import { AccountView } from '@/features/account/AccountView';
-import { FirebaseGate } from '@/features/auth/FirebaseGate';
+import { getCurrentUser } from '@/features/auth/currentUser';
+import { LoginRequired } from '@/features/auth/LoginRequired';
 
-const UserPage = () => (
-  <FirebaseGate feature="Account">
-    <AccountView />
-  </FirebaseGate>
-);
+const UserPage = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return <LoginRequired />;
+  }
+
+  return <AccountView />;
+};
 
 export default UserPage;

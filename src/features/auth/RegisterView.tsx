@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { auth } from '@/lib/firebase/client';
+import { saveSession } from './session';
 
 export const RegisterView = () => {
   const t = useTranslations();
@@ -33,8 +34,14 @@ export const RegisterView = () => {
     setIsSubmitting(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/');
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      // Lets the server see the login too: pages check it before showing data.
+      await saveSession(await credential.user.getIdToken());
+      router.push('/overview');
     } catch (err) {
       console.error('Registration failed', err);
       setError(t('auth.register.error'));

@@ -5,7 +5,7 @@ import type {
   RiskRule,
   Sprint,
   Team,
-} from './types';
+} from '@/lib/domain/types';
 
 export const skills = [
   {

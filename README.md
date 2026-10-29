@@ -18,8 +18,8 @@ This project is also used as a playground to practice senior‑level frontend sk
 
 - **Framework & Language**: Next.js (App Router), React, TypeScript
 - **Styling & UI**: Tailwind CSS, custom components, lucide-react icons
-- **State & Data**: @tanstack/react-query for server state, Recharts for data visualisation
-- **Backend & Auth**: Next.js API routes, Firebase SDK integration
+- **Data**: each page loads its data on the server; charts use tzardom-ui
+- **Backend & Auth**: Next.js Server Actions, Firebase Auth, Firestore through its REST API as the logged-in user
 - **Quality & Tooling**: Biome, a git pre-commit hook (`.githooks/`), strict TypeScript config
 - **Testing**: Vitest (unit/integration), Testing Library, Playwright (end-to-end)
 
@@ -54,34 +54,41 @@ pnpm dev
 
 Open [http://localhost:3333](http://localhost:3333) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+There's no page at `/`: it redirects to `/overview`. You can start editing that page in `src/app/overview/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Running with or without Firebase
 
-Copy `example.env` to `local.env` to use real data. Restart the dev server after changing it. Without it, the app falls back to mock data or a "Firebase unavailable" page.
+Copy `example.env` to `local.env` to use real data. Restart the dev server after changing it. Without it, nobody can log in: pages with data ask you to log in, and the login page shows a "needs Firebase configured" message. The mock data in `tests/mockData.ts` is only for tests.
 
 | Page type | Guard |
 |---|---|
-| Server page that fetches data (`teams`, `teams/[id]`, `risk`) | `requireFirebase("Feature")` |
-| Client-only page (`login`, `register`, `user`) | `<FirebaseGate feature="Feature">` |
+| Page with data (`overview`, `risk`, `teams`, `teams/[id]`, `user`) | `getCurrentUser()`; shows `<LoginRequired>` when nobody is logged in |
+| Login and sign-up (`login`, `register`) | `<FirebaseGate feature="Feature">` |
 
-Access Firestore only through `getDb()` (`src/lib/firebase/firestore.ts`). Never use `db!`.
+Read and write Firestore only on the server, through the helpers in `src/lib/firebase/collections.ts`.
 
-## Seeding Firestore (dev only)
+## Login and teams
 
-To populate Firebase/Firestore with the mock domain data used by the app (skills, teams, sprints, projects, risk rules/insights/events), run the dev seed endpoint while the dev server is running:
+With Firebase set up, every page with data needs a login. No private key is needed, only the public values in `example.env`:
 
-```bash
-curl -X POST http://localhost:3333/api/dev/seed-all
-```
+- Logging in happens in the browser with Firebase Auth. The browser then saves its login token in a cookie, and saves the new one each time Firebase renews it (about every hour).
+- On each page the server asks Firebase whose token it is, then reads Firestore with that same token. So `firestore.rules` decides what each user can see and change.
 
-This calls the handler in `src/app/api/dev/seed-all/route.ts` and will create or update the corresponding collections in your Firestore project. Use this only in development; for production, configure real data and proper Firestore security rules.
+Users can sign up at `/register`, or be added in Firebase console → **Authentication → Users → Add user**.
+
+Any logged-in user can create teams on `/teams`. A team belongs to the person who created it (its `ownerId`): only they see it, rename it, delete it, and manage its members on the team's page. The overview and risk pages only count the projects, risks and events of the user's own teams.
+
+Team members are accounts. Each time someone logs in, their email is saved in the `users` collection (the document ID is their account's UID), so others can pick them: in the "Add team" dialog, or with "Add a member" on a team's page. Each member's role and capacity per sprint are set on the team's page. People with an account show up in the list after their first login.
+
+## Firestore rules
+
+`firestore.rules` is what keeps the data private: each team can only be read and changed by the user who created it, everyone logged in can see the list of accounts (`users`) but only write their own, and logged-in users can read the shared data (projects, sprints and risks). The app needs these rules published: paste the file into Firebase console → Firestore → Rules and click **Publish**, and again after every change.
 
 ## End-to-end tests
 
-The end-to-end tests use Playwright and run in Chromium, Firefox and WebKit (Safari). They need Firebase set up (`local.env`) with seeded data. Install the browsers once, then run them:
+The end-to-end tests use Playwright and run in Chromium, Firefox and WebKit (Safari). They need Firebase set up (`local.env`) with some teams in Firestore, and a test user to log in as: `E2E_EMAIL` and `E2E_PASSWORD` in `local.env`. Install the browsers once, then run them:
 
 ```bash
 pnpm exec playwright install chromium firefox webkit

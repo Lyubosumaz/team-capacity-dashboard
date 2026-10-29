@@ -6,7 +6,7 @@ import { Providers } from '@/shared/providers/Providers';
 const Child = () => <div data-testid="child">child-content</div>;
 
 describe('Providers', () => {
-  it('renders children inside QueryClientProvider', () => {
+  it('renders its children', () => {
     render(
       <Providers>
         <Child />

@@ -7,6 +7,12 @@ vi.mock('@/lib/firebase/config', () => ({
   firebaseConfig: {},
 }));
 
+// The server actions only save or remove a cookie; tests don't need them.
+vi.mock('@/features/auth/session', () => ({
+  saveSession: vi.fn(),
+  deleteSession: vi.fn(),
+}));
+
 import { TestProviders } from '@tests/TestProviders';
 import LoginPage from '@/app/login/page';
 

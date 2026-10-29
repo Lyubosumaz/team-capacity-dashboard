@@ -4,7 +4,15 @@ export type Skill = {
   category?: string;
 };
 
+// A Firebase account, copied to the `users` collection when its owner logs
+// in, so others can add them to teams. The ID is the account's UID.
+export type UserProfile = {
+  id: string;
+  email: string;
+};
+
 export type Member = {
+  // The member's account UID.
   id: string;
   name: string;
   role: string;
@@ -16,6 +24,9 @@ export type Member = {
 export type Team = {
   id: string;
   name: string;
+  // The user who created the team; only they can see and change it.
+  // Old sample teams have none.
+  ownerId?: string;
   members: Member[];
 };
 

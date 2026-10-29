@@ -1,10 +1,11 @@
-import { requireFirebase } from '@/features/auth/requireFirebase';
+import { getCurrentUser } from '@/features/auth/currentUser';
+import { LoginRequired } from '@/features/auth/LoginRequired';
 import { RiskView } from '@/features/risk/RiskView';
 import {
   getOverCapacityItems,
   getUpcomingEventItems,
 } from '@/features/risk/riskWidgets';
-import { getUpcomingRiskEvents } from '@/lib/domain/metrics';
+import { forTeams, getUpcomingRiskEvents } from '@/lib/domain/metrics';
 import type {
   Project,
   RiskEvent,
@@ -13,24 +14,38 @@ import type {
   Sprint,
   Team,
 } from '@/lib/domain/types';
-import { getCollectionWithId } from '@/lib/firebase/collections';
+import {
+  getCollectionWhere,
+  getCollectionWithId,
+} from '@/lib/firebase/collections';
 
 const RiskPage = async () => {
-  const unavailable = requireFirebase('Risk insights');
+  const user = await getCurrentUser();
 
-  if (unavailable) {
-    return unavailable;
+  if (!user) {
+    return <LoginRequired />;
   }
 
-  const [teams, projects, sprints, riskRules, riskInsights, riskEvents] =
-    await Promise.all([
-      getCollectionWithId<Team>('teams'),
-      getCollectionWithId<Project>('projects'),
-      getCollectionWithId<Sprint>('sprints'),
-      getCollectionWithId<RiskRule>('riskRules'),
-      getCollectionWithId<RiskInsight>('riskInsights'),
-      getCollectionWithId<RiskEvent>('riskEvents'),
-    ]);
+  const [
+    teams,
+    allProjects,
+    sprints,
+    riskRules,
+    allRiskInsights,
+    allRiskEvents,
+  ] = await Promise.all([
+    getCollectionWhere<Team>('teams', 'ownerId', user.uid),
+    getCollectionWithId<Project>('projects'),
+    getCollectionWithId<Sprint>('sprints'),
+    getCollectionWithId<RiskRule>('riskRules'),
+    getCollectionWithId<RiskInsight>('riskInsights'),
+    getCollectionWithId<RiskEvent>('riskEvents'),
+  ]);
+
+  // Only what belongs to the user's own teams.
+  const projects = forTeams(allProjects, teams);
+  const riskInsights = forTeams(allRiskInsights, teams);
+  const riskEvents = forTeams(allRiskEvents, teams);
 
   const highRiskInsights = riskInsights.filter(
     (insight) => insight.severity === 'high',

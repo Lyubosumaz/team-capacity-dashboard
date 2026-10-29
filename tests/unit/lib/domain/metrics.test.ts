@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  forTeams,
   getCapacitySnapshotsForTeam,
   getTeamCapacityForSprint,
   getTeamsOverCapacity,
@@ -106,5 +107,17 @@ describe('metrics', () => {
       capacity: 25,
       workload: 20,
     });
+  });
+});
+
+describe('forTeams', () => {
+  it('keeps only the items of the given teams', () => {
+    const items = [
+      { id: 'a', teamId: 'team-1' },
+      { id: 'b', teamId: 'team-2' },
+      { id: 'c' },
+    ];
+
+    expect(forTeams(items, [team])).toEqual([{ id: 'a', teamId: 'team-1' }]);
   });
 });

@@ -14,7 +14,7 @@ vi.mock('firebase/auth', () => {
     initializeAuth: vi.fn(() => authMock),
     browserLocalPersistence: {},
 
-    onAuthStateChanged: vi.fn((_auth, callback: (user: unknown) => void) => {
+    onIdTokenChanged: vi.fn((_auth, callback: (user: unknown) => void) => {
       callback(null);
       return () => {};
     }),
@@ -44,5 +44,12 @@ vi.mock('next/navigation', () => {
     useRouter: () => ({ push, replace, back, forward, refresh }),
     usePathname: () => '/',
     useSearchParams: () => new URLSearchParams(),
+    // Like the real ones, these stop the code that calls them.
+    redirect: vi.fn((url: string) => {
+      throw new Error(`NEXT_REDIRECT ${url}`);
+    }),
+    notFound: vi.fn(() => {
+      throw new Error('NEXT_NOT_FOUND');
+    }),
   };
 });

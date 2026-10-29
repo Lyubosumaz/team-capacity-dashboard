@@ -7,7 +7,11 @@ if (existsSync('local.env')) {
   process.loadEnvFile('local.env');
 }
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  redirects: async () => [
+    { source: '/', destination: '/overview', permanent: false },
+  ],
+};
 
 const withNextIntl = createNextIntlPlugin('./src/shared/i18n/request.ts');
 

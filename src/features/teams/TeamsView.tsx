@@ -7,24 +7,26 @@ import {
   TzarTextField,
 } from '@tzardom-ui/react';
 import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
-import type { Team } from '@/lib/domain/types';
+import type { Team, UserProfile } from '@/lib/domain/types';
+import { addTeam, deleteTeam } from './actions';
 import { TeamsList } from './TeamsList';
 
 type TeamsViewProps = {
+  // The user's own teams.
   teams: Team[];
+  // Everyone who can be added to a team.
+  accounts: UserProfile[];
 };
 
-export const TeamsView = ({ teams }: TeamsViewProps) => {
-  const router = useRouter();
+export const TeamsView = ({ teams, accounts }: TeamsViewProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTeamName, setNewTeamName] = useState('');
-  const [selectedMembersTeamIds, setSelectedMembersTeamIds] = useState<
-    string[]
-  >([]);
+  const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>(
+    [],
+  );
   const [teamIdPendingDelete, setTeamIdPendingDelete] = useState<string | null>(
     null,
   );
@@ -36,6 +38,14 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
   const memberSuffixPlural = t('teams.list.membersSuffixPlural');
   const viewLabel = t('teams.list.viewLabel');
 
+  const toggleAccount = (accountId: string) => {
+    setSelectedAccountIds((ids) =>
+      ids.includes(accountId)
+        ? ids.filter((id) => id !== accountId)
+        : [...ids, accountId],
+    );
+  };
+
   const handleDeleteTeam = (teamId: string) => {
     setTeamIdPendingDelete(teamId);
   };
@@ -44,20 +54,14 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
     if (!teamIdPendingDelete) return;
 
     try {
-      const response = await fetch(
-        `/api/teams?id=${encodeURIComponent(teamIdPendingDelete)}`,
-        {
-          method: 'DELETE',
-        },
-      );
+      const result = await deleteTeam(teamIdPendingDelete);
 
-      if (!response.ok && response.status !== 204) {
-        console.error('Failed to delete team');
+      if (result.error) {
+        console.error('Failed to delete team:', result.error);
         return;
       }
 
       setTeamIdPendingDelete(null);
-      router.refresh();
     } catch (error) {
       console.error('Error deleting team', error);
     }
@@ -78,7 +82,7 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
           onClick={() => {
             setSubmitError(null);
             setNewTeamName('');
-            setSelectedMembersTeamIds([]);
+            setSelectedAccountIds([]);
             setIsAddModalOpen(true);
           }}
         >
@@ -94,7 +98,7 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
           setIsAddModalOpen(false);
           setNewTeamName('');
           setSubmitError(null);
-          setSelectedMembersTeamIds([]);
+          setSelectedAccountIds([]);
         }}
         title="Add team"
         size="lg"
@@ -119,43 +123,17 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
               setIsSubmitting(true);
               setSubmitError(null);
 
-              const response = await fetch('/api/teams', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name: trimmedName,
-                  members:
-                    selectedMembersTeamIds.length > 0
-                      ? (() => {
-                          const combined = teams
-                            .filter((team) =>
-                              selectedMembersTeamIds.includes(team.id),
-                            )
-                            .flatMap((team) => team.members);
+              const result = await addTeam(trimmedName, selectedAccountIds);
 
-                          const seen = new Set<string>();
-                          return combined.filter((member) => {
-                            if (seen.has(member.id)) return false;
-                            seen.add(member.id);
-                            return true;
-                          });
-                        })()
-                      : [],
-                }),
-              });
-
-              if (!response.ok) {
-                setSubmitError('Failed to add team. Please try again.');
+              if (result.error) {
+                setSubmitError(result.error);
                 return;
               }
 
               setIsAddModalOpen(false);
               setNewTeamName('');
               setSubmitError(null);
-              setSelectedMembersTeamIds([]);
-              router.refresh();
+              setSelectedAccountIds([]);
             } catch (error) {
               console.error('Error adding team', error);
               setSubmitError('Failed to add team. Please try again.');
@@ -172,29 +150,35 @@ export const TeamsView = ({ teams }: TeamsViewProps) => {
             placeholder="Enter team name"
           />
 
-          <label className="block text-xs font-medium">
-            Members
-            <select
-              className="mt-1 w-full rounded-md border border-border-subtle bg-background px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              multiple
-              value={selectedMembersTeamIds}
-              onChange={(event) =>
-                setSelectedMembersTeamIds(
-                  Array.from(
-                    event.target.selectedOptions,
-                    (option) => option.value,
-                  ),
-                )
-              }
-            >
-              <option value="">No members (empty team)</option>
-              {teams.map((team) => (
-                <option key={team.id} value={team.id}>
-                  Copy members from {team.name}
-                </option>
-              ))}
-            </select>
-          </label>
+          <fieldset className="space-y-2">
+            <legend className="text-xs font-medium uppercase tracking-wide opacity-70">
+              Members
+            </legend>
+            {accounts.length === 0 ? (
+              <p className="text-xs text-muted">
+                No accounts yet. People show up here after they log in.
+              </p>
+            ) : (
+              <ul className="max-h-48 space-y-1 overflow-y-auto rounded-md border border-border-subtle p-2">
+                {accounts.map((account) => (
+                  <li key={account.id}>
+                    <label className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={selectedAccountIds.includes(account.id)}
+                        onChange={() => toggleAccount(account.id)}
+                      />
+                      {account.email}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="text-xs text-muted">
+              You can set each member&apos;s role and capacity on the team
+              page.
+            </p>
+          </fieldset>
 
           {submitError ? (
             <p data-testid="teams-add-error" className="text-xs text-danger">

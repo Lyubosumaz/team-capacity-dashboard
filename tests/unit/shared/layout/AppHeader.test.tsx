@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { TestProviders } from '@tests/TestProviders';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { CurrentUser } from '@/features/auth/currentUser';
 import { setLocale } from '@/shared/i18n/actions';
 import { AppHeader } from '@/shared/layout/AppHeader';
 
@@ -16,10 +17,15 @@ vi.mock('next/link', () => ({
   ),
 }));
 
-const renderHeader = () =>
+const LOGGED_IN: CurrentUser = {
+  uid: 'user-1',
+  email: 'ana@example.com',
+};
+
+const renderHeader = (user: CurrentUser | null = null) =>
   render(
     <TestProviders>
-      <AppHeader />
+      <AppHeader user={user} />
     </TestProviders>,
   );
 
@@ -39,12 +45,12 @@ describe('AppHeader', () => {
   });
 
   it('links to the three primary pages in both navs', () => {
-    renderHeader();
+    renderHeader(LOGGED_IN);
 
     for (const area of ['header', 'mobile']) {
       expect(screen.getByTestId(`${area}-nav-overview-link`)).toHaveAttribute(
         'href',
-        '/',
+        '/overview',
       );
       expect(screen.getByTestId(`${area}-nav-risk-link`)).toHaveAttribute(
         'href',
@@ -58,6 +64,21 @@ describe('AppHeader', () => {
     expect(screen.getByTestId('header-nav-overview-link')).toHaveTextContent(
       /overview/i,
     );
+  });
+
+  it('hides the menu when logged out', () => {
+    renderHeader();
+
+    expect(screen.queryByTestId('header-nav')).toBeNull();
+    expect(screen.queryByTestId('mobile-nav')).toBeNull();
+  });
+
+  it('shows the user menu and no login links when logged in', () => {
+    renderHeader(LOGGED_IN);
+
+    expect(screen.getByTestId('header-user-menu')).toBeInTheDocument();
+    expect(screen.queryByTestId('header-login-link')).toBeNull();
+    expect(screen.queryByTestId('mobile-login-link')).toBeNull();
   });
 
   it('shows the login links and no user menu when logged out', () => {

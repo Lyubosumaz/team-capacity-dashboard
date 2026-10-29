@@ -14,7 +14,7 @@ import {
   riskRules as mockRiskRules,
   sprints as mockSprints,
   teams as mockTeams,
-} from '@/lib/domain/mockData';
+} from '@tests/mockData';
 
 describe('Risk page', () => {
   it('renders risk overview heading and key sections', () => {

@@ -11,11 +11,12 @@ import {
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { useAuth } from '@/features/auth/AuthProvider';
+import type { CurrentUser } from '@/features/auth/currentUser';
 import { setLocale } from '@/shared/i18n/actions';
 import type { Locale } from '@/shared/i18n/messages/types';
 
 const NAV_ITEMS = [
-  { href: '/', labelKey: 'header.nav.overview', name: 'overview' },
+  { href: '/overview', labelKey: 'header.nav.overview', name: 'overview' },
   { href: '/risk', labelKey: 'header.nav.risk', name: 'risk' },
   { href: '/teams', labelKey: 'header.nav.teams', name: 'teams' },
 ];
@@ -26,10 +27,15 @@ const LANGUAGES: TzarLanguage<Locale>[] = [
   { code: 'ka', short: 'KA', label: 'Georgian' },
 ];
 
-export const AppHeader = () => {
+type AppHeaderProps = {
+  // From the server's session check; null when nobody is logged in.
+  user: CurrentUser | null;
+};
+
+export const AppHeader = ({ user }: AppHeaderProps) => {
   const t = useTranslations();
   const locale = useLocale();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
   const renderNav = (area: string) => (
     <nav
@@ -65,7 +71,9 @@ export const AppHeader = () => {
           />
 
           <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
-            <div className="hidden lg:block">{renderNav('header')}</div>
+            {user && (
+              <div className="hidden lg:block">{renderNav('header')}</div>
+            )}
             <div className="flex items-center gap-2">
               <TzarThemeToggle data-testid="header-theme-toggle" />
               <TzarLanguageSelect
@@ -103,8 +111,8 @@ export const AppHeader = () => {
         data-testid="mobile-header"
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between py-2 px-6 gap-3">
-          {renderNav('mobile')}
-          <div className="flex items-center gap-2">
+          {user && renderNav('mobile')}
+          <div className="ml-auto flex items-center gap-2">
             {!user && (
               <TzarCommonLink
                 as={Link}

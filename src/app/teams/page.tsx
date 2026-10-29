@@ -1,20 +1,25 @@
-import { requireFirebase } from '@/features/auth/requireFirebase';
+import { getCurrentUser } from '@/features/auth/currentUser';
+import { LoginRequired } from '@/features/auth/LoginRequired';
 import { TeamsView } from '@/features/teams/TeamsView';
-import type { Team } from '@/lib/domain/types';
-import { getCollectionWithId } from '@/lib/firebase/collections';
-
-export const dynamic = 'force-static';
+import type { Team, UserProfile } from '@/lib/domain/types';
+import {
+  getCollectionWhere,
+  getCollectionWithId,
+} from '@/lib/firebase/collections';
 
 const TeamsPage = async () => {
-  const unavailable = requireFirebase('Teams');
+  const user = await getCurrentUser();
 
-  if (unavailable) {
-    return unavailable;
+  if (!user) {
+    return <LoginRequired />;
   }
 
-  const teams = await getCollectionWithId<Team>('teams');
+  const [teams, accounts] = await Promise.all([
+    getCollectionWhere<Team>('teams', 'ownerId', user.uid),
+    getCollectionWithId<UserProfile>('users', 'email'),
+  ]);
 
-  return <TeamsView teams={teams} />;
+  return <TeamsView teams={teams} accounts={accounts} />;
 };
 
 export default TeamsPage;
