@@ -1,9 +1,10 @@
 import { requireFirebase } from '@/features/auth/requireFirebase';
 import { RiskView } from '@/features/risk/RiskView';
 import {
-  getTeamsOverCapacity,
-  getUpcomingRiskEvents,
-} from '@/lib/domain/metrics';
+  getOverCapacityItems,
+  getUpcomingEventItems,
+} from '@/features/risk/riskWidgets';
+import { getUpcomingRiskEvents } from '@/lib/domain/metrics';
 import type {
   Project,
   RiskEvent,
@@ -43,12 +44,9 @@ const RiskPage = async () => {
 
   const upcomingEvents = getUpcomingRiskEvents(riskEvents, new Date(), 50);
 
-  const teamsOverCapacity =
-    sprints.length > 0
-      ? getTeamsOverCapacity(teams, projects, sprints[0], 1)
-      : [];
+  const overCapacityTeams = getOverCapacityItems(teams, projects, sprints);
 
-  const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
+  const upcomingEventItems = getUpcomingEventItems(riskEvents, teams);
 
   return (
     <RiskView
@@ -58,7 +56,8 @@ const RiskPage = async () => {
       insights={riskInsights}
       rules={riskRules}
       teams={teams}
-      overCapacityTeamIds={overCapacityTeamIds}
+      overCapacityTeams={overCapacityTeams}
+      upcomingEvents={upcomingEventItems}
     />
   );
 };

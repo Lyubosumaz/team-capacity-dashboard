@@ -10,6 +10,7 @@ import { OverviewView } from '@/features/overview/OverviewView';
 import {
   projects as mockProjects,
   riskInsights as mockRiskInsights,
+  sprints as mockSprints,
   teams as mockTeams,
 } from '@/lib/domain/mockData';
 
@@ -27,6 +28,11 @@ describe('Home page', () => {
           totalTeams={totalTeams}
           totalProjects={totalProjects}
           highRiskCount={highRiskCount}
+          overCapacityTeams={[]}
+          upcomingEvents={[]}
+          chartTeam={mockTeams[0]}
+          sprints={mockSprints}
+          projects={mockProjects}
         />
       </TestProviders>,
     );

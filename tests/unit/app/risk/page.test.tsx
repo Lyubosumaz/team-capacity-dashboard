@@ -3,9 +3,10 @@ import { TestProviders } from '@tests/TestProviders';
 import { describe, expect, it } from 'vitest';
 import { RiskView } from '@/features/risk/RiskView';
 import {
-  getTeamsOverCapacity,
-  getUpcomingRiskEvents,
-} from '@/lib/domain/metrics';
+  getOverCapacityItems,
+  getUpcomingEventItems,
+} from '@/features/risk/riskWidgets';
+import { getUpcomingRiskEvents } from '@/lib/domain/metrics';
 import {
   projects as mockProjects,
   riskEvents as mockRiskEvents,
@@ -33,12 +34,13 @@ describe('Risk page', () => {
       50,
     );
 
-    const teamsOverCapacity =
-      mockSprints.length > 0
-        ? getTeamsOverCapacity(mockTeams, mockProjects, mockSprints[0], 1)
-        : [];
+    const overCapacityTeams = getOverCapacityItems(
+      mockTeams,
+      mockProjects,
+      mockSprints,
+    );
 
-    const overCapacityTeamIds = teamsOverCapacity.map(({ team }) => team.id);
+    const upcomingEventItems = getUpcomingEventItems(mockRiskEvents, mockTeams);
 
     render(
       <TestProviders>
@@ -49,7 +51,8 @@ describe('Risk page', () => {
           insights={mockRiskInsights}
           rules={mockRiskRules}
           teams={mockTeams}
-          overCapacityTeamIds={overCapacityTeamIds}
+          overCapacityTeams={overCapacityTeams}
+          upcomingEvents={upcomingEventItems}
         />
       </TestProviders>,
     );

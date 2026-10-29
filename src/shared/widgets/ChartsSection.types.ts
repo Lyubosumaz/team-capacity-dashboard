@@ -1,9 +1,8 @@
+import type { Project, Sprint, Team } from '@/lib/domain/types';
+
 export type ChartsSectionTexts = {
   heading?: string;
   description?: string;
-  loading: string;
-  error: string;
-  notFound: string;
   noData: string;
   capacityOverTimeTitle: string;
   workloadVsCapacityTitle: string;
@@ -11,7 +10,9 @@ export type ChartsSectionTexts = {
 };
 
 export type ChartsSectionProps = {
-  teamId: string;
+  team: Team;
+  sprints: Sprint[];
+  projects: Project[];
   texts: ChartsSectionTexts;
   withHeader?: boolean;
 };

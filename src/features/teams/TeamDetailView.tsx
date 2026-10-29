@@ -4,7 +4,7 @@ import { TzarButton, TzarDialog, TzarTextField } from '@tzardom-ui/react';
 import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
-import type { Project, RiskInsight, Team } from '@/lib/domain/types';
+import type { Project, RiskInsight, Sprint, Team } from '@/lib/domain/types';
 import { ChartsSection } from '@/shared/widgets/ChartsSection';
 import { TeamMembersSection } from './TeamMembersSection';
 import { TeamProjectsAndRisksSection } from './TeamProjectsAndRisksSection';
@@ -13,6 +13,7 @@ type TeamDetailViewProps = {
   team: Team;
   projects: Project[];
   risks: RiskInsight[];
+  sprints: Sprint[];
   totalCapacity: number;
 };
 
@@ -20,6 +21,7 @@ export const TeamDetailView = ({
   team,
   projects,
   risks,
+  sprints,
   totalCapacity,
 }: TeamDetailViewProps) => {
   const t = useTranslations();
@@ -53,9 +55,6 @@ export const TeamDetailView = ({
   const chartsTexts = {
     heading: t('teams.detail.chartsSection.heading'),
     description: t('teams.detail.chartsSection.description'),
-    loading: t('teams.detail.chartsSection.loading'),
-    error: t('teams.detail.chartsSection.error'),
-    notFound: t('teams.detail.chartsSection.notFound'),
     noData: t('teams.detail.chartsSection.noData'),
     capacityOverTimeTitle: t(
       'teams.detail.chartsSection.capacityOverTimeTitle',
@@ -108,7 +107,12 @@ export const TeamDetailView = ({
         />
       </div>
 
-      <ChartsSection teamId={team.id} texts={chartsTexts} />
+      <ChartsSection
+        team={team}
+        sprints={sprints}
+        projects={projects}
+        texts={chartsTexts}
+      />
 
       <TzarDialog
         data-testid="team-detail-edit-dialog"

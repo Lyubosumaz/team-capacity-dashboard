@@ -1,6 +1,10 @@
 'use client';
 
-import { TzarPageHeader } from '@tzardom-ui/react';
+import {
+  TzarPageHeader,
+  type TzarRiskEvent,
+  type TzarTeamCapacity,
+} from '@tzardom-ui/react';
 import { useTranslations } from 'next-intl';
 import type { RiskInsight, RiskRule, Team } from '@/lib/domain/types';
 import { KeyMetricsSection } from '@/shared/widgets/KeyMetricsSection';
@@ -14,7 +18,8 @@ type RiskViewProps = {
   insights: RiskInsight[];
   rules: RiskRule[];
   teams: Team[];
-  overCapacityTeamIds: string[];
+  overCapacityTeams: TzarTeamCapacity[];
+  upcomingEvents: TzarRiskEvent[];
 };
 
 export const RiskView = ({
@@ -24,9 +29,12 @@ export const RiskView = ({
   insights,
   rules,
   teams,
-  overCapacityTeamIds,
+  overCapacityTeams,
+  upcomingEvents,
 }: RiskViewProps) => {
   const t = useTranslations();
+
+  const overCapacityTeamIds = overCapacityTeams.map((team) => team.id);
 
   return (
     <section className="flex w-full flex-col gap-6">
@@ -56,7 +64,10 @@ export const RiskView = ({
         }}
       />
 
-      <CapacityAndRiskWidgetsSection />
+      <CapacityAndRiskWidgetsSection
+        overCapacityTeams={overCapacityTeams}
+        upcomingEvents={upcomingEvents}
+      />
 
       <RiskInsightsList
         insights={insights}

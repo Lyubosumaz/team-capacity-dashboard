@@ -1,8 +1,4 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
 import { TzarChart, TzarPageHeader } from '@tzardom-ui/react';
-import { api } from '@/lib/api/client';
 import {
   getCapacitySnapshotsForTeam,
   getTeamCapacityForSprint,
@@ -17,45 +13,15 @@ const CAPACITY_SERIES = [
 ];
 
 export const ChartsSection = ({
-  teamId,
+  team,
+  sprints,
+  projects,
   texts,
   withHeader = true,
 }: ChartsSectionProps) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['team-charts', teamId],
-    queryFn: async () => {
-      const [teams, sprints, projects] = await Promise.all([
-        api.getTeams(),
-        api.getSprints(),
-        api.getProjects(),
-      ]);
+  const snapshots = getCapacitySnapshotsForTeam(team, sprints, projects);
 
-      return { teams, sprints, projects };
-    },
-  });
-
-  if (isLoading) {
-    return <ChartsSectionLayout texts={texts} message={texts.loading} />;
-  }
-
-  if (isError || !data) {
-    return <ChartsSectionLayout texts={texts} message={texts.error} />;
-  }
-
-  const team = data.teams.find((t) => t.id === teamId);
-
-  if (!team) {
-    return <ChartsSectionLayout texts={texts} message={texts.notFound} />;
-  }
-
-  const snapshots = getCapacitySnapshotsForTeam(
-    team.id,
-    data.sprints,
-    data.teams,
-    data.projects,
-  );
-
-  const currentSprint = data.sprints[0];
+  const currentSprint = sprints[0];
   const workloadData = currentSprint
     ? [
         {
@@ -64,7 +30,7 @@ export const ChartsSection = ({
           workload: getTeamWorkloadForSprint(
             team.id,
             currentSprint.id,
-            data.projects,
+            projects,
           ),
         },
       ]

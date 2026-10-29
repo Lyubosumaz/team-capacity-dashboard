@@ -10,6 +10,7 @@ import { TeamDetailView } from '@/features/teams/TeamDetailView';
 import {
   projects as mockProjects,
   riskInsights as mockRiskInsights,
+  sprints as mockSprints,
   teams as mockTeams,
 } from '@/lib/domain/mockData';
 
@@ -39,6 +40,7 @@ describe('TeamDetailPage', () => {
           team={team}
           projects={teamProjects}
           risks={teamRisks}
+          sprints={mockSprints}
           totalCapacity={totalCapacity}
         />
       </TestProviders>,

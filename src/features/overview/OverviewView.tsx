@@ -1,8 +1,11 @@
-'use client';
-
-import { TzarPageHeader } from '@tzardom-ui/react';
+import {
+  TzarPageHeader,
+  type TzarRiskEvent,
+  type TzarTeamCapacity,
+} from '@tzardom-ui/react';
 import { useTranslations } from 'next-intl';
 import { CapacityAndRiskWidgetsSection } from '@/features/risk/CapacityAndRiskWidgetsSection';
+import type { Project, Sprint, Team } from '@/lib/domain/types';
 import { ChartsSection } from '@/shared/widgets/ChartsSection';
 import { KeyMetricsSection } from '@/shared/widgets/KeyMetricsSection';
 
@@ -10,12 +13,22 @@ type OverviewViewProps = {
   totalTeams: number;
   totalProjects: number;
   highRiskCount: number;
+  overCapacityTeams: TzarTeamCapacity[];
+  upcomingEvents: TzarRiskEvent[];
+  chartTeam?: Team;
+  sprints: Sprint[];
+  projects: Project[];
 };
 
 export const OverviewView = ({
   totalTeams,
   totalProjects,
   highRiskCount,
+  overCapacityTeams,
+  upcomingEvents,
+  chartTeam,
+  sprints,
+  projects,
 }: OverviewViewProps) => {
   const t = useTranslations();
 
@@ -35,9 +48,6 @@ export const OverviewView = ({
   };
 
   const chartsTexts = {
-    loading: t('teams.detail.chartsSection.loading'),
-    error: t('teams.detail.chartsSection.error'),
-    notFound: t('teams.detail.chartsSection.notFound'),
     noData: t('teams.detail.chartsSection.noData'),
     capacityOverTimeTitle: t(
       'teams.detail.chartsSection.capacityOverTimeTitle',
@@ -68,13 +78,20 @@ export const OverviewView = ({
         texts={keyMetricsLabels}
       />
 
-      <CapacityAndRiskWidgetsSection />
-
-      <ChartsSection
-        teamId="team-alpha"
-        withHeader={false}
-        texts={chartsTexts}
+      <CapacityAndRiskWidgetsSection
+        overCapacityTeams={overCapacityTeams}
+        upcomingEvents={upcomingEvents}
       />
+
+      {chartTeam && (
+        <ChartsSection
+          team={chartTeam}
+          sprints={sprints}
+          projects={projects}
+          withHeader={false}
+          texts={chartsTexts}
+        />
+      )}
     </section>
   );
 };

@@ -99,25 +99,12 @@ describe('metrics', () => {
   });
 
   it('builds capacity snapshots for a team', () => {
-    const snapshots = getCapacitySnapshotsForTeam(
-      'team-1',
-      [sprint],
-      teams,
-      projects,
-    );
+    const snapshots = getCapacitySnapshotsForTeam(team, [sprint], projects);
     expect(snapshots).toHaveLength(1);
     expect(snapshots[0]).toMatchObject({
       sprintId: sprint.id,
       capacity: 25,
       workload: 20,
     });
-
-    const empty = getCapacitySnapshotsForTeam(
-      'missing',
-      [sprint],
-      teams,
-      projects,
-    );
-    expect(empty).toEqual([]);
   });
 });

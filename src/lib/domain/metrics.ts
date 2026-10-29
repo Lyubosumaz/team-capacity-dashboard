@@ -63,14 +63,10 @@ export const getUpcomingRiskEvents = (
 };
 
 export const getCapacitySnapshotsForTeam = (
-  teamId: string,
+  team: Team,
   sprints: Sprint[],
-  teams: Team[],
   projects: Project[],
 ): CapacitySnapshot[] => {
-  const team = teams.find((t) => t.id === teamId);
-  if (!team) return [];
-
   return sprints.map((sprint) => {
     const capacity = getTeamCapacityForSprint(team);
     const workload = getTeamWorkloadForSprint(team.id, sprint.id, projects);

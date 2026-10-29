@@ -76,9 +76,6 @@ export const en: Messages = {
         heading: 'Capacity & workload',
         description:
           "How this team's planned capacity compares to workload over sprints.",
-        loading: 'Loading charts…',
-        error: 'Unable to load charts for this team right now.',
-        notFound: 'This team could not be found.',
         noData: 'Not enough data yet to show charts for this team.',
         capacityOverTimeTitle: 'Capacity over time',
         workloadVsCapacityTitle: 'Workload vs capacity',

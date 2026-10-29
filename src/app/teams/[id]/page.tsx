@@ -2,8 +2,11 @@ import { collection, doc, getDoc, query, where } from 'firebase/firestore';
 import { notFound } from 'next/navigation';
 import { requireFirebase } from '@/features/auth/requireFirebase';
 import { TeamDetailView } from '@/features/teams/TeamDetailView';
-import type { Project, RiskInsight, Team } from '@/lib/domain/types';
-import { getCollectionQueryWithId } from '@/lib/firebase/collections';
+import type { Project, RiskInsight, Sprint, Team } from '@/lib/domain/types';
+import {
+  getCollectionQueryWithId,
+  getCollectionWithId,
+} from '@/lib/firebase/collections';
 import { getDb } from '@/lib/firebase/firestore';
 
 type TeamPageParams = {
@@ -37,13 +40,14 @@ const TeamDetailPage = async ({
   const teamData = teamDoc.data() as Omit<Team, 'id'>;
   const team: Team = { ...teamData, id: teamDoc.id };
 
-  const [teamProjects, teamRisks] = await Promise.all([
+  const [teamProjects, teamRisks, sprints] = await Promise.all([
     getCollectionQueryWithId<Project>(
       query(collection(db, 'projects'), where('teamId', '==', id)),
     ),
     getCollectionQueryWithId<RiskInsight>(
       query(collection(db, 'riskInsights'), where('teamId', '==', id)),
     ),
+    getCollectionWithId<Sprint>('sprints'),
   ]);
 
   const totalCapacity = team.members.reduce(
@@ -56,6 +60,7 @@ const TeamDetailPage = async ({
       team={team}
       projects={teamProjects}
       risks={teamRisks}
+      sprints={sprints}
       totalCapacity={totalCapacity}
     />
   );

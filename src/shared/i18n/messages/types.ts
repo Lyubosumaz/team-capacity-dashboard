@@ -75,9 +75,6 @@ export type Messages = {
       chartsSection: {
         heading: string;
         description: string;
-        loading: string;
-        error: string;
-        notFound: string;
         noData: string;
         capacityOverTimeTitle: string;
         workloadVsCapacityTitle: string;
